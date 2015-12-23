@@ -1,0 +1,1 @@
+<a href="${channel.nodeList[0].url}" target="_blank">${channel.name}</a>

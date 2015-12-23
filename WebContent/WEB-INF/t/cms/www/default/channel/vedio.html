@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${channel.title!channel.name} - ${site.name} - Powered by JEECMS</title>
+<meta http-equiv="keywords" content="${channel.keywords!}"/>
+<meta http-equiv="description" content="${channel.description!}"/>
+<head>
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="/${res}/js/tv.js" type="text/javascript"></script>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+	Cms.siteFlow("${base}", location.href, document.referrer);
+});
+</script>
+</head>
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+	<!--焦点图_begin-->
+    <div id="slider">
+        <div class="slider_box" id="slider_name">
+            <div class="silder_tip" id="movie_tip">电影</div>
+            <ul class="silder_con">		
+                [@cms_content_list count='8' orderBy='4' typeId='3' titLen='10' channelId='46' channelOption='1']
+                [#list tag_list as a]
+                <li class="silder_panel clearfix">
+                    <a href="${a.url}" class="f_l" target="_blank">
+                    <img src="${a.typeImg!site.defImg}" alt="${a.title}" width="690" height="270" />
+                    </a>
+                    <div class="silder_intro f_r">
+                    <h3>
+                    <strong>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    [@text_cut s=a.title len=titLen /]
+                    </a>
+                    </strong>
+                    <span>[@text_cut s=a.ctgName/]</span>
+                    </h3>
+                    <ul>
+                        <li><label>类型：</label><span>${a.attr.VideoType!}</span></li>
+                        <li><label>导演：</label><span>${a.attr.Director!}</span></li>
+                        <li><label>主演：</label><span>${a.attr.Starring!}</span></li>
+                    </ul>
+                    <p>
+                    [<strong>影片介绍</strong>]
+                    [@text_cut s=a.desc len=60 append='...'/]
+                    </p>
+                    <a class="silder_play" href="${a.url}" target="_blank">马上观看</a>
+                    </div>
+                </li>
+                [/#list]
+                [/@cms_content_list]
+            </ul>
+        </div>
+    </div>
+    <script src="/${res}/js/tv.slides.js" type="text/javascript"></script>
+    <!--焦点图_end-->
+    
+    <div class="w700 mt10">
+    	<!--电视剧_begin-->
+    	<div class="hundred100">
+            <div class="HorLine2"></div>
+            <div class="HorLine1"></div>
+            <div class="clear"></div>
+            <div class="LineTitle01">
+                <h1>电视剧</h1>
+                <em>
+                [@cms_channel id='49']
+                <a href="${tag_bean.url}" target="_blank">更多>></a>
+                [/@cms_channel]
+                </em>
+            </div>
+            <div class="tvNews">
+            	<ul>
+            	[@cms_content_list count='8' orderBy='4' titLen='10' channelId='49' channelOption='1']
+                [#list tag_list as a]
+                <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    <img src="${a.titleImg!site.defImg}" alt="${a.title}" />
+                    </a>
+                    <p>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    [@text_cut s=a.title len=titLen /]
+                    </a>
+                	</p>
+                    <p class="tvtype">类型：${a.attr.VideoType!}</p>
+                    <p class="starring">主演：${a.attr.Starring!}</p>
+                    <div class="clear"></div>
+                </li>
+                [/#list]
+                [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+        <!--电视剧_end-->
+        <div class="clear-10"></div>
+        <!--记录片_begin-->
+    	<div class="hundred100">
+            <div class="HorLine2"></div>
+            <div class="HorLine1"></div>
+            <div class="clear"></div>
+            <div class="LineTitle01">
+                <h1>记录片</h1>
+                <em>
+                [@cms_channel id='50']
+                <a href="${tag_bean.url}" target="_blank">更多>></a>
+                [/@cms_channel]
+                </em>
+            </div>
+            <div class="tvNews">
+            	<ul>
+            	[@cms_content_list count='8' orderBy='4' titLen='10' channelId='50' channelOption='1']
+                [#list tag_list as a]
+                <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    <img src="${a.titleImg!site.defImg}" alt="${a.title}" />
+                    </a>
+                    <p>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    [@text_cut s=a.title len=titLen /]
+                    </a>
+                	</p>
+                    <p class="tvabout">[@text_cut s=a.desc len=25 append='...'/]</p>
+                    <div class="clear"></div>
+                </li>
+                [/#list]
+                [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+        <!--记录片_end-->
+        <div class="clear-10"></div>
+        <!--电影_begin-->
+    	<div class="hundred100">
+            <div class="HorLine2"></div>
+            <div class="HorLine1"></div>
+            <div class="clear"></div>
+            <div class="LineTitle01">
+                <h1>电影</h1>
+                <em>
+                [@cms_channel id='61']
+                <a href="${tag_bean.url}" target="_blank">更多>></a>
+                [/@cms_channel]
+                </em>
+            </div>
+            <div class="tvNews">
+            	<ul>
+            	[@cms_content_list count='8' orderBy='4' titLen='10' channelId='51' channelOption='1']
+                [#list tag_list as a]
+                <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    <img src="${a.titleImg!site.defImg}" alt="${a.title}" />
+                    </a>
+                    <p>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    [@text_cut s=a.title len=titLen /]
+                    </a>
+                	</p>
+                    <p class="tvtype">类型：${a.attr.VideoType!}</p>
+                    <p class="tvabout">导演：${a.attr.Director!}</p>
+                    <div class="clear"></div>
+                </li>
+                [/#list]
+                [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+        <!--电影_end-->
+        <div class="clear"></div>
+    </div>
+    
+    <div class="w270">
+    	<!--电视剧点播排行榜_begin-->
+    	<div class="rim02 mt10">
+            <div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>电视剧点播排行榜</span>
+                <div class="LanMu01-3"></div>
+            </div>
+            <div class="tvphb">
+                <ul>
+                	<div class="tvphlb">点播排行榜</div>
+                    <div class="tvdjcs">播放次数</div>
+                    <div class="clear"></div>
+                    <div style="border-bottom:1px dotted #ccc;"></div>
+                    [@cms_content_list count='10' titLen='12' orderBy='9' channelOption='1' channelId='49']
+                    [#list tag_list as a]
+                    <li>
+                    <div class="v-rank2-order2 v-rank4-top4">${a_index+1}</div>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    <span>[@text_cut s=a.title len=titLen /]</span>
+                    </a>
+                    <em>${a.views!}次</em>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+        <!--电视剧点播排行榜_end-->
+        <div class="clear-10"></div>
+        <!--记录片点播排行榜_begin-->
+    	<div class="rim02">
+            <div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>记录片点播排行榜</span>
+                <div class="LanMu01-3"></div>
+            </div>
+            <div class="tvphb">
+                <ul>
+                	<div class="tvphlb">点播排行榜</div>
+                    <div class="tvdjcs">播放次数</div>
+                    <div class="clear"></div>
+                    <div style="border-bottom:1px dotted #ccc;"></div>
+                    [@cms_content_list count='10' titLen='12' orderBy='9' channelOption='1' channelId='50']
+                    [#list tag_list as a]
+                    <li>
+                    <div class="v-rank2-order2 v-rank4-top4">${a_index+1}</div>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    <span>[@text_cut s=a.title len=titLen /]</span>
+                    </a>
+                    <em>${a.views!}次</em>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+        <!--记录片点播排行榜_end-->
+        <div class="clear-10"></div>
+        <!--电影点播排行榜_begin-->
+    	<div class="rim02">
+            <div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>电影点播排行榜</span>
+                <div class="LanMu01-3"></div>
+            </div>
+            <div class="tvphb">
+                <ul>
+                	<div class="tvphlb">点播排行榜</div>
+                    <div class="tvdjcs">播放次数</div>
+                    <div class="clear"></div>
+                    <div style="border-bottom:1px dotted #ccc;"></div>
+                    [@cms_content_list count='10' titLen='12' orderBy='9' channelOption='1' channelId='51']
+                    [#list tag_list as a]
+                    <li>
+                    <div class="v-rank2-order2 v-rank4-top4">${a_index+1}</div>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    <span>[@text_cut s=a.title len=titLen /]</span>
+                    </a>
+                    <em>${a.views!}次</em>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+        <!--电影点播排行榜_end-->
+    </div>
+    
+    [#include "../include/friend_link.html"/]
+    [#include "../include/footer.html"/]
+</div>
+</body>
+</html>

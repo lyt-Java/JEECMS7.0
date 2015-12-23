@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="">
+$(function() {
+var group="${group}";
+$("#beginDateInput").bind('click', function() {
+	if(group=="year"){
+		WdatePicker({dateFmt:'yyyy'})
+	}else if(group=="month"){
+		WdatePicker({dateFmt:'yyyy-MM'})
+	}else if(group=="day"){
+		WdatePicker({dateFmt:'yyyy-MM-dd'})
+	}
+});
+$("#endDateInput").bind('click', function() {
+	if(group=="year"){
+		WdatePicker({dateFmt:'yyyy',minDate:'#F{$dp.$D(\'beginDateInput\')}'})
+	}else if(group=="month"){
+		WdatePicker({dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'beginDateInput\')}'})
+	}else if(group=="day"){
+		WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'beginDateInput\')}'})
+	}
+});
+});
+function resetDateInput(date){
+	$("#beginDateInput").unbind( "click" );
+	$("#endDateInput").unbind( "click" );
+	if(date=="year"){
+		$("#beginDateInput").bind('click', function() {
+			WdatePicker({dateFmt:'yyyy'})
+		});
+		$("#endDateInput").bind('click', function() {
+			WdatePicker({dateFmt:'yyyy',minDate:'#F{$dp.$D(\'beginDateInput\')}'})
+		});
+	}else if(date=="month"){
+		$("#beginDateInput").bind('click', function() {
+			WdatePicker({dateFmt:'yyyy-MM'})
+		});
+		$("#endDateInput").bind('click', function() {
+			WdatePicker({dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'beginDateInput\')}'})
+		});
+	}else if(date=="day"){
+		$("#beginDateInput").bind('click', function() {
+			WdatePicker({dateFmt:'yyyy-MM-dd'})
+		});
+		$("#endDateInput").bind('click', function() {
+			WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'beginDateInput\')}'})
+		});
+	}
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "cms.workload.statistic.function"/> </div>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<form id="queryForm" action="v_list.do" method="post">
+<input type="hidden" name="year"/>
+<input type="hidden" name="month"/>
+<input type="hidden" name="day"/>
+<div style="padding-top:5px;padding-bottom:5px; text-indent:10px; border-top:1px solid #fff;">
+	<@s.m "statistic.channel"/>:
+	<select id="channelId" name="channelId">
+	<option value="" <#if !channelId??>selected="selected"</#if>><@s.m "global.pleaseSelect"/></option>
+	<#if channelList?size gt 0>
+	<#assign origDeep=channelList[0].deep+1/>
+	<#list channelList as c>
+		<#if c.hasContent || c.child?size gt 0>
+		<option <#if channelId??&&c.id==channelId>selected="selected"</#if> value="${c.id}"><#if c.deep gte origDeep><#list origDeep..c.deep as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+		</#if>
+	</#list>
+	</#if>
+	</select>
+	<@s.m "cms.statistic.date.begin"/> <input id="beginDateInput" name="beginDate" <#if group=="year">value="${beginDate?string('yyyy')}"<#elseif group=="month">value="${beginDate?string('yyyy-MM')}"<#else>value="${beginDate?string('yyyy-MM-dd')}"</#if> type="text"   class="Wdate" />
+	<@s.m "cms.statistic.date.end"/>  <input id="endDateInput" name="endDate"     <#if group=="year">value="${endDate?string('yyyy')}"<#elseif group=="month">value="${endDate?string('yyyy-MM')}"<#else>value="${endDate?string('yyyy-MM-dd')}"</#if> type="text"  class="Wdate" />
+	<select name="authorId">
+		<option value="0"><@s.m "cms.workload.statistic.selectuser"/></option>
+		<#list users as user>
+		<option value="${user.id}" <#if authorId??><#if authorId==user.id>selected="selected"</#if></#if>>${user.username}</option>
+		</#list>
+	</select>
+	<select name="reviewerId">
+		<option value="0"><@s.m "cms.workload.statistic.selectchecker"/></option>
+		<#list admins as admin>
+		<option value="${admin.id}" <#if reviewerId??><#if reviewerId==admin.id>selected="selected"</#if></#if>>${admin.username}</option>
+		</#list>
+	</select>
+	<input name="group" value="year" type="radio"  <#if group=="year">checked="checked"</#if> onclick="resetDateInput('year')" />年统计
+	<input name="group" value="month" type="radio" <#if group=="month">checked="checked"</#if>  onclick="resetDateInput('month')"/>月统计
+	<input name="group" value="day" type="radio"   <#if group=="day">checked="checked"</#if>  onclick="resetDateInput('day')"/>日统计
+	<input class="query" type="submit" value="<@s.m "global.query"/>"/>
+</div>
+</form>
+<@p.table value=list;cmsStatistic,i,has_next><#rt/>
+	<@p.column code="cmsStatic.channel" align="center"><#if cmsStatistic.channel??>${cmsStatistic.channel.name}</#if></@p.column><#t/>
+	<@p.column code="statistic.content.contents" align="center">${cmsStatistic.count!}</@p.column><#t/>
+	<@p.column code="content.user" align="center"><#if cmsStatistic.author??>${cmsStatistic.author.username}</#if></@p.column><#t/>
+	<@p.column code="content.checker" align="center"><#if cmsStatistic.reviewer??>${cmsStatistic.reviewer.username}</#if></@p.column><#t/>
+	<@p.column code="cms.statistic.date" align="center">
+		<#if group=="year">${cmsStatistic.date?string("yyyy")}
+		<#elseif group=="month">${cmsStatistic.date?string("yyyy-MM")}
+		<#elseif group=="day">${cmsStatistic.date?string("yyyy-MM-dd")}
+		</#if>
+	</@p.column><#t/>
+</@p.table>
+</div>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<link href="${base}/res/common/css/jquery.flot.css" rel="stylesheet" type="text/css"/>
+<!--[if lte IE 8]><![endif]-->
+<script language="javascript" type="text/javascript" src="${base}/res/common/js/excanvas.min.js"></script>
+<script src="${base}/res/common/js/jquery.flot.min.js" type="text/javascript"></script>
+<script src="${base}/res/common/js/jquery.flot.time.min.js" type="text/javascript"></script>
+<script src="${base}/res/common/js/jquery.flot.pie.min.js" type="text/javascript"></script>
+<#assign keys=totalMap?keys/>
+<script class="code" type="text/javascript">
+$(function() {
+	//饼图
+	var data = [
+   		<#list keys as s>
+   		{ label: "${s}",  data: [${totalMap["${s}"]}]}
+   		<#if s_has_next>,</#if>
+   		</#list>
+	  ];
+	if (data.length > 0) {
+		var plot=$.plot('#pieplaceholder', data, {
+		    series: {
+		        pie: {
+		            show: true
+		        }
+		    },
+		    grid: {
+		        hoverable: true,
+		        clickable: true
+		    },
+		    legend: {
+		        show: true,
+		        labelFormatter:  function (label, series) {
+		    	    return  label+"&nbsp&nbsp"+series.data[0][1]+"&nbsp&nbsp"+Math.round(series.percent)+"%";
+		    	}
+		    }
+		});
+	}
+	
+	function showTooltip(x, y, contents) {
+	    $('<div id="tooltip">' + contents + '</div>').css( {
+	        position: 'absolute',
+	        top: y + 5,
+	        left: x + 5,
+	        border: '1px solid #fdd',
+	        padding: '2px',
+	        'background-color': '#fee',
+	        opacity: 0.80
+	    }).appendTo("body");//.fadeIn(200);
+	 }
+	 var previousPoint = null;
+	 $('#pieplaceholder').bind('mouseout', function() {
+	    plot.unhighlight();
+	    $("#tooltip").remove();
+	    $(this).data('previous-post', -1);
+	 });
+	 $('#pieplaceholder').bind('plothover', function(event, pos, item) {
+	    if (item) {
+	        if ($(this).data('previous-post') != item.seriesIndex) {
+	            plot.unhighlight();
+	            plot.highlight(item.series, item.datapoint);
+	            $(this).data('previous-post', item.seriesIndex);
+	        }
+	        $("#tooltip").remove();
+	       // y = item.datapoint[1];
+	       	y = item.series.data[0][1];
+	        showTooltip(pos.pageX, pos.pageY, item.series.label + " " + y);
+	    } else {
+	        plot.unhighlight();
+	        $("#tooltip").remove();
+	        previousPost = $(this).data('previous-post', -1);
+	    }
+	 });
+});
+function statisticYear(){
+	var f = getTableForm();
+	$("#flag").val(2);
+	f.submit();
+}
+function statisticDays(){
+	var f = getTableForm();
+	$("#flag").val(1);
+	f.submit();
+}
+function statisticDay(){
+	var f = getTableForm();
+	$("#flag").val(0);
+	f.submit();
+}
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+</script>
+</head>
+<body>
+<form id="tableForm" action="v_list.do" method="post" style="padding-top:5px;">
+<div>
+<@s.m "statistic.function.year"/>:
+<input type="text" name="year" value="${year!}" style="width:100px" onclick="WdatePicker({dateFmt:'yyyy'})" class="Wdate"/>
+<@s.m "statistic.function.days"/>:
+<input type="text" name="begin" value="${begin!?string('yyyy-MM-dd')}" style="width:120px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate"/>
+<input type="text" name="end" value="${end!?string('yyyy-MM-dd')}" style="width:120px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate"/>
+<input id="flag" name="flag" type="hidden" value="1"/>
+<input id="type" name="type" type="hidden" value="${type!}"/>
+<select name="target">
+<option value="0" <#if target??><#if target==0>selected="selected"</#if></#if>>pv</option>
+<option value="1" <#if target??><#if target==1>selected="selected"</#if></#if>>ip</option>
+<option value="2" <#if target??><#if target==2>selected="selected"</#if></#if>><@s.m 'statistic.target.visitors'/></option>
+</select>
+<input class="query" type="button" onclick="statisticYear()" value="<@s.m 'statistic.function.year'/>"/>
+<input class="query" type="button" onclick="statisticDays()" value="<@s.m 'statistic.function.days'/>"/>
+<input class="query" type="button" onclick="statisticDay()" value="<@s.m 'statistic.function.day'/>"/>
+</div>
+</form>
+	<div id="header">
+		<#if target==0>pv<#elseif target==1>ip<#else><@s.m "statistic.target.visitors"/></#if>
+		<#if flag==1>
+		<@s.m "statistic.function.days"/>
+		<#elseif flag==2>
+		<@s.m "statistic.function.year"/>
+		<#else>
+		<@s.m "statistic.function.day"/>
+		</#if>
+	</div>
+	<div id="content">
+		<#if keys?size  gt 0>
+		<div class="demo-container">
+			<div id="pieplaceholder" class="demo-pie-placeholder" style="float:left; width:600px;"></div>
+		</div>
+		<#else>
+		<@s.m "statistic.noresult"/>
+		</#if>
+	</div>
+	<div id="content">
+		<#if areaCountMap?keys?size  gt 0>
+		<table>
+		<tr><td>地区</td><td>pv</td><td>ip</td><td>访客</td><td>访问时长</td></tr>
+		<#list areaCountMap?keys as area>
+		<tr>
+		<td>${area}</td>
+		<#list areaCountMap["${area}"] as c>
+			<#if c_index<4>
+			<td>${c!?string("0")}</td>
+			</#if>
+		</#list>
+		</tr>
+		</#list>
+		</table>
+		<#else>
+		<@s.m "statistic.noresult"/>
+		</#if>
+	</div>
+</body>
+</html>

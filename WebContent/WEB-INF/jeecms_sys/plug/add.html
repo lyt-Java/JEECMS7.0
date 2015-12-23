@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function() {
+	$("#jvForm").validate();
+});
+function plugExist(msg){
+	$.alert("<@s.m 'global.prompt'/>",msg);
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "plug.function"/> - <@s.m "global.add"/></div>
+	<form class="ropt">
+		<input class="return-button" type="submit" value="<@s.m "global.backToList"/>" onclick="this.form.action='v_list.do';"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<#include "plug_upload.html"/>
+<@p.form id="jvForm" action="o_save.do">
+<@p.text label="plug.name" name="name" required="true" class="required" maxlength="100"/>
+<@p.text label="plug.author" name="author"  maxlength="100"/>
+<@p.td label="plug.upload" colspan="2" width="50" noHeight="true">
+<div>
+	<input type="text" id="plugPath" name="path" style="width:265px"/>
+</div>
+<div>
+	<span id="mfc" style="position:relative;display:block;width:300px;*width:300px;">
+	<input type='text' id='plugFileText'/>  
+	<input class="browse" type='button' value='<@s.m "global.browse"/>'/>
+	<input onchange="$('#plugFileText').val(this.value)" size="19" type="file" name="plugFile" id="plugFile" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:79px;top:2px;"/>
+	<input type="button" value="<@s.m "imageupload.upload"/>" onclick="uploadPlug();" class="upload-button"/>
+	</span> 
+</div>
+</@p.td><@p.tr/>
+<@p.textarea  cols="50" rows="5" maxlength="500"  label="plug.description" id="description" name="description"  width="100"/>
+<@p.td><@p.submit code="global.submit"/> &nbsp; <@p.reset code="global.reset"/></@p.td>
+</@p.form>
+</div>
+</body>
+</html>

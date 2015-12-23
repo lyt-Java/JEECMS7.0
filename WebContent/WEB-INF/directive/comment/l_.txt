@@ -1,0 +1,8 @@
+[@cms_comment_list  count='#{count}'  recommend='#{recommend}' checked='#{checked}' orderBy='#{orderBy}' textLen='#{textLen}' siteId=site.id append='...']
+		<dl>
+		[#list tag_list as c]
+			<dt><span>${(c.commentUser.username)!"匿名网友"}</span> 对 <a href="${c.content.url}" target="_blank">${c.content.title}</a> 评论道:</dt>
+			<dd>[@text_cut s=c.textHtml len=textLen append=append/]</dd>
+		[/#list]
+		</dl>
+[/@cms_comment_list]

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<title>${title} - ${site.name} - Powered by JEECMS</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta content="${content.tagStr!}" http-equiv="keywords" />
+<meta content="${content.description!}" http-equiv="description" />
+
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script src="/${res}/js/common.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+$(function() {
+Cms.viewCount("${base}","${content.id}");
+Cms.siteFlow("${base}", location.href, document.referrer);
+});
+</script>
+</head>
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+    <div class="w670 mt10">
+        <div class="website">当前位置：<a href="${base}/">首页</a> > [#list channel.nodeList as n]<a target="_blank" href="${n.url}">${n.name}</a>[#if n_has_next] > [/#if][/#list] > 正文</div>
+        <div class="clear"></div>
+    
+        <div class="newsTex">
+          <h1><span style="color: ${content.titleColor!}">[#if content.bold]<b>${content.title}</b>[#else]${content.title}[/#if]</span></h1>
+        <div class="msgbar">发布时间：${content.releaseDate?string("yyyy-MM-dd")} &nbsp; 截止时间：${content.attr.deadline!} &nbsp; 浏览次数：<span id="views"></span> &nbsp; 
+        [#if user??]
+        <span onclick="Cms.collect('${base}','${content.id}',1,'cancelSpan','comfirmSpan')" id="comfirmSpan" style="cursor: pointer;">我要收藏</span>
+        <span onclick="Cms.collect('${base}','${content.id}',0,'cancelSpan','comfirmSpan')" id="cancelSpan"  style="cursor: pointer;">取消收藏</span>
+        <script type="text/javascript">
+        $(function() {
+        Cms.collectexist("${base}","${content.id}","cancelSpan","comfirmSpan");
+        });
+        </script>
+        [/#if]
+        </div>
+        <div class="clear"></div>
+        <div class="newsCon">
+            <table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="zpbgfont" style=" border:1px solid #dadada; background:#fafafa;">
+              <tr>
+                <td width="75" height="30" align="right">工作经验：</td>
+                <td>${content.attr.experience!}</td>
+                <td width="75" align="right">工作性质：</td>
+                <td>${content.attr.nature!}</td>
+              </tr>
+              <tr>
+                <td height="30" align="right" bgcolor="#f6f6f6">最低学历：</td>
+                <td>${content.attr.education!}</td>
+                <td align="right">管理经验：</td>
+                <td>${content.attr.hasmanage!}</td>
+              </tr>
+              <tr>
+                <td height="30" align="right" bgcolor="#f6f6f6">职位月薪：</td>
+                <td>${content.attr.salary!}</td>
+                <td align="right">招聘人数：</td>
+                <td>${content.attr.nums!}</td>
+              </tr>
+              <tr>
+                <td height="30" align="right" bgcolor="#f6f6f6">工作地点：</td>
+                <td>${content.attr.workplace!}</td>
+                <td align="right">职位类别：</td>
+                <td>${content.attr.category!}</td>
+              </tr>
+            </table>
+
+        </div>
+        <div class="clear-10"></div>
+        <div class="resume" onclick="Cms.jobApply('${base}','${content.id}');"></div>
+        <div class="clear-10"></div>
+        
+		<div class="newsCon">
+        	<div class="jobDescription">职位描述</div>
+        <div class="jobAbout">${txt!}</div>
+       	<div class="jobDescription">公司介绍</div>
+        <div class="jobAbout">
+			<h5>${content.companyName!}</h5>
+                公司地址：${content.companyAddr!}<br/>
+                公司规模：${content.companyScale!}<br/>
+                公司性质：${content.companyNature!}<br/>
+                公司行业：${content.companyIndustry!}<br/>
+            </div>
+            <div class="jobDescription">公司简介</div>
+        <div class="jobAbout">${content.companyDesc!}</div>
+        <div class="jobDescription">联系方式</div>  
+        <div class="jobAbout">${content.companyContact!}</div>
+        </div>
+        <div class="pagebar">[#include "../style_page/content.html"/]</div>
+        <div class="other box">[#if channel.allowUpdown]
+            [/#if]
+            <ul>
+            <li><strong>上一篇：</strong>[@cms_content id=content.id next='1' channelId=channel.id][#if tag_bean??]<a href="${tag_bean.url}">${tag_bean.title}</a>[#else]没有了[/#if][/@cms_content]</li>
+            <li><strong>下一篇：</strong>[@cms_content id=content.id next='0' channelId=channel.id][#if tag_bean??]<a href="${tag_bean.url}">${tag_bean.title}</a>[#else]没有了[/#if][/@cms_content]</li>
+            </ul>
+          </div>
+          <div class="clear-10"></div>
+        </div>
+    </div>
+    <div class="w300 mt10">
+    	<!--招聘信息_begin-->
+    	<div class="rim02">
+            <div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>招聘信息</span>
+                <div class="LanMu01-3"></div>
+            </div>
+            <div class="jrhtList">
+                <ul>
+                [@cms_content_list count='20' orderBy='4' titLen='18' channelId='61'  channelOption='1']
+                [#list tag_list as a]
+                  <li>
+                <a href="${a.url}" title="${a.title}" target="_blank">
+                [@text_cut s=a.title len=titLen /]
+                </a>
+                </li>
+                [/#list]
+                [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+        <!--招聘信息_end-->
+    </div>
+    [#include "../include/right3.html"/]
+	[#include "../include/friend_link.html"/]
+    [#include "../include/footer.html"/]
+</div>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+var timeout = 500;
+var closetimer = 0;
+var ddmenuitem = 0;
+function jsddm_open()
+{	
+	jsddm_canceltimer();
+	jsddm_close();
+	ddmenuitem = $(this).find('ul').eq(0).css('visibility', 'visible');
+}
+function jsddm_close()
+{	
+	if(ddmenuitem) ddmenuitem.css('visibility', 'hidden');
+}
+function jsddm_timer()
+{	
+	closetimer = window.setTimeout(jsddm_close, timeout);
+}
+function jsddm_canceltimer()
+{	
+	if(closetimer){	
+		window.clearTimeout(closetimer);
+		closetimer = null;
+	}
+}
+document.onclick = jsddm_close;
+$(function() {
+	$("#tableForm").validate();
+	$('#jsddm > li').bind('mouseover', jsddm_open);
+	$('#jsddm > li').bind('mouseout',  jsddm_timer);
+	$("tbody tr").each(function(){
+		$(this).attr("bgColor","dbedf4");
+		$(this).bind('mouseover', function() {
+			$(this).attr("bgColor","#b8d8e2");
+		});
+		$(this).bind('mouseout', function() {
+			$(this).attr("bgColor","#dbedf4");
+		});
+	});
+	$("#rejectDialog").dialog({
+		autoOpen: false,
+		modal: true,
+		width: 380,
+		height: 200,
+		position: ["center",50],
+		buttons: {
+			"OK": function() {
+				rejectSubmit();
+			}
+		}
+	});
+	//移动栏目对话框
+	$("#moveDialog").dialog({
+		autoOpen: false,
+		modal: true,
+		width: 280,
+		height: 420,
+		position: ["center",20],
+		buttons: {
+			"OK": function() {
+				doOperate("o_move.do","<@s.m 'content.move.success'/>");
+				$(this).dialog("close");
+			}
+		}
+	});
+	var move_opened = false;
+	$('#move').click(function(){
+		//第一次打开，需要获取数据。
+		if(!move_opened) {
+			$("#movetree").treeview({
+				url: "v_tree_radio.do"
+			});
+			move_opened = true;
+			$("#moveDialog").show();
+		}
+		$('#moveDialog').dialog('open');
+		return false;
+	});		
+	//复制栏目对话框
+	$("#copyDialog").dialog({
+		autoOpen: false,
+		modal: true,
+		width: 280,
+		height: 420,
+		position: ["center",20],
+		buttons: {
+			"OK": function(){
+				doOperate("o_copy.do","<@s.m 'content.copy.success'/>");
+				$(this).dialog("close");
+			}
+		}
+	});
+	var copy_opened = false;
+	$('#copy').click(function(){
+		//第一次打开，需要获取数据。
+		if(!copy_opened) {
+			$("#copytree").treeview({
+				url: "v_tree_radio.do"
+			});
+			copy_opened = true;
+			$("#copyDialog").show();
+		}
+		$('#copyDialog').dialog('open');
+		return false;
+	});		
+	//推送至专题
+	$("#topicsDialog").dialog({
+		autoOpen: false,
+		modal: true,
+		width: 280,
+		height: 420,
+		position: ["center",20],
+		buttons: {
+			"OK": function(){
+		        doSendToTopics();
+				$(this).dialog("close");
+			}
+		}
+	});
+	var send_to_topic_opened = false;
+	$('#sendtotopic').click(function(){
+		if(!send_to_topic_opened) {
+			$.getJSON("../topic/by_channel.do",function(topics) {
+				var ts = $("#topics");
+				ts.empty();
+				var len = topics.length;
+				for(var i=0;i<len;i++) {
+					ts.append("<li><input type='checkbox' name='topics' value='"+topics[i].id+"'/>"+topics[i].name+"</li> ");
+				}
+				ts.parent().toggle(len>0);
+			});
+			$("#topicsDialog").show();
+		}
+		$('#topicsDialog').dialog('open');
+		return false;
+	});	
+	
+	
+	$("div[id^='status_']").each(function(){
+		$(this).bind('mouseout', function() {
+			$("#step_"+$(this).attr("id").split("status_")[1]).hide();
+		});
+		$(this).bind('mouseover', function() {
+			$("#step_"+$(this).attr("id").split("status_")[1]).show();
+		});
+	});
+});
+function doSendToTopics(){
+    var contentIds=getContentIds();
+    var topicIds=getTopicIds();
+    if(contentIds.length<=0){
+      $.alert("<@s.m 'global.prompt'/>","<@s.m 'content.noselectcontent'/>");
+   }else{
+     if(topicIds.length<=0){
+	   $.alert("<@s.m 'global.prompt'/>","<@s.m 'content.noselectchannel'/>");
+      }else{
+    	  $.post("o_send_to_topic.do", {
+	    		contentIds:contentIds,
+	    		topicIds:topicIds
+	    		}, function(data) {
+	    			if(data.pass){
+	    				$.alert("<@s.m 'global.prompt'/>","<@s.m 'content.sendtopic.success'/>");
+	    				}
+	    			},
+	    		"json");
+      }
+    }
+}
+function getContentIds(){
+	var ids=new Array();
+	$("input[name='ids']").each(function() {
+		if($(this).prop("checked")){
+			ids.push($(this).val());
+			}
+	});
+	return ids;
+}
+function getChannelIds(){
+	var ids=new Array();
+	$("input[name='channels']").each(function() {
+		if($(this).prop("checked")){
+			ids.push($(this).val());
+			}
+	});
+	return ids;
+}
+function getTopicIds(){
+	var ids=new Array();
+	$("input[name='topics']").each(function() {
+		if($(this).prop("checked")){
+			ids.push($(this).val());
+			}
+	});
+	return ids;
+}
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+function optDelete() {
+	if(Pn.checkedCount('ids')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	$.confirm(doDelete,"<@s.m 'global.confirm'/>","<@s.m 'global.confirm.delete'/>");
+}
+function doDelete(){
+	var f = getTableForm();
+	f.action="o_delete.do";
+	f.submit();
+}
+function optCheck() {
+	if(Pn.checkedCount('ids')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	var f = getTableForm();
+	f.action="o_check.do";
+	f.submit();
+}
+function optStatic() {
+	if(Pn.checkedCount('ids')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	var f = getTableForm();
+	f.action="o_static.do";
+	f.submit();
+}
+function optReject() {
+	if(Pn.checkedCount('ids')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	$("#rejectDialog").dialog("open");
+}
+
+function rejectSubmit() {
+	$("input[name=rejectOpinion]").val($("#rejectOpinion").val());
+	$("input[name=rejectStep]").val($("#rejectStep").val());
+	$("#rejectDialog").dialog("close");
+	var f = getTableForm();
+	f.action="o_reject.do";
+	f.submit();
+}
+function chgStatus() {
+	var queryStatus = $("input[name=queryStatus]:checked").val();
+	location.href="v_list.do?cid=${cid!}&queryStatus=" + queryStatus;
+}
+
+function optPriority() {
+	var f = getTableForm();
+	f.action="o_priority.do";
+	f.submit();
+}
+</script>
+<style type="">
+.ui-dialog-content ui-widget-content{background:url(../img/admin/lbg.jpg) #e9f4f8 right repeat-y;color:#666666;}
+</style>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "content.function"/> - <@s.m "global.list"/></div>
+	<form class="ropt">
+		<@cms_perm url="/content/v_add.do">
+		 <ul id="jsddm">
+	        <li style="background-image:url(${base}/res/common/img/theme/top_menu_butten.png); width:80px; height:21px; line-height:21px;"><a href="#" style=" text-align:center;"><@s.m "content.opt.publish"/></a>
+	        <ul>
+	            <#list models as m>
+			 	<li value="1">
+	            <a href="v_add.do?modelId=${m.id}&cid=${cid!}"">
+	            <#if m.id gt 0&&m.id lt 10><img src="${base}/res/common/img/theme/model-${m.id}.gif" / style="vertical-align:middle;">
+					<#else><img src="${base}/res/common/img/theme/model-0.gif"/>
+				</#if>
+	            	${m.name}</a>
+	            </li>
+				 </#list>
+	        </ul>
+	    </li>
+	    </ul>
+	    </div>
+		</@cms_perm>
+		<input type="hidden" name="cid" value="${cid!}"/>
+	</form>
+</div>
+
+
+<div class="body-box">
+<form action="v_list.do" method="post">
+<div style="padding-top:5px; padding-bottom:5px; text-indent:10px; border-bottom:1px solid #fff; border-top:1px solid #fff;">
+<@s.m "content.title"/>: <input type="text" name="queryTitle" value="${queryTitle!}" style="width:100px"/>
+<@s.m "content.user"/>: <input type="text" name="queryInputUsername" value="${queryInputUsername!}" style="width:70px"/>
+<label><input type="checkbox" name="queryTopLevel" value="true"<#if queryTopLevel?? && queryTopLevel> checked="checked"</#if>/><@s.m "content.topLevel.query"/></label>
+<label><input type="checkbox" name="queryRecommend" value="true"<#if queryRecommend?? && queryRecommend> checked="checked"</#if>/><@s.m "content.recommend"/></label>
+<@p.select name="queryTypeId" value=queryTypeId list=typeList listKey="id" listValue="name" headerKey="" headerValue="content.query.allType"/>
+<#--
+<@p.select name="queryStatus" value=queryStatus list={"0":"content.status.0","1":"content.status.1","2":"content.status.2"} headerKey="" headerValue="content.query.allStatus"/>
+-->
+<@p.select name="queryOrderBy" value=queryOrderBy list={"0":"content.orderBy.0","1":"content.orderBy.1","2":"content.orderBy.2","3":"content.orderBy.3","4":"content.orderBy.4","5":"content.orderBy.5","6":"content.orderBy.6","7":"content.orderBy.7","8":"content.orderBy.8","9":"content.orderBy.9","10":"content.orderBy.10","11":"content.orderBy.11","12":"content.orderBy.12","13":"content.orderBy.13","14":"content.orderBy.14","15":"content.orderBy.15","16":"content.orderBy.16","17":"content.orderBy.17","18":"content.orderBy.18","19":"content.orderBy.19","20":"content.orderBy.20","21":"content.orderBy.21"}/>
+<input type="hidden" name="cid" value="${cid!}"/>
+<input class="query" type="submit" value="<@s.m "global.query"/>"/>
+</div>
+<div style="padding-top:5px; line-height:28px; text-indent:10px;">
+<label><input type="radio" name="queryStatus" value="all" onclick="chgStatus();"<#if !status?? || queryStatus="all"> checked="checked"</#if>/><@s.m "content.status.all"/></label>
+<label><input type="radio" name="queryStatus" value="contribute" onclick="chgStatus();"<#if queryStatus?? && queryStatus=="contribute"> checked="checked"</#if>/><@s.m "content.status.contribute"/></label>
+<label><input type="radio" name="queryStatus" value="draft" onclick="chgStatus();"<#if queryStatus?? && queryStatus=="draft"> checked="checked"</#if>/><@s.m "content.status.draft"/></label>
+<label><input type="radio" name="queryStatus" value="prepared" onclick="chgStatus();"<#if queryStatus?? && queryStatus=="prepared"> checked="checked"</#if>/><@s.m "content.status.prepared"/></label>
+<label><input type="radio" name="queryStatus" value="passed" onclick="chgStatus();"<#if queryStatus?? && queryStatus=="passed"> checked="checked"</#if>/><@s.m "content.status.passed"/></label>
+<label><input type="radio" name="queryStatus" value="checked" onclick="chgStatus();"<#if queryStatus?? && queryStatus=="checked"> checked="checked"</#if>/><@s.m "content.status.checked"/></label>
+<label><input type="radio" name="queryStatus" value="rejected" onclick="chgStatus();"<#if queryStatus?? && queryStatus=="rejected"> checked="checked"</#if>/><@s.m "content.status.rejected"/></label>
+</div>
+</form>
+<form id="tableForm" method="post">
+<input type="hidden" name="pageNo" value="${pageNo!}"/>
+<input type="hidden" name="cid" value="${cid!}"/>
+<#list .data_model?keys as pkey>
+	<#if pkey?starts_with('query')><input type="hidden" name="${pkey}" value="${(.data_model[pkey])!?string}"/></#if><#t/>
+</#list>
+<input type="hidden" name="rejectStep"/>
+<input type="hidden" name="rejectOpinion"/>
+<@p.table value=pagination;content,i,has_next><#rt/>
+	<@p.column title="<input type='checkbox' onclick='Pn.checkbox(\"ids\",this.checked)'/>" width="25" align="center">
+		<input type='checkbox' name='ids' value='${content.id}' onclick="Pn.selectCheckBox('${content.id}',this.checked)"/><#t/>
+	</@p.column><#t/>
+	<@p.column title="ID" align="center">${content.id}</@p.column><#t/>
+	<@p.column code="content.title">
+		<#if content.model.id gt 0&&content.model.id lt 10><img src="${base}/res/common/img/theme/model-${content.model.id}.gif"/>
+		<#else><img src="${base}/res/common/img/theme/model-0.gif"/>
+		</#if>
+		<#if content.topLevel gt 0><span style="color:#6da807">[<@s.m "content.topLevel.short"/>${content.topLevel}]</span></#if>
+		<#if content.recommend><span style="color:#6da807">[<@s.m "content.recommend.short"/>]</span></#if>
+		<strong>[${content.channel.name}]</strong>
+		<a href="${content.url}" target="_blank"><@text_cut s=content.title?html len=25 append="..."/></a>
+		<#if content.checkOpinion??>
+		<br/><span style="color:#6da807">${content.checkOpinion}</span>
+		</#if>
+	</@p.column><#t/>
+	<@p.column code="content.topLevel" align="center">
+		<input type="hidden" name="wids" value="${content.id}"/>
+		<input type="text" name="topLevel" value="${content.topLevel!}" required="true" class="required digits" maxlength="2" style="width:20px"/>
+	</@p.column><#t/>
+	<@p.column code="content.type" align="center">${content.type.name}</@p.column><#t/>
+	<@p.column code="content.user" align="center">${content.user.username}</@p.column><#t/>
+	<@p.column code="content.views" align="center">${content.views}</@p.column><#t/>
+	<#if queryOrderBy??>
+		<#switch queryOrderBy>
+		<#case 6>
+			<@p.column code="content.viewsDay" align="right">${content.viewsDay}</@p.column><#t/>
+			<#break>
+		<#case 7>
+			<@p.column code="content.viewsWeek" align="right">${content.contentCount.viewsWeek}</@p.column><#t/>
+			<#break>
+		<#case 8>
+			<@p.column code="content.viewsMonth" align="right">${content.contentCount.viewsMonth}</@p.column><#t/>
+			<#break>
+		<#case 10>
+			<@p.column code="content.commentsDay" align="right">${content.commentsDay}</@p.column><#t/>
+			<#break>
+		<#case 11>
+			<@p.column code="content.commentsWeek" align="right">${content.contentCount.commentsWeek}</@p.column><#t/>
+			<#break>
+		<#case 12>
+			<@p.column code="content.commentsMonth" align="right">${content.contentCount.commentsMonth}</@p.column><#t/>
+			<#break>
+		<#case 13>
+			<@p.column code="content.comments" align="right">${content.contentCount.comments}</@p.column><#t/>
+			<#break>			
+		<#case 14>
+			<@p.column code="content.downloadsDay" align="right">${content.downloadsDay}</@p.column><#t/>
+			<#break>
+		<#case 15>
+			<@p.column code="content.downloadsWeek" align="right">${content.contentCount.downloadsWeek}</@p.column><#t/>
+			<#break>
+		<#case 16>
+			<@p.column code="content.downloadsMonth" align="right">${content.contentCount.downloadsMonth}</@p.column><#t/>
+			<#break>
+		<#case 17>
+			<@p.column code="content.downloads" align="right">${content.contentCount.downloads}</@p.column><#t/>
+			<#break>			
+		<#case 18>
+			<@p.column code="content.upsDay" align="right">${content.upsDay}</@p.column><#t/>
+			<#break>
+		<#case 19>
+			<@p.column code="content.upsWeek" align="right">${content.contentCount.upsWeek}</@p.column><#t/>
+			<#break>
+		<#case 20>
+			<@p.column code="content.upsMonth" align="right">${content.contentCount.upsMonth}</@p.column><#t/>
+			<#break>
+		<#case 21>
+			<@p.column code="content.ups" align="right">${content.contentCount.ups}</@p.column><#t/>
+			<#break>
+		<#default>	
+		</#switch>
+	</#if>
+	<@p.column code="content.releaseDate" align="center">${content.releaseDate?string('yyyy-MM-dd')}</@p.column><#t/>
+	<@p.column code="content.status" align="center">
+		<div id="status_${content.id}" class="status"><@s.m "content.status."+content.status/></div>
+		<#if content.status==1> 
+			${content.checkStep}
+			<#if content.rejected> <span style="color:#6da807"><@s.m "content.status.rejected"/></span></#if>
+		</#if>
+	</@p.column><#t/>
+	<@p.column code="content.static.status" align="center">
+		<#if content.needRegenerate> <span style="color:#6da807"><@s.m "content.static.needRegenerate"/></span><#else><span style="color:green"><@s.m "content.static.hasGenerated"/></span></#if>
+	</@p.column><#t/>
+	<@p.column code="global.operate" align="center">
+		<#assign params>&cid=${cid!}&pageNo=${pageNo!}&queryTitle=${queryTitle!?url}&queryInputUsername=${queryInputUsername!?url}&queryTopLevel=${(queryTopLevel!false)?string}&queryRecommend=${(queryRecommend!false)?string}&queryTypeId=${queryTypeId!}&queryStatus=${queryStatus!}&queryOrderBy=${queryOrderBy!}</#assign>
+		<@cms_perm url="/content/v_view.do">
+		<a href="v_view.do?id=${content.id}${params}" class="pn-opt"><@s.m "content.opt.view"/></a> | <#rt/>
+		</@cms_perm>
+		<@cms_perm url="/content/v_edit.do">
+		<#if content.hasUpdateRight>
+			<#if content.siteId==site.id>
+			<a href="v_edit.do?id=${content.id}${params}" class="pn-opt"><@s.m "global.edit"/></a> | <#rt/>
+			</#if>
+		<#else>
+			<span class="disabled"><@s.m "global.edit"/></span>
+		</#if>
+		</@cms_perm>
+		<@cms_perm url="/content/o_delete.do">
+		<#if content.hasDeleteRight>
+			<#if content.siteId==site.id>
+				<a href="o_delete.do?ids=${content.id}${params}" onclick="if(!$.confirmToUrl(this.href)) {return false;}" class="pn-opt"><@s.m "global.delete"/></a>
+			<#else>
+				<a href="o_delete_share.do?ids=${content.id}${params}" onclick="if(!$.confirmToUrl(this.href)) {return false;}" class="pn-opt"><@s.m "global.delete"/></a>
+			</#if>
+		<#else>
+			<span class="disabled"><@s.m "global.delete"/></span>
+		</#if>
+		</@cms_perm> <#t/>
+	</@p.column><#t/>
+</@p.table>
+<div style="background:url(${base}/res/common/img/theme/FmenuBG.gif) repeat-x; height:20px; padding-top:5px; overflow:hidden;">
+	<@cms_perm url="/content/o_delete.do">
+	<input type="button" value="<@s.m "global.delete"/>" onclick="optDelete();" class="del-button"/ style="float:left; border-right:1px solid #ffffff;">
+	</@cms_perm>
+	<@cms_perm url="/content/o_move.do">
+        <input type="button" id="move" value="<@s.m "content.opt.move"/>" class="content_move"/ style="float:left; border-right:1px solid #ffffff;">
+    </@cms_perm>
+    <@cms_perm url="/content/o_copy.do">
+        <input type="button" id="copy" value="<@s.m "content.opt.copy"/>" class="content_copy"/ style="float:left; border-right:1px solid #ffffff;">
+    </@cms_perm>
+	<@cms_perm url="/content/o_check.do">
+	<input type="button" value="<@s.m "content.opt.check"/>" onclick="optCheck();" class="check"/ style="float:left; border-right:1px solid #ffffff;">
+	</@cms_perm>
+	<@cms_perm url="/content/o_reject.do">
+	<input id="rejectButton" type="button" value="<@s.m "content.opt.reject"/>" onclick="optReject();" class="reject"/ style="float:left; border-right:1px solid #ffffff;">
+	</@cms_perm>
+	<@cms_perm url="/content/o_static.do">
+	<input type="button" value="<@s.m "content.opt.static"/>" onclick="optStatic();" class="generate-static"/ style="float:left; border-right:1px solid #ffffff;">
+	</@cms_perm>
+	<input class="save-order" type="submit" value="<@s.m "content.opt.saveTopLevel"/>" onclick="optPriority();"/ style="float:left; border-right:1px solid #ffffff;">
+	<@cms_perm url="/content/o_send_topic.do">
+        <input style="background:url(${base}/res/common/img/theme/tuisongzhizhuanti.gif); border:0; width:90px; color:#666666; height:20px; float:left; border-right:1px solid #ffffff; cursor:pointer;" type="button" id="sendtotopic" value="<@s.m "content.opt.sendtotopic"/>" class="content_sendtopic"/>
+    </@cms_perm>
+</div>
+</form>
+</div>
+<div id="rejectDialog" style="display:none" title="<@s.m "content.rejectOpinion"/>">
+<p><@s.m "content.rejectOpinion"/>: <input type="text" id="rejectOpinion" style="width:260px" onkeypress="if(event.keyCode==13){rejectSubmit();return false;}"/></p>
+<p><@s.m "content.rejectStep"/>:
+	<select id="rejectStep">
+		<option value=""><@s.m "content.rejectBack"/></option>
+		<#list currStep-1..0 as i><option value="${i}">${i}</option></#list>
+	</select>
+</p>
+</div>
+<div id="moveDialog" title="<@s.m "content.opt.move"/>(${site.name})" style="display:none;">
+    <ul id="movetree" class="filetree"></ul>
+</div>
+<div id="copyDialog" title="<@s.m "content.opt.copy"/>(${site.name})" style="display:none;">
+    <ul id="copytree" class="filetree"></ul>
+</div>
+<div id="topicsDialog" title="<@s.m "content.opt.sendtotopic"/>(${site.name})" style="display:none;">
+    <ul id="topics"></ul>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

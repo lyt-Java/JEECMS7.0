@@ -1,0 +1,14 @@
+<div class="clear"></div>
+<div class="LanMu01-2">
+    <div class="LanMu01-1"></div>
+    <span>评论列表</span>
+    <div id="commentList">已有 ${content.commentsCheckedNum!} 条评论<a href="${base}/comment.jspx?contentId=${content.id}" target="_blank">（查看更多评论）</a></div>
+
+</div>
+
+<div id="commentListContainer"></div>
+<script type="text/javascript">
+$(function(){
+	Cms.commentList("${base}","commentListContainer",{contentId:${content.id},orderBy:0,count:5,checked:1});
+});
+</script>

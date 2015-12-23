@@ -1,0 +1,13 @@
+[@cms_comment_page  count='#{count}' recommend='#{recommend}' checked='#{checked}' orderBy='#{orderBy}' textLen='#{textLen}' siteId=site.id append='...']
+		<dl>
+		 [#if tag_pagination.list?size = 0]
+            <dt><span>暂无相关评论！</span></dt>
+	    [#else]
+		    [#list tag_pagination.list as c]
+			  <dt><span>${(c.commentUser.username)!"匿名网友"}</span> 于 ${c.createTime} 评论道:</dt>
+			  <dd>${c.textHtml!}</dd>
+		    [/#list]
+		    <div class="pagebar">[@cms_pagination sysPage='1'/]</div>
+	    [/#if]
+		</dl>
+[/@cms_comment_page]

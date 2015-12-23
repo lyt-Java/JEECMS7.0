@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+	<diskStore path="java.io.tmpdir/jeecms/shiro" />
+	<defaultCache maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="120" timeToLiveSeconds="120"
+		overflowToDisk="true" diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000" 
+		diskPersistent="false" diskExpiryThreadIntervalSeconds="120"/>
+	<cache name="com.jeecms.cms.shiro.shiroCache" maxElementsInMemory="500" eternal="false" timeToIdleSeconds="1200" overflowToDisk="true" diskPersistent="true"/>
+
+</ehcache>

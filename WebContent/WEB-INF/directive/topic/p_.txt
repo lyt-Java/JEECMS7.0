@@ -1,0 +1,10 @@
+[@cms_topic_page  count='#{count}' recommend='#{recommend}'  descLen='#{descLen}' append='...']
+		   [#list tag_pagination.list as t]	
+			<dl>
+				<dt><a href="${base}/topic/${t.id}.jspx" target="_blank">${t.name}</a></dt>
+				<dd><a href="${base}/topic/${t.id}.jspx"><img src="${t.titleImg!site.defImg}"/></a></dd>
+				<dd>[@text_cut s=t.description len=descLen append=append/]</dd>
+			</dl>
+		   [/#list]
+		   <div class="pagebar">[@cms_pagination sysPage='1'/]</div>
+[/@cms_topic_page]	

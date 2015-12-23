@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function() {
+	$("#tableForm").validate();
+	$("tbody tr").each(function(){
+		$(this).attr("bgColor","dbedf4");
+		$(this).bind('mouseover', function() {
+			$(this).attr("bgColor","#b8d8e2");
+		});
+		$(this).bind('mouseout', function() {
+			$(this).attr("bgColor","#dbedf4");
+		});
+	});
+	$("div[id^='status_']").each(function(){
+		$(this).bind('mouseout', function() {
+			$("#step_"+$(this).attr("id").split("status_")[1]).hide();
+		});
+		$(this).bind('mouseover', function() {
+			$("#step_"+$(this).attr("id").split("status_")[1]).show();
+		});
+	});
+});
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "content.function"/> - <@s.m "global.list"/></div>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<form id="tableForm" method="post">
+<input type="hidden" name="pageNo" value="${pageNo!}"/>
+<input type="hidden" name="orderBy" value="${orderBy!}"/>
+<#list .data_model?keys as pkey>
+	<#if pkey?starts_with('query')><input type="hidden" name="${pkey}" value="${(.data_model[pkey])!?string}"/></#if><#t/>
+</#list>
+<input type="hidden" name="rejectStep"/>
+<input type="hidden" name="rejectOpinion"/>
+<@cms_content_page count='${pageSize!}' titLen='12' orderBy='${orderBy!}' channelOption='1' >
+<@p.table listAction="rank_list.do" value=tag_pagination;content,i,has_next><#rt/>
+	<@p.column title="<input type='checkbox' onclick='Pn.checkbox(\"ids\",this.checked)'/>" width="25" align="center">
+		<input type='checkbox' name='ids' value='${content.id}' onclick="Pn.selectCheckBox('${content.id}',this.checked)"/><#t/>
+	</@p.column><#t/>
+	<@p.column title="ID" align="center">${content.id}</@p.column><#t/>
+	<@p.column code="content.title">
+		<#if content.model.id gt 0&&content.model.id lt 10><img src="${base}/res/common/img/theme/model-${content.model.id}.gif"/>
+		<#else><img src="${base}/res/common/img/theme/model-0.gif"/>
+		</#if>
+		<#if content.topLevel gt 0><span style="color:red">[<@s.m "content.topLevel.short"/>${content.topLevel}]</span></#if>
+		<#if content.recommend><span style="color:red">[<@s.m "content.recommend.short"/>]</span></#if>
+		<strong>[${content.channel.name}]</strong>
+		<a href="${content.url}" target="_blank"><@text_cut s=content.title?html len=25 append="..."/></a>
+		<#if content.checkOpinion??>
+		<br/><span style="color:red">${content.checkOpinion}</span>
+		</#if>
+	</@p.column><#t/>
+	<@p.column code="content.type" align="center">${content.type.name}</@p.column><#t/>
+	<@p.column code="content.user" align="center">${content.user.username}</@p.column><#t/>
+	<@p.column code="content.views" align="center">${content.views}</@p.column><#t/>
+	<#if orderBy??>
+		<#switch orderBy>
+		<#case "6">
+			<@p.column code="content.viewsDay" align="center">${content.viewsDay}</@p.column><#t/>
+			<#break>
+		<#case "7">
+			<@p.column code="content.viewsWeek" align="center">${content.contentCount.viewsWeek}</@p.column><#t/>
+			<#break>
+		<#case "8">
+			<@p.column code="content.viewsMonth" align="center">${content.contentCount.viewsMonth}</@p.column><#t/>
+			<#break>
+		<#case "10">
+			<@p.column code="content.commentsDay" align="center">${content.commentsDay}</@p.column><#t/>
+			<#break>
+		<#case "11">
+			<@p.column code="content.commentsWeek" align="center">${content.contentCount.commentsWeek}</@p.column><#t/>
+			<#break>
+		<#case "12">
+			<@p.column code="content.commentsMonth" align="center">${content.contentCount.commentsMonth}</@p.column><#t/>
+			<#break>
+		<#case "13">
+			<@p.column code="content.comments" align="center">${content.contentCount.comments}</@p.column><#t/>
+			<#break>			
+		<#case "14">
+			<@p.column code="content.downloadsDay" align="center">${content.downloadsDay}</@p.column><#t/>
+			<#break>
+		<#case "15">
+			<@p.column code="content.downloadsWeek" align="center">${content.contentCount.downloadsWeek}</@p.column><#t/>
+			<#break>
+		<#case "16">
+			<@p.column code="content.downloadsMonth" align="center">${content.contentCount.downloadsMonth}</@p.column><#t/>
+			<#break>
+		<#case "17">
+			<@p.column code="content.downloads" align="center">${content.contentCount.downloads}</@p.column><#t/>
+			<#break>			
+		<#case "18">
+			<@p.column code="content.upsDay" align="center">${content.upsDay}</@p.column><#t/>
+			<#break>
+		<#case "19">
+			<@p.column code="content.upsWeek" align="center">${content.contentCount.upsWeek}</@p.column><#t/>
+			<#break>
+		<#case "20">
+			<@p.column code="content.upsMonth" align="center">${content.contentCount.upsMonth}</@p.column><#t/>
+			<#break>
+		<#case "21">
+			<@p.column code="content.ups" align="center">${content.contentCount.ups}</@p.column><#t/>
+			<#break>
+		<#default>	
+		</#switch>
+	</#if>
+	<@p.column code="content.releaseDate" align="center">${content.releaseDate?string('yyyy-MM-dd')}</@p.column><#t/>
+	<@p.column code="content.status" align="center">
+		<div id="status_${content.id}"><@s.m "content.status."+content.status/></div>
+		<#if content.status==1> 
+			${content.checkStep}
+			<#if content.rejected> <span style="color:red"><@s.m "content.status.rejected"/></span></#if>
+		</#if>
+	</@p.column><#t/>
+</@p.table>
+</@cms_content_page>
+</form>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<@childSite sites=siteList/>
+<#macro childSite sites>
+<#list sites as s>
+<li >
+${s.shortName}
+<#assign id=""/>
+<#list s.nodeList as n><#assign id=id+"${n.id}"/><#if n_has_next><#assign id=id+"_"/></#if></#list>
+<input type="checkbox" name="siteIds" id="siteId_${id}"  value="${s.id}" />
+<input id="step${id}" type="hidden" name="steps" value="${s.finalStep!}"/>
+<input name="allChannels" id="allChannelHide_${id}"  type="hidden" />
+<input type="checkbox" id="allChannel_${id}"/>
+<#if s.child?size lte 0>
+</li>
+</#if>
+<#if s.child?size gt 0>
+<ul>
+	<@childSite sites=s.child/>
+</ul>
+</li>
+</#if>
+</#list>
+</#macro>

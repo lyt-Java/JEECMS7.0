@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.cms.entity.assist">
+	<class
+		name="CmsTask"
+		table="jc_task"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="id"
+			type="integer"
+			column="task_id"
+		>
+			<generator class="identity"/>
+		</id>
+		<property
+			name="taskCode"
+			column="task_code"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="type"
+			column="task_type"
+			type="integer"
+			not-null="true"
+		/>
+		<property
+			name="name"
+			column="task_name"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="jobClass"
+			column="job_class"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="execycle"
+			column="execycle"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
+		<property
+			name="dayOfMonth"
+			column="day_of_month"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
+		<property
+			name="dayOfWeek"
+			column="day_of_week"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
+		<property
+			name="hour"
+			column="hour"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
+		<property
+			name="minute"
+			column="minute"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
+		<property
+			name="intervalHour"
+			column="interval_hour"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
+		<property
+			name="intervalMinute"
+			column="interval_minute"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
+		<property
+			name="intervalUnit"
+			column="task_interval_unit"
+			type="integer"
+			not-null="false"
+		/>
+		<property
+			name="cronExpression"
+			column="cron_expression"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="enable"
+			column="is_enable"
+			type="boolean"
+			not-null="true"
+		/>
+		<property
+			name="remark"
+			column="task_remark"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="createTime"
+			column="create_time"
+			type="timestamp"
+			not-null="true"
+			length="19"
+		/>
+		<many-to-one name="user" column="user_id" class="com.jeecms.core.entity.CmsUser" not-null="true"></many-to-one>
+		<many-to-one name="site" column="site_id" class="com.jeecms.core.entity.CmsSite" not-null="true"></many-to-one>
+	
+		<map name="attr" table="jc_task_attr" lazy="false">
+			<cache usage="read-write"/>
+			<key column="task_id" not-null="true"/>
+			<map-key column="param_name" type="string" length="30"/>
+			<element column="param_value" type="string" length="255"/>
+		</map>
+
+	</class>	
+</hibernate-mapping>

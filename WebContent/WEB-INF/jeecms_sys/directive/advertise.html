@@ -1,0 +1,35 @@
+<script type="text/javascript">
+function typeSelect(){
+	var type=$("input:radio[name='page']:checked").val();
+	if(type=="true"){
+		$("#aid").hide();	
+		$("#sid").show();
+	}else{
+		$("#aid").show();	
+		$("#sid").hide();
+	}
+}
+</script>
+<@s.m "directive.advertise"/><input  type="radio" name="page" value="false" onclick="typeSelect()"/>
+<@s.m "directive.advertiseSpace"/><input type="radio" name="page" value="true" checked="checked" onclick="typeSelect()"/>
+<br/>
+<div id="aid"  style="display: none;">
+<@s.m "directive.advertise"/>&nbsp;&nbsp;
+<select name="aid">
+<#if adList?size gt 0>
+<#list adList as c>
+	<option value="${c.id}">${c.name}</option>
+</#list>
+</#if>
+</select>
+</div>
+<div id="sid" >
+<@s.m "directive.advertiseSpace"/>&nbsp;&nbsp;
+<select name="sid">
+<#if spList?size gt 0>
+<#list spList as c>
+	<option value="${c.id}">${c.name}</option>
+</#list>
+</#if>
+</select>
+</div>

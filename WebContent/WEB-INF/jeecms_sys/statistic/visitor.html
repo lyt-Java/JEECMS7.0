@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<link href="${base}/res/common/css/jquery.flot.css" rel="stylesheet" type="text/css"/>
+<!--[if lte IE 8]><![endif]-->
+<script language="javascript" type="text/javascript" src="${base}/res/common/js/excanvas.min.js"></script>
+<script src="${base}/res/common/js/jquery.flot.min.js" type="text/javascript"></script>
+<script src="${base}/res/common/js/jquery.flot.categories.min.js" type="text/javascript"></script>
+<script class="code" type="text/javascript">
+$(function() {
+	//柱状图
+	<#if result??>
+	 var data = [<#list result as s>{data: [["${s[1]}", "${s[0]}"]]}<#if s_has_next>,</#if></#list>];
+	</#if>
+	$.plot($("#placeholder"), data, {
+		series: {
+			lines: {
+				fill: true,
+			},
+			bars: {
+				show: true,
+				align:'center',
+				barWidth: 0.1,
+			}	
+		},
+        xaxis: {
+        	mode: "categories",
+        	tickLength: 0
+        },
+		yaxis: {
+			min: 0,
+			tickDecimals: 0
+		}
+	});
+});
+function statisticYear(){
+	var f = getTableForm();
+	$("#flag").val(2);
+	f.submit();
+}
+function statisticDays(){
+	var f = getTableForm();
+	$("#flag").val(1);
+	f.submit();
+}
+function statisticDay(){
+	var f = getTableForm();
+	$("#flag").val(0);
+	f.submit();
+}
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+</script>
+</head>
+<body>
+<form id="tableForm" action="v_list.do" method="post" style="padding-top:5px;">
+<div>
+<@s.m "statistic.function.year"/>:
+<input type="text" name="year" value="${year!}" style="width:100px" onclick="WdatePicker({dateFmt:'yyyy'})" class="Wdate"/>
+<@s.m "statistic.function.days"/>:
+<input type="text" name="begin" value="${begin!?string('yyyy-MM-dd')}" style="width:120px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate"/>
+<input type="text" name="end" value="${end!?string('yyyy-MM-dd')}" style="width:120px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate"/>
+<input id="flag" name="flag" type="hidden" value="1"/>
+<input id="type" name="type" type="hidden" value="${type!}"/>
+<input class="query" type="button" onclick="statisticYear()" value="<@s.m 'statistic.function.year'/>"/>
+<input class="query" type="button" onclick="statisticDays()" value="<@s.m 'statistic.function.days'/>"/>
+<input class="query" type="button" onclick="statisticDay()" value="<@s.m 'statistic.function.day'/>"/>
+</div>
+</form>
+	<div id="header">
+		<@s.m "cmsAccess.visitor.pages"/>
+	</div>
+	<div id="content">
+		<#if result?size  gt 0>
+		<div class="demo-container">
+			<div id="placeholder" class="demo-placeholder" style="float:left; width:600px;"></div>
+		</div>
+		<#else>
+		<@s.m "statistic.noresult"/>
+		</#if>
+	</div>
+</body>
+</html>

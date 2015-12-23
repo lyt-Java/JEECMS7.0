@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.cms.entity.assist">
+	<class
+		name="CmsScoreItem"
+		table="jc_score_item"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<cache usage="read-write"/>
+		<id
+			name="id"
+			type="integer"
+			column="score_item_id"
+		>
+			<generator class="identity"/>
+		</id>
+
+		<property
+			name="name"
+			column="name"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="score"
+			column="score"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="imagePath"
+			column="image_path"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="priority"
+			column="priority"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<many-to-one
+			name="group"
+			column="score_group_id"
+			class="CmsScoreGroup"
+			not-null="true"
+		>
+		</many-to-one>
+	
+
+		<set name="records" inverse="true" lazy="true">
+			<key column="score_item_id"/>
+			<one-to-many class="CmsScoreRecord"/>
+		</set>
+
+
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>JEECMS Administrator's Control Panel - powered by jeecms</title>
+<#include "/jeecms_sys/head.html"/>
+<style type="text/css">        
+*{margin:0;padding:0}
+a:focus {outline:none;}
+html{height:100%;overflow:hidden;}
+body{height:100%;}
+#top{ background-color:#1d63c6; height:71px; width:100%;}
+.logo{width:209px; height:71px;}
+.topbg{ height:71px;}
+.login-welcome{padding-left:20px; color:#8099ae; font-size:12px;}
+.login-welcome a:link,.login-welcome a:visited{color:#8099ae; text-decoration:none;}
+
+#welcome {color: #8099ae;padding: 0 30px 0 5px;}
+#logout {color: #8099ae; padding-left: 5px;}
+
+.nav{height:28px; overflow:hidden;}
+.nav-menu{ height:28px; list-style:none; font-size:13px;}
+.nav .current {background: url(${base}/res/jeecms/img/admin/top_menu_selected.png) no-repeat center; color:#fff; text-align:center; width:100px; height:28px;} 
+.nav .current a{color:#093153;}
+.nav-menu li {height:28px;text-align:center; line-height:28px; float:left; }
+.nav-menu li a{color:#fff; font-weight:bold;}
+.nav-menu li.sep{background: url(${base}/res/jeecms/img/admin/top_menu_Divideline.png) no-repeat; width:3px; height:13px; margin:9px 0 0 0;}
+.nav .normal{text-align:center; width:100px;}
+
+.undis{display:none;}
+.dis{display:block;}
+</style>
+
+<script type="text/javascript">
+function g(o){
+	return document.getElementById(o);
+}
+function HoverLi(id){
+	$("li[id^='tb_']").each(function(){
+		$(this).removeClass("current");
+		$(this).addClass("normal");
+	});
+	$("#tb_"+id).removeClass("normal");
+	$("#tb_"+id).addClass("current");
+}
+function countUnreadMsg(){
+	 $.post("message/v_countUnreadMsg.do", {
+		}, function(data) {
+			if(data.result){
+				 $("#countDiv").html(""+data.count+"");
+			}else{
+				alert("<@s.m 'cmsMessage.noLogin'/>");
+			}
+		}, "json");
+	 setTimeout( "countUnreadMsg() ",1000*60*10);    
+}
+
+$(function(){
+	$('a').bind("focus", function(){   
+	    $(this).blur();   
+	}); 
+	countUnreadMsg();
+});
+setTimeout( "countUnreadMsg() ",1000*60*10); 
+function mapDialog(){
+	var result=window.showModalDialog("map.do","","dialogHeight:600px;dialogWidth:800px;center:yes;resizable: yes;");
+	if(result!=null){
+		var href=result.split(";")[0];
+		var target=result.split(";")[1];
+		if(target=="rightFrame"){
+				window.parent.mainFrame.document.getElementById(target).src=href;
+				var rightFrameSrc=window.parent.mainFrame.document.getElementById(target).src;
+				 if(rightFrameSrc.indexOf("frame")>=0){
+					window.parent.mainFrame.document.getElementById(target).src=rightFrameSrc.split("frame/")[0]+rightFrameSrc.split("frame/")[1];
+					}
+			}
+		else {
+			 	window.parent.document.getElementById(target).src=href;
+			}
+		}
+}
+</script>
+<script> 
+	
+</script> 
+</head>
+
+<body>
+<div id="top">
+     <div class="top">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background:url(${base}/res/jeecms/img/admin/newtopbg2.jpg) repeat-x;">
+          <tr>
+            <td width="209"><div class="logo"><img src="${base}/res/jeecms/img/admin/logo.gif" width="209" height="71" /></div></td>
+            <td valign="top" style="background:url(${base}/res/jeecms/img/admin/newtopbg1.jpg) no-repeat;">
+                <div class="topbg">
+                     <div class="login-welcome">
+                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                  <tr>
+                                    <td width="420" height="42">
+                                    <img src="${base}/res/jeecms/img/admin/top_useinfo_icon_01.png"/>&nbsp;<span id="welcome"><@s.ma code="global.admin.welcome" args=[user.username]/></span>
+                                    <img src="${base}/res/jeecms/img/admin/top_useinfo_icon_02.png"/>&nbsp;<a href="logout.do?returnUrl=index.do" target="_top" id="logout" onclick="return confirm('<@s.m "global.confirm.logout"/>');"><@s.m "global.admin.logout"/></a>　　
+                                    <img src="${base}/res/jeecms/img/admin/top_useinfo_icon_03.png"/>&nbsp;&nbsp;<a href="message/v_list.do" target="rightFrame"><@s.m "cmsUser.has"/>&nbsp;<span id="countDiv"></span>&nbsp;<@s.m "cmsUser.unreadcount"/></a>
+                                    </td>
+                                    <td align="right">
+                                         <form action="index.do" target="_top" method="get">
+											<select name="${siteParam}" onchange="this.form.submit();">
+											  <#list siteList as s>
+								              <option value="${s.id}"<#if s.id==site.id> selected="selected"</#if>>${s.name}</option>
+								              </#list>
+								            </select>
+							            </form>
+                                    </td>
+                                    <td width="180">
+                                    &nbsp;<a id="view_index" href="${site.url}" target="_blank"><@s.m "global.admin.viewFrontIndex"/></a>
+                                    <!--
+                                    &nbsp;<a style="color:#FFF" href="javascript:alert($(document).width()+','+$(document).height())">【窗口大小】</a>
+                                    -->
+                                    </td>
+                                  </tr>
+                                </table>
+                       </div>  
+                     <div class="nav">
+                     	  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                              <tr>
+                                <td>
+                                	<ul class="nav-menu">
+                                    	<li class="sep"></li>
+                                    	<li class="current" id="tb_11" onclick="HoverLi(11);"><a href="main.do" target="mainFrame"><@s.m "cms.function.workbench"/></a></li>
+										<@cms_perm url="/frame/content_main.do">
+										<li class="sep"></li><li class="normal" id="tb_12" onclick="HoverLi(12);"><a href="frame/content_main.do?source=top" target="mainFrame"><@s.m "cms.function.content"/></a></li>
+										</@cms_perm>
+										<@cms_perm url="/frame/maintain_main.do">
+										<li class="sep"></li><li class="normal" id="tb_13" onclick="HoverLi(13);"><a href="frame/maintain_main.do" target="mainFrame"><@s.m "cms.function.maintain"/></a></li>
+										</@cms_perm>
+										<@cms_perm url="/frame/user_main.do">
+										<li class="sep"></li><li class="normal" id="tb_14" onclick="HoverLi(14);"><a href="frame/user_main.do" target="mainFrame"><@s.m "cms.function.user"/></a></li>
+										</@cms_perm>
+										<@cms_perm url="/frame/expand_main.do">
+										<li class="sep"></li><li class="normal" id="tb_15" onclick="HoverLi(15);"><a href="frame/expand_main.do" target="mainFrame"><@s.m "cms.function.expand"/></a></li>
+										</@cms_perm>
+										<@cms_perm url="/frame/statistic_main.do">
+										<li class="sep"></li><li class="normal" id="tb_16" onclick="HoverLi(16);"><a href="frame/statistic_main.do" target="mainFrame"><@s.m "cms.function.data"/></a></li>
+										</@cms_perm>
+										<@cms_perm url="/frame/config_main.do">
+										<li class="sep"></li><li class="normal" id="tb_17" onclick="HoverLi(17);"><a href="frame/config_main.do" target="mainFrame"><@s.m "cms.function.config"/></a></li>
+										</@cms_perm>
+                                    </ul>
+                                </td>
+                              </tr>
+                            </table>
+                     </div>  
+                </div>
+          </tr>
+        </table>
+     </div>
+</div>
+
+</body>
+</html>

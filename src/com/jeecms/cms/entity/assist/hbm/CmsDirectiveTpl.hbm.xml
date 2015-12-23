@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.cms.entity.assist">
+	<class
+		name="CmsDirectiveTpl"
+		table="jc_directive_tpl"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="id"
+			type="integer"
+			column="tpl_id"
+		>
+			<generator class="identity"/>
+		</id>
+
+		<property
+			name="name"
+			column="name"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="description"
+			column="description"
+			type="string"
+			not-null="false"
+			length="500"
+		/>
+		<property
+			name="code"
+			column="code"
+			type="string"
+			not-null="false"
+		/>
+		
+		<many-to-one name="user" column="user_id" class="com.jeecms.core.entity.CmsUser" not-null="true"></many-to-one>
+		
+
+
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,9 @@
+[@cms_guestbook_list count='#{count}' ctgId='#{ctgId}' recommend='#{recommend}' checked='#{checked}' titleLen='#{titleLen}' contentLen='#{contentLen}' append='...' ]
+	 [#list tag_pagination.list as m]
+		<dl>
+			<dt><span>[${m.ctg.name!}]</span>[@text_cut s=m.titleHtml len=titleLen append=append/]</dt>
+			<dd>[@text_cut s=m.contentHtml len=contentLen append=append/]</dd>
+	   </dl>
+	 [/#list]		   
+	 <div class="pagebar">[@cms_pagination sysPage='1'/]</div>
+[/@cms_guestbook_list]

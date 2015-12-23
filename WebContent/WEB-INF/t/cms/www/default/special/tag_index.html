@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Tags标签导航 - ${site.name} - Powered by JEECMS</title>
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+
+<link href="${resSys}/front.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script src="/${res}/js/common.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+	<div class="w700 mt10">
+    	<div class="rim05">
+            <div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>Tags标签列表</span>
+                <div class="LanMu01-3"></div>
+            </div>
+            <div class="taglist">		 
+             [@cms_tag_list]
+                <div class="search_msg">
+                    共有 <span>${tag_list?size} 个</span> Tag标签，参照格式<span>： Tag名[相关文章数]</span>
+                </div>
+                <ul>
+                 [#list tag_list as t]
+                    <li><a href="${base}/tag/${t.id}.jspx">${t.name}[${t.count}]</a></li>
+                 [/#list]
+                 </ul>
+             [/@cms_tag_list]
+				
+            </div>
+        </div>
+	</div>
+	[#include "../include/right1.html"/]
+	[#include "../include/friend_link.html"/]
+    [#include "../include/footer.html"/]
+</div>
+</body>
+</html>

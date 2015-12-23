@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>评论页 - ${site.name} - Powered by JEECMS</title>
+<meta http-equiv="keywords" content="${content.tagStr!}"/>
+<meta http-equiv="description" content="${content.description!}"/>
+
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script src="/${res}/js/common.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  Cms.attachment("${base}","${content.id}","${content.attachments?size}","attach");
+  Cms.viewCount("${base}","${content.id}");
+  Cms.siteFlow("${base}", location.href, document.referrer);
+});
+</script>
+</head>
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+	<div class="w700">
+        <div class="hundred100">
+        	<div class="rim06 mt10">
+                <div class="LanMu01-2">
+                    <div class="LanMu01-1"></div>
+                    <em>当前位置：<a href="${base}/">首页</a> > 文章评论详细列表</em>
+                    <div class="LanMu01-3"></div>
+                </div>
+            	
+            	<div class="newsTex">
+                    <h1>评论主题：<a href="${content.url}" target="_blank">${content.title}</a></h1>
+                    <div class="msgbar">发布时间： ${content.releaseDate} &nbsp; 作者：${content.author!'本站编辑'} &nbsp; 来源： ${content.origin!'本站原创'} &nbsp;  浏览次数：<span id="views"></span>
+                    </div>
+            	</div>  
+            </div>
+        </div>
+    	<div class="clear-10"></div>
+        <div class="rim06">
+        	<div class="LanMu01-2">
+                    <div class="LanMu01-1"></div>
+                    <span>评论列表</span>
+                    <div class="LanMu01-3"></div>
+                </div>
+            <div id="commentListContainer">
+            [@cms_comment_page contentId=contentId count='15' checked='1']		 
+            <dl class="rmpl">
+            [#if tag_pagination.list?size = 0]
+            <dt><span>暂无相关评论！</span></dt>
+            [#else]
+            [#list tag_pagination.list as c]
+            <dt><span>${(c.commentUser.username)!"匿名网友"}</span> 于 ${c.createTime} 评论道:</dt>
+            <dd>${c.textHtml!}</dd>
+            <dd class="line"></dd>
+            [/#list]
+            <div class="pagebar">[@cms_pagination sysPage='1'/]</div>			
+            [/#if]
+            </dl>		  
+            [/@cms_comment_page]
+        	</div>
+        </div>
+    	<div class="clear-10"></div>
+        <div class="rim06">
+          [#include "../content/inc_comment_input.html"/]
+        </div>
+        <div class="clear"></div>
+    </div>
+    
+    [#include "../include/right2.html"/]
+	[#include "../include/friend_link.html"/]
+    [#include "../include/footer.html"/]
+</div>
+</body>
+</html>

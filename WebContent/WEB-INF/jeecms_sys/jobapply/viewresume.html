@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function() {
+	$("#jvForm").validate();
+});
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "cmsJobApply.function"/> - <@s.m "cmsJobApply.view"/></div>
+	<form class="ropt">
+		<input type="submit" value="<@s.m "global.backToList"/>" onclick="this.form.action='v_list.do';" class="return-button"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="v_list.do" labelWidth="12">
+<@p.td colspan="2" label="cmsResume.name" >${resume.resumeName!}</@p.td><@p.tr/>
+<@p.td colspan="2" label="cmsResume.base" ></@p.td><@p.tr/>
+<@p.td colspan="1" width="50" label="cmsUser.realname" >${resume.user.realname!}</@p.td>
+<@p.td colspan="1" width="50" label="cmsUser.gender" ><#if resume.user.gender??><#if resume.user.gender><@s.m "cmsUser.male"/><#else><@s.m "cmsUser.female"/></#if><#else><@s.m "cmsUser.secrecy"/></#if></@p.td>
+<@p.tr/>
+<@p.td colspan="1" width="50" label="cmsUser.comefrom" >${resume.user.comefrom!}</@p.td>
+<@p.td colspan="1" width="50" label="cmsUser.birthday" ><#if resume.user.birthday??>${resume.user.birthday!?string("yyyy-MM-dd")}</#if></@p.td>
+<@p.tr/>
+<@p.td colspan="1" width="50" label="cmsUser.mobile" >${resume.user.mobile!}</@p.td>
+<@p.td colspan="1" width="50" label="cmsUser.phone" >${resume.user.phone!}</@p.td>
+<@p.tr/>
+<@p.td colspan="2" label="cmsResume.target" ></@p.td><@p.tr/>
+<@p.td colspan="1" width="50" label="cmsResume.nature" >${resume.targetWorknature!}</@p.td>
+<@p.td colspan="1" width="50" label="cmsResume.workplace" >${resume.targetWorkplace!}</@p.td>
+<@p.tr/>
+<@p.td colspan="1" width="50" label="cmsResume.category"  >${resume.targetCategory!}</@p.td>
+<@p.td colspan="1" width="50" label="cmsResume.salary" >${resume.targetSalary!}</@p.td>
+<@p.tr/>
+<@p.td colspan="2" label="cmsResume.edu" ></@p.td><@p.tr/>
+<@p.td colspan="1" width="50" label="cmsResume.eduSchool" >${resume.eduSchool!}</@p.td>
+<@p.td colspan="1" width="50" label="cmsResume.eduGraduation" ><#if resume.eduGraduation??>${resume.eduGraduation!?string("yyyy-MM-dd")}</#if></@p.td>
+<@p.tr/>
+<@p.td colspan="1" width="50" label="cmsResume.eduBack" >${resume.eduBack!}</@p.td>
+<@p.td colspan="1" width="50" label="cmsResume.eduDiscipline" >${resume.eduDiscipline!}</@p.td>
+<@p.tr/>
+<@p.td colspan="2" label="cmsResume.experience" ></@p.td><@p.tr/>
+<@p.td colspan="2" label="cmsResume.recentCompany" >${resume.recentCompany!}</@p.td><@p.tr/>
+<@p.td colspan="1" width="50" label="cmsResume.jobName" >${resume.jobName!}</@p.td>
+<@p.td colspan="1" width="50" label="cmsResume.jobStart" ><#if resume.jobStart??>${resume.jobStart!?string("yyyy-MM-dd")}</#if></@p.td><@p.tr/>
+<@p.td colspan="2" label="cmsResume.jobDescription" >${resume.jobDescription!}</@p.td><@p.tr/>
+<@p.td colspan="2" label="cmsResume.selfEvaluationt" >${resume.selfEvaluationt!}</@p.td><@p.tr/>
+<@p.td colspan="2"><@p.submit code="global.backToList" class="return-button"/> </@p.td><@p.tr/>
+</@p.form>
+</div>
+</body>
+</html>

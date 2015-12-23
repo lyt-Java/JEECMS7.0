@@ -1,0 +1,73 @@
+<script type="text/javascript">
+function listSelect(){
+	var list=getListValue();
+	var channel=getChannelValue();
+	if(list=="true"){
+		$("#channelList").show();	
+		$("#channelSingle").hide();
+		$("#hasContent").show();
+		if(channel=="true"){
+			$("#channelId").hide();	
+		}else{
+			$("input[name='listType'][value='childs']").prop("checked","checked");
+			$("#channelList").hide();	
+			$("#channelId").show();	
+		}
+	}else{
+		$("#channelList").hide();	
+		$("#channelSingle").show();
+		$("#hasContent").hide();
+		if(channel=="true"){
+			$("#channelId").hide();	
+		}else{
+			$("input[name='singleType'][value='channel']").prop("checked","checked");
+			$("#channelSingle").hide();	
+			$("#channelId").show();	
+		}
+	}
+}
+
+function getListValue(){
+	return $('input:radio[name=list]:checked').val();
+}
+function getChannelValue(){
+	return $('input:radio[name=channel]:checked').val();
+}
+</script>
+<@s.m "directive.list.label"/>&nbsp;&nbsp;
+<@s.m "directive.list"/><input onclick="listSelect(this.value)" type="radio" name="list" value="true" checked="checked"/>
+<@s.m "directive.single"/><input onclick="listSelect(this.value)" type="radio" name="list" value="false"/>
+<br/>
+<@s.m "directive.channel.userinchannel"/>&nbsp;&nbsp;
+<@s.m "global.true"/><input type="radio" name="channel" value="true"  checked="checked"  onclick="listSelect(this.value)"/>
+<@s.m "global.false"/><input type="radio" name="channel" value="false" onclick="listSelect(this.value)"/>
+<br/>
+<div id="hasContent">
+<@s.m "directive.channel.list.hasContent"/>&nbsp;&nbsp;
+<@s.m "global.true"/><input type="radio" name="hasContent" value="true" />
+<@s.m "global.all"/><input type="radio" name="hasContent" value="false" checked="checked"/>
+</div>
+<div id="channelList" >
+	<@s.m "directive.channel.list.type"/>
+	<@s.m "directive.channel.childs"/><input  type="radio" name="listType" value="childs" checked="checked"/>
+	<@s.m "directive.channel.top"/><input  type="radio" name="listType" value="top"/>
+	<@s.m "directive.channel.brothers"/><input  type="radio" name="listType" value="brothers"/>
+	<br/>
+</div>
+<div id="channelSingle" style="display: none;">
+	<@s.m "directive.channel.select"/>
+	<@s.m "directive.channel.channel"/><input type="radio" name="singleType" value="channel" checked="checked"/>
+	<@s.m "directive.channel.channel.top"/><input type="radio" name="singleType" value="top"/>
+	<@s.m "directive.channel.parent"/><input type="radio" name="singleType" value="parent"/>
+	<@s.m "directive.channel.navi"/><input type="radio" name="singleType" value="navigation"/>
+	<br/>
+</div>
+
+<select id="channelId" name="channelId" style="display: none;">
+<#if channelList?size gt 0>
+<#assign origDeep=channelList[0].deep+1/>
+<#list channelList as c>
+	<option value="${c.id}"><#if c.deep gte origDeep><#list origDeep..c.deep as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+</#list>
+</#if>
+</select>

@@ -1,0 +1,10 @@
+[@cms_tag_list  count='#{count}' ]
+   <div class="search_msg">
+                共有 <span>${tag_list?size} 个</span> Tag标签，参照格式<span>： Tag名[相关文章数]</span>
+   </div>
+    <ul>
+     [#list tag_list as t]
+        <li><a href="${base}/tag/${t.id}.jspx">${t.name}[${t.count}]</a></li>
+     [/#list]
+   	</ul>
+[/@cms_tag_list]	

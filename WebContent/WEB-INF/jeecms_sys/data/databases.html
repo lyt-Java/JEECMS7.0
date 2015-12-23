@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function() {
+	$("#jvForm").validate();
+	<#if msg??>
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'db.revert.success'/>");
+	</#if>
+});
+function openBackUpFiles()   
+{   
+	var result = new Array(); 
+	result=window.showModalDialog("v_selectfile.do","","dialogHeight:200px;dialogWidth:400px;center:yes;resizable: yes"); 
+	$("#filename").val(result);
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>:<@s.m "cms.function.db"/> -<@s.m "db.revert"/> </div>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_revert.do" labelWidth="15">
+<@p.td colspan="2">
+	${backuppath!}/<@p.text width="50" colspan="1" name="filename" id="filename" class="required" required="true" readonly="true"/>
+	<@p.button code="db.selectfile" class="select-file"  onclick="openBackUpFiles()" />
+	<@s.m "db.revertOver"/>
+</@p.td><@p.tr/>
+<@p.td colspan="2"><@p.submit code="db.revert" class="recovery"/> &nbsp;</@p.td>
+</@p.form>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

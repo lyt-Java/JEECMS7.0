@@ -1,0 +1,13 @@
+[@cms_content_page tagId='#{tagId}' topicId='#{topicId}' channelId='#{channelId}' channelPath='#{channelPath}'  typeId='#{typeId}' recommend='#{recommend}'  title='#{title}' image='#{image}' orderBy='#{orderBy}'  titLen='#{titLen}' count='#{count}'  dateFormat='#{dateFormat}'  target='#{target}' new='#{new}' showDesc='#{showDesc}' descLen='#{descLen}' channelOption='#{channelOption}' siteId=site.id  append='...']
+[#list tag_pagination.list as a]
+	<li>
+	[#if new=='1'][#if a.new]<img src="${base}/${site.newPic!}"/>[/#if][/#if]
+	<a href="${a.url}" title="${a.title}" [#if target=='1'] target="_blank"[/#if]>[@text_cut s=a.title len=titLen append=append/]</a>&nbsp;&nbsp;${a.releaseDate?string(dateFormat)}</li>
+	[#if showDesc=='1']
+	<p>
+        [@text_cut s=a.desc len=descLen append='...'/]
+     </p>
+     [/#if]
+[/#list]
+<div class="pagebar">[@cms_pagination sysPage='1'/]</div>
+[/@cms_content_page]

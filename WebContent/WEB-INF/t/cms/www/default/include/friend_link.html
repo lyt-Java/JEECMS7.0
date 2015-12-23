@@ -1,0 +1,16 @@
+<div class="clear"></div>
+<div class="yqlj">
+
+        <div class="yqljLeft">友情链接</div>
+        <div class="yqljRight">
+        <div style="margin-right:1%;">
+        [@cms_friendlink_list]
+        [#list tag_list as link]
+        <div style="margin-left:1.5%; float:left;">
+        <a href="${link.domain}" onclick="$.get('${base}/friendlink_view.jspx?id=${link.id}')" target="_blank">${link.name}</a>
+        </div>
+        [/#list]
+        [/@cms_friendlink_list]
+        </div>
+        </div>
+</div>

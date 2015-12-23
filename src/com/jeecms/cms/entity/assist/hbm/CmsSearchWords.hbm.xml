@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.cms.entity.assist">
+	<class
+		name="CmsSearchWords"
+		table="jc_search_words"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<cache usage="read-write"/>
+		<id
+			name="id"
+			type="integer"
+			column="word_id"
+		>
+			<generator class="identity"/>
+		</id>
+
+		<property
+			name="name"
+			column="name"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="hitCount"
+			column="hit_count"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="priority"
+			column="priority"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="nameInitial"
+			column="name_initial"
+			type="string"
+			not-null="true"
+			length="500"
+		/>
+	</class>	
+</hibernate-mapping>

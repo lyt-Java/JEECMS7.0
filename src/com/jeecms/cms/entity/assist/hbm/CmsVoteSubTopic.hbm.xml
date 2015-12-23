@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.cms.entity.assist">
+	<class
+		name="CmsVoteSubTopic"
+		table="jc_vote_subtopic"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="id"
+			type="integer"
+			column="subtopic_id"
+		>
+			<generator class="native"/>
+		</id>
+
+		<property
+			name="title"
+			column="title"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="type"
+			column="subtopic_type"
+			type="integer"
+			not-null="true"
+			length="2"
+		/>
+		<property name="priority" column="priority" type="integer" not-null="true" length="10"/>
+		<many-to-one
+			name="voteTopic"
+			column="votetopic_id"
+			class="CmsVoteTopic"
+			not-null="true"
+		>
+		</many-to-one>
+	
+
+		<set name="voteItems" inverse="true" cascade="delete-orphan" sort="com.jeecms.common.hibernate3.PriorityComparator">
+			<key column="subtopic_id"/>
+			<one-to-many class="CmsVoteItem"/>
+		</set>
+		<set name="voteReplys" inverse="true" cascade="delete-orphan">
+			<key column="subtopic_id"/>
+			<one-to-many class="CmsVoteReply"/>
+		</set>
+
+
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.core.entity">
+	<class
+		name="CmsDictionary"
+		table="jc_dictionary"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="id"
+			type="integer"
+			column="id"
+		>
+			<generator class="identity"/>
+		</id>
+
+		<property
+			name="name"
+			column="name"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="value"
+			column="value"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="type"
+			column="type"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

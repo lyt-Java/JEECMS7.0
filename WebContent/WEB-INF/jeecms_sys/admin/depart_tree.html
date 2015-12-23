@@ -1,0 +1,30 @@
+<#if isRoot>
+[{
+	"text": "<a href='v_list.do' target='rightFrame'><@s.m "cmsDepartment.top"/></a>",
+	"classes": ""
+	<#if list?size gt 0>,
+	"expanded": true,
+	"children": [
+	<#list list as depart>
+		{
+		"id": "${depart.id}",
+		"text": "<input type='radio' name='departId'  value='${depart.id}'/><span>${depart.name}</span> ",
+		"classes": "<#if depart.child?size gt 0><#else></#if>",
+		"hasChildren": <#if depart.child?size gt 0>true<#else>false</#if>
+		}<#if depart_has_next>,</#if>
+	</#list>
+	]
+	</#if>
+}]
+<#else>
+	[
+	<#list list as depart>
+		{
+		"id": "${depart.id}",
+		"text": "<input type='radio' name='departId' value='${depart.id}'/><span>${depart.name}</span>",
+		"classes": "<#if depart.child?size gt 0><#else></#if>",
+		"hasChildren": <#if depart.child?size gt 0>true<#else>false</#if>
+		}<#if depart_has_next>,</#if>
+	</#list>
+	]
+</#if>

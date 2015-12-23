@@ -1,0 +1,18 @@
+package #{manager_p};
+
+import com.jeecms.common.page.Pagination;
+import #{entity_p}.#{Entity};
+
+public interface #{Entity}Mng {
+	public Pagination getPage(int pageNo, int pageSize);
+
+	public #{Entity} findById(Integer id);
+
+	public #{Entity} save(#{Entity} bean);
+
+	public #{Entity} update(#{Entity} bean);
+
+	public #{Entity} deleteById(Integer id);
+	
+	public #{Entity}[] deleteByIds(Integer[] ids);
+}

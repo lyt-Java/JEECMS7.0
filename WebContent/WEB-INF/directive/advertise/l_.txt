@@ -1,0 +1,1 @@
+<script src="${base}/ad.jspx?id=#{id}"></script>

@@ -1,0 +1,25 @@
+<div id="menu" class="page box relative">
+    <dl id="topmenu">  
+        [@cms_channel_list]
+        <dt class="menu_first">
+        <a href="${site.url!}" target="_self" [#if !channel??]class="selected"[/#if]><span>首 页</span></a>
+        </dt>
+        [#list tag_list as c]
+        [#if c_index<5]
+        <dt>
+        <a href="${c.url}"  target="_self" [#if channel??&&channel.id==c.id] class="selected" [/#if]><span>${c.name}</span></a>
+        </dt>
+        [/#if]
+        [/#list]
+        [/@cms_channel_list]
+        <dt><a href="${base}/wldc/index.jhtml" target="blank">网络调查</a></dt>
+        <dt><a href="${base}/job/index.jhtml" target="blank">招聘</a></dt>
+        <dt>
+        <a href="${base}/guestbook.jspx" target="blank">留言版</a>
+        </dt>
+        <dt style="border-right:0;">
+        <a href="http://bbs.jeecms.com" target="blank">论坛</a>
+        </dt>
+    </dl>
+</div>
+<div class="clear"></div>

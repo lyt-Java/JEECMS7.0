@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd"
+	default-lazy-init="true">
+	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="cacheSeconds" value="-1"/>
+		<property name="basenames" value="#{propertyUtils.getList('messages.admin.')}"/>
+	</bean>
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+	<!--
+	<bean id="multipartResolver" class="com.jeecms.common.web.cos.CosMultipartResolver"/>
+	-->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean class=" com.jeecms.common.web.springmvc.BindingInitializer"/>
+		</property>
+	</bean>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/config/firewall.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="adminContextInterceptor"/>
+				<ref bean="adminLocaleIntercept"/>
+				<ref bean="fireWallInterceptor"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="adminContextInterceptor" class="com.jeecms.cms.web.AdminContextInterceptor">
+		<!--<property name="adminId" value="1"/>-->
+		<property name="auth" value="true"/>
+		<property name="excludeUrls">
+			<list>
+				<value>/login.do</value>
+				<value>/logout.do</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="adminLocaleIntercept" class="com.jeecms.cms.web.AdminLocaleInterceptor"/>
+	
+	<bean id="fireWallInterceptor" class="com.jeecms.cms.web.FireWallInterceptor"/>
+	
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+	</bean>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    	<property name="securityManager" ref="securityManager"/>
+	</bean>
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieName" value="clientlanguage"/>
+		<property name="cookieMaxAge" value="-1"/>
+	</bean>
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.web.bind.MissingServletRequestParameterException">/error/requiredParameter</prop>
+				<prop key="org.springframework.beans.TypeMismatchException">/error/mismatchParameter</prop>
+				<prop key="org.springframework.web.bind.ServletRequestBindingException">/error/bindException</prop>
+				<prop key="org.apache.shiro.authz.AuthorizationException">/error/authrizationException</prop>
+			</props>
+		</property>
+	</bean>
+	<!--
+	<bean class="com.jeecms.common.web.springmvc.HandlerExceptionResolver"/>
+	-->
+	<bean id="freemarkerViewResolver" class="com.jeecms.common.web.springmvc.RichFreeMarkerViewResolver">
+		<property name="prefix" value="/jeecms_sys/"/>
+		<property name="suffix" value=".html"/>
+		<property name="contentType" value="text/html; charset=UTF-8"/>
+		<property name="exposeRequestAttributes" value="false"/>
+		<property name="exposeSessionAttributes" value="false"/>
+		<property name="exposeSpringMacroHelpers" value="true"/>
+	</bean>
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF"/>
+		<property name="freemarkerVariables">
+			<map>
+				<!--在FCK编辑器中需要用到appBase，以确定connector路径。-->
+				<entry key="appBase" value="/jeeadmin/jeecms"/>
+				<!--后台管理权限控制-->
+				<entry key="cms_perm" value-ref="cms_perm"/>
+				<entry key="text_cut" value-ref="text_cut"/>
+				<entry key="html_cut" value-ref="html_cut"/>
+				<entry key="cms_content_list" value-ref="cms_content_list"/>
+				<entry key="cms_content_page" value-ref="cms_content_page"/>
+			</map>
+		</property>
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="template_update_delay">0</prop>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="url_escaping_charset">UTF-8</prop>
+				<prop key="locale">zh_CN</prop>
+				<prop key="boolean_format">true,false</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<prop key="number_format">0.######</prop>
+				<prop key="whitespace_stripping">true</prop>
+				<prop key="auto_import">/ftl/jeecms/index.ftl as p,/ftl/spring.ftl as s</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<context:annotation-config/>
+	
+	<!--包含action-->
+	<import resource="jeecms/jeecms-servlet-admin-action.xml"/>
+</beans>

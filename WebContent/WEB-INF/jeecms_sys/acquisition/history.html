@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+function optDelete() {
+	if(Pn.checkedCount('ids')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	$.confirm(doDelete,"<@s.m 'global.confirm'/>","<@s.m 'global.confirm.delete'/>");
+}
+function doDelete(){
+	var f = getTableForm();
+	f.action="o_delete_history.do";
+	f.submit();
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "cmsAcquisition.function"/> - <@s.m "cmsAcquisitionHistory.function"/></div>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<form id="tableForm" method="post">
+<input type="hidden" name="pageNo" value="${pageNo!}"/>
+<@p.table value=pagination listAction="v_history.do";history,i,has_next><#rt/>
+	<@p.column title="<input type='checkbox' onclick='Pn.checkbox(\"ids\",this.checked)'/>" width="25" align="center">
+		<input type='checkbox' name='ids' value='${history.id}' onclick="Pn.selectCheckBox('${history.id}',this.checked)"/><#t/>
+	</@p.column><#t/>
+	<@p.column title="ID" align="center">${history.id}</@p.column><#t/>
+	<@p.column code="cmsAcquisitionHistory.title" align="center"><#if history.title??>${history.title}<#else><@s.m "cmsAcquisitionHistory.ruleError"/></#if></@p.column><#t/>
+	<@p.column code="cmsAcquisitionHistory.name" align="center">${history.acquisition.name}</@p.column><#t/>
+	<@p.column code="cmsAcquisitionHistory.channel" align="center">${history.acquisition.channel.name}</@p.column><#t/>
+	<@p.column code="cmsAcquisitionHistory.contentType" align="center">${history.acquisition.type.name}</@p.column><#t/>
+	<@p.column code="cmsAcquisitionHistory.url" align="center"><a href="${history.channelUrl!}" target="_blank" title="${history.channelUrl!}"><@s.m "cmsAcquisitionHistory.clickToBrowse"/></a></@p.column><#t/>
+	<@p.column code="cmsAcquisitionHistory.contentUrl" align="center"><a href="${history.contentUrl!}" target="_blank" title="${history.contentUrl!}"><@s.m "cmsAcquisitionHistory.clickToBrowse"/></a></@p.column><#t/>
+	<@p.column code="cmsAcquisitionHistory.status" align="center"><#if history.description=="SUCCESS"><span style="color:green"><@s.m "cmsAcquisitionHistory.success"/></span><#else><span style="color:red"><@s.m "cmsAcquisitionHistory.failure"/></span></#if></@p.column><#t/>
+	<@p.column code="cmsAcquisitionHistory.description" align="center">
+	<#switch history.description>
+  		<#case "SUCCESS">
+   			 <@s.m "cmsAcquisitionHistory.success"/>
+    	<#break>
+ 		<#case "TITLESTARTNOTFOUND">
+   			<@s.m "cmsAcquisitionHistory.errorCause.titleStartNotFound"/>
+    	<#break>
+  		<#case "TITLEENDNOTFOUND">
+    		<@s.m "cmsAcquisitionHistory.errorCause.titleEndNotFound"/>
+   		<#break>
+   		<#case "CONTENTSTARTNOTFOUND">
+   			<@s.m "cmsAcquisitionHistory.errorCause.contentStartNotFound"/>
+    	<#break>
+     	<#case "CONTENTENDNOTFOUND">
+    		<@s.m "cmsAcquisitionHistory.errorCause.contentEndNotFound"/>
+    	<#break>
+  		<#default>
+    		<@s.m "cmsAcquisitionHistory.errorCause.unknow"/>
+	</#switch>
+	</@p.column><#t/>
+	<@p.column code="global.operate" align="center">
+		<a href="o_delete_history.do?ids=${history.id}&pageNo=${pageNo!}" class="pn-opt" onclick="if(!$.confirmToUrl(this.href)) {return false;}"><@s.m "global.delete"/></a><#t/>
+	</@p.column><#t/>
+</@p.table>
+<div style="background:url(${base}/res/common/img/theme/boxTitleBG.jpg) repeat-x; height:20px; overflow:hidden;">
+<input class="del-button" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/ style="float:left; border-right:1px solid #ffffff;">
+</div>
+</form>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

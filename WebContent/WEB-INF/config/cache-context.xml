@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+	default-lazy-init="true">
+	<!--缓存-->
+	<bean id="cacheManager" class="com.jeecms.common.web.WebEhCacheManagerFacotryBean">
+		<property name="configLocation">
+			<value>/WEB-INF/config/ehcache-application.xml</value>
+		</property>
+		<property name="diskStoreLocation">
+			<value>/WEB-INF/cache/application</value>
+		</property>
+	</bean>
+	<!--SESSION缓存-->
+	<bean id="ehSessionCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.common.web.Session</value>
+		</property>
+		<qualifier value="session"/>
+	</bean>
+	<!--内容计数缓存-->
+	<bean id="ehContentCountCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.front.ContentCount</value>
+		</property>		
+		<qualifier value="contentCount"/>
+	</bean>
+	<!--栏目计数缓存-->
+	<bean id="ehChannelCountCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.front.ChannelCount</value>
+		</property>		
+		<qualifier value="channelCount"/>
+	</bean>
+	<!--微信token缓存-->
+	<bean id="ehWeixinTokenCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.weixin.token</value>
+		</property>		
+		<qualifier value="tokenCache"/>
+	</bean>
+	
+	<!--站点流量缓存-->
+	<bean id="ehCmsSiteFlowCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.front.CmsSiteFlow</value>
+		</property>		
+		<qualifier value="cmsSiteFlow"/>
+	</bean>
+	<!--一次会话访问缓存-->
+	<bean id="ehCmsSiteAccessCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.front.CmsAccess</value>
+		</property>		
+		<qualifier value="cmsAccessCache"/>
+	</bean>
+	<!--最新会话访问缓存-->
+	<bean id="ehCmsSiteLastAccessCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.front.CmsLastAccess</value>
+		</property>		
+		<qualifier value="cmsLastAccessCache"/>
+	</bean>
+	<!--每次访问页面缓存-->
+	<bean id="ehCmsSiteAccessPagesCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.front.CmsAccessPage</value>
+		</property>		
+		<qualifier value="cmsAccessPageCache"/>
+	</bean>
+	<!--pv总量计数缓存-->
+	<bean id="ehPvTotalCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.front.CmsSitePvTotal</value>
+		</property>		
+		<qualifier value="cmsPvTotalCache"/>
+	</bean>
+	<!--访问者总量计数缓存-->
+	<bean id="ehVisitorTotalCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.front.CmsSiteVisitorTotal</value>
+		</property>		
+		<qualifier value="cmsVisitorTotalCache"/>
+	</bean>
+		
+	<!--搜索词汇缓存-->
+	<bean id="ehSearchWordsCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.front.CmsSearchWords</value>
+		</property>		
+		<qualifier value="cmsSearchWords"/>
+	</bean>
+	
+	<!--shiro缓存
+	<bean id="ehShiroCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.jeecms.cms.shiro.shiroCache</value>
+		</property>		
+		<qualifier value="shiroCache"/>
+	</bean>
+	-->
+</beans>

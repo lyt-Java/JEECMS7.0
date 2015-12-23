@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户绑定</title>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<link href="${resSys}/front.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="/${res}/css/regist.css" />
+<script type="text/javascript">
+$(function() {
+	$("#bindForm").validate();
+	$("#bindNewForm").validate();
+	//正确绑定用户返回
+	[#if success??&& success]
+	  [#if source??]
+		[#if source="QQ"]
+			//qq授权窗口需要手动关闭，父窗口重新加载
+	  		opener.location.reload();
+            window.close();	
+		[#elseif source="SINA"]
+			//新浪授权窗口会自动关闭
+		    location="${base}/";
+		[#elseif source="QQWEBO"]
+		  		opener.location.reload();
+	            window.close();	
+		  [/#if]
+		[/#if]
+    [/#if]
+});
+</script>
+</head>
+<body>
+<table width="500" border="0" align="center" cellpadding="0" cellspacing="5" >		  
+	<tr>
+		<td height="30" align="center">				
+		[#if errors??]
+			<ul>
+			  [#list errors as error]<li style="color: red;font-size: 20px;">${error}</li>[/#list]
+			</ul>
+		[/#if]
+		</td>
+	</tr>
+</table>
+<table width="500" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+          <td>
+            <table width="50%" border="0" align="center" cellpadding="0" cellspacing="5">
+            	<form id="bindForm" action="${base}/public_bind.jspx" method="post">	
+                 <tr>
+	                 <td width="67" height="30" align="right">登录QQ：</td>
+	                 <td colspan="2"><span id="qqLoginBtn"></span></td>
+                  </tr>	 
+                 <tr>
+                   <td height="40" colspan="3"><strong style="font-size:14px;">绑定现有账户</strong></td>
+                 </tr>	  
+                 <tr>
+	                 <td width="67" height="30" align="right">用户名：</td>
+	                 <td colspan="2"><input type="text" id="username" name="username" class="required"/></td>
+                  </tr>
+                 <tr>
+                   <td height="30" align="right">密　码：</td>
+                   <td colspan="2"><input type="password" id="password" name="password" class="required"/></td>
+                 </tr>
+                  <tr>
+                     <td height="40" colspan="3"><input type="submit" id="submit" value="绑定 " class="login-button"/>&nbsp;&nbsp;&nbsp;</td>
+                  </tr>
+ 				</form>
+            </table>
+            <table width="50%" border="0" align="center" cellpadding="0" cellspacing="5">	
+ 			 <form id="bindNewForm" action="${base}/public_bind_username.jspx" method="post">
+                 <tr>
+                   <td height="40" colspan="3"><strong style="font-size:14px;">指定新用户名</strong></td>
+                 </tr>	  
+                 <tr>
+	                 <td width="67" height="30" align="right">用户名：</td>
+	                 <td colspan="2"><input type="text" name="username" class="required"/></td>
+                  </tr>
+                  <tr>
+                     <td height="40" colspan="3" ><input type="submit" id="newuser" value="登录 " class="login-button"/>&nbsp;&nbsp;&nbsp;</td>
+                  </tr>
+              </form>
+              </table>
+			</td>
+          </tr>
+    </table>
+    [#if site.config.qqEnable]
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="${site.config.qqID!}" data-redirecturi="http://${site.domain}/public_auth.jspx" charset="utf-8"></script>
+	<script type="text/javascript">
+           //插入按钮的节点qqLoginBtn id
+	    QC.Login({btnId:"qqLoginBtn",size: "A_M"}, function(reqData, opts){//登录成功
+	       //根据返回数据，更换按钮显示状态方法
+	       var dom = document.getElementById(opts['btnId']),
+	       _logoutTemplate=[
+	            //昵称
+	            '<span>{nickname}</span>'    
+	       ].join("");
+	       dom && (dom.innerHTML = QC.String.format(_logoutTemplate, {
+	           nickname : QC.String.escHTML(reqData.nickname), //做xss过滤
+	           figureurl : reqData.figureurl
+	       }));
+	   });
+                         if(!QC.Login.check()){
+                                 $("#qqLoginBtn").remove();        
+                          }
+	 </script>
+	 [/#if]
+</body>
+</html>

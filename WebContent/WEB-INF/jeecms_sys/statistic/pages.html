@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+function optDelete() {
+	if(Pn.checkedCount('ids')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	$.confirm(doDelete,"<@s.m 'global.confirm'/>","<@s.m 'global.confirm.delete'/>");
+}
+function doDelete(){
+	var f = getTableForm();
+	f.action="o_delete.do";
+	f.submit();
+}
+function order() {
+	var orderBy = $("input[name=orderBy]:checked").val();
+	location.href="v_list.do?orderBy=" + orderBy;
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "cmsAccess.pages"/> - <@s.m "global.list"/></div>
+	<div style="padding-top:5px">
+	<@s.m "cmsAccess.pages.order"/>
+	<label><input type="radio" name="orderBy" value="1" onclick="order();"<#if !orderBy?? || orderBy=1> checked="checked"</#if>/><@s.m "cmsAccess.pages.pv"/></label>
+	<label><input type="radio" name="orderBy" value="2" onclick="order();"<#if orderBy?? && orderBy==2> checked="checked"</#if>/><@s.m "cmsAccess.pages.visitors"/></label>
+	<label><input type="radio" name="orderBy" value="3" onclick="order();"<#if orderBy?? && orderBy==3> checked="checked"</#if>/><@s.m "cmsAccess.pages.second"/></label>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<form id="tableForm" method="post">
+<input type="hidden" name="pageNo" value="${pageNo!}"/>
+<input type="hidden" name="orderBy" value="${orderBy!}"/>
+<@p.table value=pagination;array,i,has_next><#rt/>
+	<@p.column code="cmsAccess.pages">${array[0]!}</@p.column><#t/>
+	<@p.column code="cmsAccess.pages.pv">
+		${array[1]!}
+	</@p.column><#t/>
+	<@p.column code="cmsAccess.pages.visitors">${array[2]!}</@p.column><#t/>
+	<@p.column code="cmsAccess.pages.second">${array[3]!}</@p.column><#t/>
+</@p.table>
+</form>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

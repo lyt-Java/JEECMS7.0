@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function() {
+	$("#jvForm").validate();
+});
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>:  <@s.m "cmsSiteConfig.function"/> - <@s.m "cmsSiteConfig.function.company"/> - <@s.m "global.edit"/></div>
+	<#include "inc_opt.html"/>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_company_update.do" labelWidth="12">
+<@p.text colspan="1" width="50" label="company.name" name="name" value=company.name style="width:260px" required="true" class="required" maxlength="100"/>
+<@p.select colspan="1" width="50" label="company.scale" name="scale" value=company.scale list=scales listKey="value" listValue="name" required="true"/><@p.tr/>
+<@p.select colspan="1" width="50" label="company.nature" name="nature" value=company.nature list=natures listKey="value" listValue="name" required="true"/>
+<@p.select colspan="1" width="50" label="company.industry" name="industry" value=company.industry list=industrys listKey="value" listValue="name" required="true"/><@p.tr/>
+<@p.text colspan="2" width="100" label="company.address" name="address" value=company.address maxlength="255" /><@p.tr/>
+<@p.textarea value=company.contact cols="50" rows="5" maxlength="255"  label="company.contact" name="contact" colspan="2" width="100"/><@p.tr/>
+<@p.editor value=company.description colspan="2" label="company.description" name="description"/><@p.tr/>
+<@p.td colspan="2">
+	<@p.hidden name="id" value=company.id/><@p.submit code="global.submit"/> &nbsp; <@p.reset code="global.reset"/>
+</@p.td>
+</@p.form>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

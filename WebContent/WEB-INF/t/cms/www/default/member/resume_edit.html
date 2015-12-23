@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>简历管理- ${site.name} - Powered by JEECMS</title>
+<link href="${resSys}/front.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="../../${res}/css/member.css" />
+<script src="${base}/thirdparty/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+	$("#jvForm").validate();
+});
+</script>
+</head>
+
+<body>
+[#include "member_header.html"/]
+<div class="container">
+	 [#include "member_navi.html"/]
+    <div class="mc_right">
+        [#include "member_top.html"/]
+        <div class="mr-top-position">
+		 </div>
+        <div class="mc_content">   
+      		<form id="jvForm" action="resume.jspx" method="post"> 
+             <table width="98%" border="0" align="center" cellpadding="5" cellspacing="1" bgcolor="#C8DCF0" style="margin:5px;">
+               <tr>
+		         <td width="150" height="25" align="right" bgcolor="#f6fbff">简历名称：</td>
+		         <td bgcolor="#FFFFFF"><input type="text" name="resumeName" [#if user.userResume??]value="${user.userResume.resumeName!}"[/#if] maxlength="100"  class="required"/> </td>
+		       </tr>
+               <tr>
+		         <td  colspan="2" height="25" align="left" bgcolor="#f6fbff">基本信息</td>
+		      </tr>
+               <tr>
+		         <td width="150" height="25" align="right" bgcolor="#f6fbff">真实姓名：</td>
+		         <td bgcolor="#FFFFFF"><input type="text" name="realname" value="${user.realname!?html}" maxlength="100"/> </td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">性别：</td>
+				 <td bgcolor="#FFFFFF">
+		         [@p.radio name="gender" value=user.gender list={"true":"男","false":"女","":"保密"}/]
+				 </td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">出生日期：</td>
+		         <td bgcolor="#FFFFFF"><input type="text" name="birthday" value="${(user.birthday?string('yyyy-MM-dd'))!}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate"/></td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">来自：</td>
+		         <td bgcolor="#FFFFFF"><input type="text" name="comefrom" value="${user.comefrom!?html}" maxlength="150"/></td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">电话：</td>
+		         <td bgcolor="#FFFFFF"><input type="text" name="phone" value="${user.phone!?html}" maxlength="50"/></td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">手机：</td>
+		         <td bgcolor="#FFFFFF"><input type="text" name="mobile" value="${user.mobile!?html}" maxlength="50"/></td>
+		       </tr> 
+			   <tr>
+		         <td  colspan="2" height="25" align="left" bgcolor="#f6fbff">求职意向</td>
+		       </tr>
+		       [@cms_model id="8"]
+		        [#list tag_bean.items as item]
+		        [#if item.field=="category"]
+		        	[#assign category=item.optValue/]
+		        [#elseif item.field=="workplace"]
+		        	[#assign workplace=item.optValue/]
+		        [#elseif item.field=="nature"]
+		        	[#assign nature=item.optValue/]
+		        [#elseif item.field=="salary"]
+		        	[#assign salary=item.optValue/]
+		        [#elseif item.field=="education"]
+		        	[#assign education=item.optValue/]
+		        [/#if]
+		        [/#list] 
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">期望工作性质：</td>
+		         <td bgcolor="#FFFFFF">
+		         	[#list nature!?split(",") as opt]
+		        	<select name="targetWorknature">
+    				<option value="">任意</option>
+			    	<option value="${opt!}" [#if user.userResume??][#if user.userResume.targetWorknature??][#if user.userResume.targetWorknature=="${opt}"]selected="selected"[/#if][/#if][/#if]>${opt!}</option>
+			    	[/#list]
+			    	</select>
+		         </td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">期望工作地点：</td>
+		         <td bgcolor="#FFFFFF">
+		         	<select name="targetWorkplace">
+			    	<option value="">任意</option>
+			    	[#list workplace!?split(",") as opt]
+			    	<option value="${opt!}"[#if user.userResume??][#if user.userResume.targetWorkplace??][#if user.userResume.targetWorkplace=="${opt}"]selected="selected"[/#if][/#if][/#if]>${opt!}</option>
+			    	[/#list]
+			    	</select>
+		         </td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">期望职位类型：</td>
+		         <td bgcolor="#FFFFFF">
+		         	<select name="targetCategory">
+			    	<option value="">任意</option>
+			    	[#list category!?split(",") as opt]
+			    	<option value="${opt!}"[#if user.userResume??][#if user.userResume.targetCategory??][#if user.userResume.targetCategory=="${opt}"]selected="selected"[/#if][/#if][/#if]>${opt!}</option>
+			    	[/#list]
+			    	</select>
+		         </td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">期望月薪：</td>
+		         <td bgcolor="#FFFFFF">
+		         	<select name="targetSalary">
+			    	<option value="">面谈</option>
+			    	[#list salary!?split(",") as opt]
+			    	<option value="${opt!}"[#if user.userResume??][#if user.userResume.targetSalary??][#if user.userResume.targetSalary=="${opt}"]selected="selected"[/#if][/#if][/#if]>${opt!}</option>
+			    	[/#list]
+			    	</select>
+		         </td>
+		       </tr>
+		       <tr>
+		         <td  colspan="2" height="25" align="left" bgcolor="#f6fbff">毕业学校</td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">学校：</td>
+		         <td bgcolor="#FFFFFF">
+		         	<input type="text" name="eduSchool" [#if user.userResume??]value="${user.userResume.eduSchool!?html}"[/#if] maxlength="255"/>
+		         </td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">毕业时间：</td>
+		         <td bgcolor="#FFFFFF"><input type="text" name="eduGraduation" [#if user.userResume??][#if user.userResume.eduGraduation??]value="${(user.userResume.eduGraduation?string('yyyy-MM'))!}"[/#if][/#if] onclick="WdatePicker({dateFmt:'yyyy-MM'})" class="Wdate"/></td>
+		       </tr>
+		        <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">学历：</td>
+		         <td bgcolor="#FFFFFF">
+		         	<select name="eduBack">
+			    	[#list education!?split(",") as opt]
+			    	<option value="${opt!}"[#if user.userResume??][#if user.userResume.eduBack??][#if user.userResume.eduBack=="${opt}"]selected="selected"[/#if][/#if][/#if]>${opt!}</option>
+			    	[/#list]
+			    	</select>
+		         </td>
+		       </tr>
+		       [/@cms_model]
+		        <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">专业：</td>
+		         <td bgcolor="#FFFFFF">
+		         	<input type="text" name="eduDiscipline" [#if user.userResume??]value="${user.userResume.eduDiscipline!?html}"[/#if] maxlength="255"/>
+		         </td>
+		       </tr>
+		       <tr>
+		         <td  colspan="2" height="25" align="left" bgcolor="#f6fbff">工作经验</td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">公司名称：</td>
+		         <td bgcolor="#FFFFFF">
+		         	<input type="text" name="recentCompany" [#if user.userResume??]value="${user.userResume.recentCompany!?html}"[/#if] maxlength="255"/>
+		         </td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">职位名称：</td>
+		         <td bgcolor="#FFFFFF">
+		         	<input type="text" name="jobName" [#if user.userResume??]value="${user.userResume.jobName!?html}"[/#if] maxlength="255"/>
+		         </td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">工作时间：</td>
+		         <td bgcolor="#FFFFFF"><input type="text" name="jobStart" [#if user.userResume??][#if user.userResume.jobStart??]value="${(user.userResume.jobStart?string('yyyy-MM'))!}"[/#if][/#if] onclick="WdatePicker({dateFmt:'yyyy-MM'})" class="Wdate"/></td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">工作描述：</td>
+		         <td bgcolor="#FFFFFF">
+		         	<textarea rows="10" cols="50" name="jobDescription">[#if user.userResume??]${user.userResume.jobDescription!?html}[/#if]</textarea>
+				</td>
+		       </tr>
+		       <tr>
+		         <td height="25" align="right" bgcolor="#f6fbff">自我评价：</td>
+		         <td bgcolor="#FFFFFF">
+		         	<textarea rows="10" cols="50" name="selfEvaluation">[#if user.userResume??]${user.userResume.selfEvaluation!?html}[/#if]</textarea>
+				</td>
+		       </tr>
+               <tr>
+                 <td height="25" colspan="2" align="center" bgcolor="#f6fbff">
+                 <input type="hidden" name="nextUrl" value="resume.jspx"/>
+                 <input type="submit" value="提交" class="member_button"/> &nbsp; <input type="reset" value="重置" class="member_button"/>
+                 </td>
+                 </tr>
+                 
+             </table>
+             </form>
+   		</div>
+  </div>
+     <div style="clear:both"></div>
+</div>
+</body>
+</html>

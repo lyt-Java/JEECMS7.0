@@ -1,0 +1,27 @@
+<script type="text/javascript">
+//上传附件
+function uploadPlug() {
+	var mf = $("#plugFile");
+	//检查是否选择了文件
+	if(mf.val()=="") {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'content.error.noFileSelected'/>");
+		return;
+	}
+	//将file移动至上传表单
+	$("#plugContent").empty();
+	$("#plugContent").append(mf);
+	//复制一个file放至原处
+	$("#mfc").append(mf.clone().attr('value',''));
+	//修改属性
+	mf.attr("id","");
+	$("#plugFileText").attr('value','');
+	//其他表单
+	$("#plugFilename").val($("#origFilename").val());
+	$("#plugForm").submit();
+}
+</script>
+<form id="plugForm" action="o_upload.do" method="post" enctype="multipart/form-data" target="plug_iframe" style="display:none;width:0px;height:0px;">
+<span id="plugContent"></span>
+<input type="hidden" id="plugFilename" name="filename"/>
+</form>
+<iframe name="plug_iframe" frameborder="0" border="0" style="display:none;width:0px;height:0px;"></iframe>

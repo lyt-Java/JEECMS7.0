@@ -1,0 +1,5 @@
+[@cms_vote_list   count='#{count}'  siteId=site.id]
+    [#list tag_list as vote]
+    <li><a href="${base}/vote.jspx?voteId=${vote.id}">${vote.title?html}</a>&nbsp;[#if vote.endTime??]${vote.endTime?string("yyyy-MM-dd")}[/#if]</li>
+    [/#list]
+[/@cms_vote_list]

@@ -1,0 +1,31 @@
+<form action="${base}/searchJob.jspx" target="_self">
+    [@cms_model id="8"]
+    [#list tag_bean.items as item]
+    [#if item.field=="category"]
+        [#assign category=item.optValue/]
+    [#elseif item.field=="workplace"]
+        [#assign workplace=item.optValue/]
+    [/#if]
+    [/#list]
+    
+        <select name="category" style="width:15%;">
+        <option value="">任意</option>
+        [#list category!?split(",") as opt]
+        <option value="${opt!}" [#if queryCategory??][#if queryCategory=="${opt}"]selected="selected"[/#if][/#if]>${opt!}</option>
+        [/#list]
+        </select>
+    
+        <select name="workplace" style="width:15%;">
+        <option value="">任意</option>
+        [#list workplace!?split(",") as opt]
+        <option value="${opt!}"[#if queryWorkplace??][#if queryWorkplace=="${opt}"]selected="selected"[/#if][/#if]>${opt!}</option>
+        [/#list]
+        [/@cms_model]
+        </select>
+    
+        <input name="q" value="${q!'请输入关键词'}" type="text" id="txtKey" onfocus="if(this.value=='请输入关键词')this.value=''" onblur="if(this.value=='')this.value='请输入关键词'" maxlength="50" autocomplete="off" / style="width:50%;">
+        
+        <input type="submit" class="" value="搜索"/ >
+    
+</form>
+<div class="clear"></div>

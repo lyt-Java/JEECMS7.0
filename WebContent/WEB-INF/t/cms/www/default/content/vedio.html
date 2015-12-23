@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<title>${title} - ${site.name} - Powered by JEECMS</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta content="${content.tagStr!}" http-equiv="keywords" />
+<meta content="${content.description!}" http-equiv="description" />
+
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script src="/${res}/js/common.js" type="text/javascript"></script>
+<script src="${resSys}/ckplayer/ckplayer.js" type="text/javascript"></script>
+<script src="${resSys}/ckplayer/offlights.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+Cms.attachment("${base}","${content.id}","${content.attachments?size}","attach");
+Cms.viewCount("${base}","${content.id}");
+Cms.siteFlow("${base}", location.href, document.referrer);
+});
+</script>
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+    <div class="website mt10">
+        当前位置：<a href="${base}/">首页</a> > [#list channel.nodeList as n]<a target="_blank" href="${n.url}">${n.name}</a>[#if n_has_next] > [/#if][/#list] > 正文
+    </div>
+    <div class="clear"></div>
+    <div class="newsTex">
+        <h1>[#if content.bold]<b>${content.title}</b>[#else]${content.title}[/#if]</h1>
+        <div class="msgbar">发布时间： ${content.releaseDate} &nbsp; 作者：${content.author!'本站编辑'} &nbsp; 来源： ${content.origin!'本站原创'} &nbsp; 浏览次数：<span id="views"></span>
+        [#if user??]
+        <script type="text/javascript">
+        $(function() {
+        Cms.collectexist("${base}","${content.id}","cancelSpan","comfirmSpan");
+        });
+        </script>
+        [/#if]
+        </div>
+    </div>
+    
+    <div class="tvCon">
+    	[#if content.mediaPath?? && content.mediaType??]
+	        <p style="margin: 5px auto; text-align: center">
+		        [#if content.mediaType=='FLV'] 
+		        <object height="500" width="98%" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
+		        <param name="movie" value="/${res}/img/flvplayer.swf" />
+		        <param name="quality" value="high" />
+		        <param name="allowFullScreen" value="true" />
+		        <param name="FlashVars" value="vcastr_file=${content.mediaPath!}&BufferTime=3" /><embed height="500" width="98%" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" quality="high" flashvars="vcastr_file=${content.mediaPath!}" allowfullscreen="true" src="/${res}/img/flvplayer.swf"></embed>
+		        </object>
+		        [#elseif content.mediaType=='FLASH'] 
+		        <embed height="500" width="98%" type="application/x-shockwave-flash" quality="high" src="${content.mediaPath}" wmode="transparent" align="center"></embed>
+		        [#elseif content.mediaType=='CK']
+	            <!--ckplayer播放视频-->
+	            <div id="video" style="position:relative;z-index: 100;width:960px;height:500px;float: left;"><div id="a1"></div></div>
+		    	<script type="text/javascript">
+		    	//函数名称不允许更改 function ckmarqueeadv(){return '广告内容'};
+				var flashvars={f:'${content.mediaPath!}',c:0,b:1,my_url:'${content.url!}',my_pic:'${content.typeImg!}'};
+				var params={bgcolor:'#FFF',allowFullScreen:true,allowScriptAccess:'always'};
+				CKobject.embedSWF('${resSys}/ckplayer/ckplayer.swf','a1','ckplayer_a1','980','500',flashvars,params);
+				var box = new LightBox();
+				function closelights(){//关灯
+					box.Show();
+				}
+				function openlights(){//开灯
+					box.Close();
+				}
+				</script>
+		        [#else] 
+		        <embed height="500" width="98%" type="video/x-ms-wmv" src="${content.mediaPath}" console="cons" controls="ImageWindow" autostart="true"></embed>
+		        [/#if]
+	        </p>
+    	[/#if]
+    	<div id="video" style="position:relative;z-index: 100;width:600px;height:400px;float: left;"><div id="a1"></div></div>
+    	
+    	<div class="content">${txt!}</div>
+    	<div class="pagebar">[#include "../style_page/content.html"/]</div>
+    </div>
+    <div class="clear"></div>
+    <div class="w700 mt10">
+    	<div class="rim06">
+            <!--网友评论_Begin-->
+            [#if channel.commentControl!=2]
+            [#include "inc_comment_input.html"/]
+            [#include "inc_comment_list.html"/]
+            [/#if]
+            <!--网友评论_End-->
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="w270">
+    	<div class="rim06 mt10">
+        	<div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>影片简介</span>
+                <div class="LanMu01-3"></div>
+            </div>
+        	<div class="tvxinxi">
+                <ul>
+                	<li><h1>${content.title!}</h1></li>
+                	<li>主演：<span>${content.attr.Starring!}</span></li>
+                	<li>导演：<span>${content.attr.Director!}</span></li>
+                	<li>类型：<span>${content.attr.VideoType!}</span></li>
+                	<li>简介：<span>${content.desc!}</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    [#include "../include/friend_link.html"/]
+    [#include "../include/footer.html"/]
+</div>
+</body>
+</html>

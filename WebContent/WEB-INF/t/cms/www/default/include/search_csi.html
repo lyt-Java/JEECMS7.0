@@ -1,0 +1,52 @@
+<script>
+//delay延迟时间（毫秒）
+$(function() {
+	$("input[name=q]").autocomplete({
+		 source: "${base}/search/v_ajax_list.jspx",
+		 minLength: 2,
+		 max:5,
+		 delay:100,
+		 autoFocus: true,
+		 select: function(e, ui) {
+			 $("input[name='q']").val(ui.item.value);
+			 $("#searchForm").submit();
+		 },
+		 success: function( data ) {
+			    response( $.map( data.items, function( item ) {
+			        return {
+			         label: '<B>' + item.id + '</B><br>' + item.label,
+			         value: item.id
+			        }
+			       }));
+		}
+	});
+});
+function qkeypress(){
+	var q=$("input[name=q]");
+	if(q.val().trim()!=""){
+		$("input[name=q]").autocomplete("enable");
+	}else{
+		$("input[name=q]").autocomplete("disable");
+	}
+}
+</script>
+<div class="pageTitle">
+    <!-- LOGO_begin -->
+    <div class="webLogo">
+        <img src="../../${res}/img/index/webLogo.gif" />
+    </div>
+    <!-- LOGO_end -->
+    <!-- 搜索_begin -->
+    <div class="searchCon">
+        <form action="${base}/search.jspx" target="_blank" id="searchForm">
+        <div class="ui-widget">
+            <div class="searchBg">
+            	<input name="q" value="${oldq!'请输入关键词'}" type="text" onfocus="if(this.value=='请输入关键词')this.value=''"  onkeypress="qkeypress()" onblur="if(this.value=='')this.value='请输入关键词'"  maxlength="50" autocomplete="off" / style="border:0;width:98%;">
+            </div>
+		</div>
+            <input type="submit" class="searchMenu" value=""/ >
+        </form>
+    </div>
+    <!-- 搜索_end -->
+</div>
+<div class="clear"></div>

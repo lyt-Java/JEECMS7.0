@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.core.entity">
+	<class
+		name="CmsSiteCompany"
+		table="jc_site_company"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<cache usage="read-write"/>
+		<id
+			name="id"
+			type="integer"
+			column="site_id"
+		>
+			<generator class="foreign"><param name="property">site</param></generator>
+		</id>
+
+		<property
+			name="name"
+			column="name"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="scale"
+			column="scale"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="nature"
+			column="nature"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="industry"
+			column="industry"
+			type="string"
+			not-null="false"
+			length="1000"
+		/>
+		<property
+			name="contact"
+			column="contact"
+			type="string"
+			not-null="false"
+			length="500"
+		/>
+		<property
+			name="description"
+			column="description"
+			type="string"
+			not-null="false"
+		/>
+		<property
+			name="address"
+			column="address"
+			type="string"
+			not-null="false"
+			length="500"
+		/>
+		<property
+			name="longitude"
+			column="longitude"
+			type="java.lang.Float"
+			not-null="false"
+			length="5"
+		/>
+		<property
+			name="latitude"
+			column="latitude"
+			type="java.lang.Float"
+			not-null="false"
+			length="4"
+		/>
+		<one-to-one name="site" class="com.jeecms.core.entity.CmsSite" constrained="true"/>
+
+	</class>	
+</hibernate-mapping>

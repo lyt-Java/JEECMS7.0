@@ -1,0 +1,299 @@
+<script type="text/javascript">
+function typeSelect(){
+	var t=$('input:radio[name=type]:checked').val();
+	if(t=="single"){
+		$("#single").show();	
+		$("#list").hide();
+		$("#ids").hide();
+	}else if(t=="ids"){
+		$("#ids").show();
+		$("#single").hide();	
+		$("#list").hide();
+	}else{
+		$("#single").hide();	
+		$("#list").show();
+		$("#ids").hide();
+	}
+}
+function singleTypeSelect(){
+	var s=$('input:radio[name=singleType]:checked').val();
+	if(s=="a_"){
+		$("#id").show();
+	}else{
+		$("#id").hide();
+	}
+}
+function sysSelect(){
+	var sys=$('input:radio[name=sys]:checked').val();
+	if(sys=="true"){
+		$("#tpl").show();
+		$("#tpl1").show();
+		$("#tpl-params").show();
+		$("#newDiv").hide();
+		tpl1Select();
+		$("#showDesc").hide();
+		$("#descLen").hide();
+	}else{
+		$("#tpl").hide();
+		$("#tpl1").hide();
+		$("#tpl2").hide();
+		$("#tpl3").hide();
+		$("#tpl-params").hide();
+		$("#tpl1-params").hide();
+		$("#tpl2-params").hide();
+		$("#showDesc").show();
+		$("#newDiv").show();
+		disableDesc();
+	}
+}
+//系统模板选择
+function tplSelect(){
+	var tpl=$('input:radio[name=tpl]:checked').val();
+	$("#tpl1").hide();
+	$("#tpl2").hide();
+	$("#tpl3").hide();
+	$("#tpl"+tpl).show();
+	$("#tpl1-params").hide();
+	$("#tpl2-params").hide();
+	$("#tpl3-params").hide();
+	$("#tpl"+tpl+"-params").show();
+	if(tpl==2){
+		tpl2Select();
+	}
+	if(tpl==1){
+		tpl1Select();
+	}
+}
+function disableDesc(){
+	var desc=$('input:radio[name=showDesc]:checked').val();
+	if(desc=="1"){
+		$("#descLen").show();
+	}else{
+		$("#descLen").hide();
+	}
+}
+//普通分类下三个分类
+function tpl1Select(){
+	var tp1=$('input:radio[name=tpl1]:checked').val();
+	$("#tpl1-params").show();
+	$("#tpl2-params").hide();
+	$("#tpl3-params").hide();
+	for(var a=1;a<=3;a++){
+		$("#tpl1-"+a+"-params").hide();
+	}
+	$("#tpl1-"+tp1+"-params").show();
+	if(tp1==3){
+		$("#tpl1-1-params").show();
+	}
+}
+//滚动列表下四分类
+function tpl2Select(){
+	var tp2=$('input:radio[name=tpl2]:checked').val();
+	$("#tpl1-params").show();
+	for(var a=1;a<=3;a++){
+		$("#tpl1-"+a+"-params").hide();
+	}
+	if(tp2==1||tp2==3){
+		//文字类
+		$("#tpl1-1-params").show();
+	}else{
+		//图文类
+		$("#tpl1-2-params").show();
+	}
+}
+</script>
+<@s.m "directive.type"/>&nbsp;&nbsp;
+<@s.m "directive.list"/><input  type="radio" name="type" onclick="typeSelect()" value="list" checked="checked"/>
+<@s.m "directive.page"/><input  type="radio" name="type"  onclick="typeSelect()" value="page" />
+<@s.m "directive.single"/><input type="radio" name="type"  onclick="typeSelect()" value="single" />
+<@s.m "directive.ids"/><input  type="radio" name="type"  onclick="typeSelect()" value="ids" />
+<br/>
+
+<div id="single" style="display: none;">
+<@s.m "directive.type"/>&nbsp;&nbsp;
+<@s.m "directive.content.next"/><input  type="radio" name="singleType" onclick="singleTypeSelect()" value="n_" checked="checked"/>
+<@s.m "directive.content.previous"/><input  type="radio" name="singleType" onclick="singleTypeSelect()" value="p_" />
+<@s.m "directive.content.one"/><input type="radio" name="singleType" onclick="singleTypeSelect()" value="a_" />
+
+<div id="id" style="display: none;">
+<@s.m "directive.content.id"/>
+<input name="id" id="contentId"  required="true" class="required digits" maxlength="10"/><br/>
+</div>
+</div>
+
+<div id="ids" style="display: none;">
+<@s.m "directive.content.ids"/>
+<input name="ids" id="ids"  required="true" class="required" maxlength="100"/><br/>
+<@s.m "directive.titleLen"/>
+<input name="idsTitLen"  required="true" class="required digits" maxlength="10"/><br/>
+<@s.m "directive.content.tpl.params.dateFormat"/><input name="idsDateFormat"  value="yyyy-MM-dd"/><br/>
+</div>
+
+<div id="list">
+<@s.m "directive.content.systpl"/>&nbsp;&nbsp;
+<@s.m "global.true"/><input  type="radio" onclick="sysSelect()" name="sys" value="true" />
+<@s.m "global.false"/><input type="radio" onclick="sysSelect()" name="sys" value="false" checked="checked"/>
+<br/>
+<div id="tpl" style="display: none;">
+<@s.m "directive.content.tpl"/>&nbsp;&nbsp;
+<@s.m "directive.content.tpl.1"/><input  type="radio" onclick="tplSelect()" name="tpl" value="1" checked="checked"//>
+<@s.m "directive.content.tpl.2"/><input type="radio" onclick="tplSelect()" name="tpl" value="2" >
+<@s.m "directive.content.tpl.3"/><input type="radio" onclick="tplSelect()" name="tpl" value="3" >
+<@s.m "directive.content.tpl.3.help"/>
+</div>
+<div id="tpl1" style="display: none;">
+<@s.m "directive.content.tpl.1"/>&nbsp;&nbsp;
+<@s.m "directive.content.tpl.1.1"/><input  type="radio" name="tpl1" onclick="tpl1Select()" value="1" checked="checked" />
+<@s.m "directive.content.tpl.1.2"/><input type="radio" name="tpl1" onclick="tpl1Select()" value="2" >
+<@s.m "directive.content.tpl.1.3"/><input type="radio" name="tpl1" onclick="tpl1Select()" value="3" >
+</div>
+<div id="tpl2" style="display: none;">
+<@s.m "directive.content.tpl.2"/>&nbsp;&nbsp;
+<@s.m "directive.content.tpl.2.1"/><input  type="radio" name="tpl2" onclick="tpl2Select()" value="1" checked="checked"//>
+<@s.m "directive.content.tpl.2.2"/><input type="radio" name="tpl2"  onclick="tpl2Select()" value="2" >
+<@s.m "directive.content.tpl.2.3"/><input type="radio" name="tpl2"  onclick="tpl2Select()" value="3" >
+<@s.m "directive.content.tpl.2.4"/><input type="radio" name="tpl2"  onclick="tpl2Select()" value="4" >
+</div>
+<div id="tpl3" style="display: none;">
+<@s.m "directive.content.tpl.3"/>&nbsp;&nbsp;
+<@s.m "directive.content.tpl.3.1"/><input  type="radio" name="tpl3" value="1" checked="checked"//>
+<@s.m "directive.content.tpl.3.2"/><input type="radio" name="tpl3" value="2" >
+<@s.m "directive.content.tpl.3.3"/><input type="radio" name="tpl3" value="3" >
+</div>
+<div id="tpl1-params" style="display: none;">
+	<div id="tpl1-1-params">
+		<@s.m "directive.content.tpl.params.lineHeight"/><input name="lineHeight" maxlength="3"/><br/>
+		<@s.m "directive.content.tpl.params.headMarkImg"/><input name="headMarkImg"  /><br/>
+		<@s.m "directive.content.tpl.params.headMark"/>
+		<@s.m "directive.content.tpl.params.headMark.1"/><input type="radio" name="headMark" value="1" >
+		<@s.m "directive.content.tpl.params.headMark.2"/><input type="radio" name="headMark" value="2" >
+		<@s.m "directive.content.tpl.params.headMark.3"/><input type="radio" name="headMark" value="3" >
+		<@s.m "directive.content.tpl.params.headMark.4"/><input type="radio" name="headMark" value="4" >
+		<@s.m "directive.content.tpl.params.headMark.0"/><input type="radio" name="headMark" value="all" checked="checked" ><br/>
+		<@s.m "directive.content.tpl.params.bottomLine"/>
+		<@s.m "global.true"/><input type="radio" name="bottomLine" value="1" />
+		<@s.m "global.false"/><input type="radio" name="bottomLine" value="0" checked="checked"/><br/>
+		<@s.m "directive.content.tpl.params.datePosition"/>
+		<@s.m "directive.content.tpl.params.datePosition.1"/><input type="radio" name="datePosition" value="1" />
+		<@s.m "directive.content.tpl.params.datePosition.2"/><input type="radio" name="datePosition" value="2" checked="checked" />
+		<@s.m "directive.content.tpl.params.datePosition.3"/><input type="radio" name="datePosition" value="3" /><br/>
+		<@s.m "directive.content.tpl.params.ctgForm"/>
+		<@s.m "directive.content.tpl.params.ctgForm.0"/><input type="radio" name="ctgForm" value="0"  checked="checked" />
+		<@s.m "directive.content.tpl.params.ctgForm.1"/><input type="radio" name="ctgForm" value="1"/>
+		<@s.m "directive.content.tpl.params.ctgForm.2"/><input type="radio" name="ctgForm" value="2" />
+	</div>
+	<div id="tpl1-2-params" style="display: none;">
+		<@s.m "directive.content.tpl.params.picWidth"/><input name="picWidth"  /><br/>
+		<@s.m "directive.content.tpl.params.picHeight"/><input name="picHeight"  /><br/>
+		<@s.m "directive.content.tpl.params.rightPadding"/><input name="rightPadding"  /><br/>
+		<@s.m "directive.content.tpl.params.picFloat"/>
+		<@s.m "global.true"/><input type="radio" name="picFloat" value="1" />
+		<@s.m "global.false"/><input type="radio" name="picFloat" value="0"  checked="checked"/>
+	</div>
+	<div id="tpl1-3-params" style="display: none;">
+		<@s.m "directive.content.tpl.params.view"/>
+		<@s.m "directive.content.tpl.params.view.1"/><input type="radio" name="view" value="1"  checked="checked" />
+		<@s.m "directive.content.tpl.params.view.2"/><input type="radio" name="view" value="2"/>
+		<@s.m "directive.content.tpl.params.view.3"/><input type="radio" name="view" value="3" />
+		<@s.m "directive.content.tpl.params.view.4"/><input type="radio" name="view" value="4" /><br/>
+		<@s.m "directive.content.tpl.params.viewTitle"/><input name="viewTitle"  />
+	</div>
+</div>
+<div id="tpl2-params" style="display: none;">
+		<@s.m "directive.content.tpl.params.rollDisplayHeight"/>
+		<input name="rollDisplayHeight"  /><@s.m "directive.content.tpl.params.height.help"/><br/>
+		<@s.m "directive.content.tpl.params.rollLineHeight"/>
+		<input name="rollLineHeight"  /><@s.m "directive.content.tpl.params.height.help"/><br/>
+		<@s.m "directive.content.tpl.params.rollCols"/>
+		<input name="rollCols"  /><@s.m "directive.content.tpl.params.rollCols.help"/><br/>
+		<@s.m "directive.content.tpl.params.rollSpeed"/>
+		<input name="rollSpeed"  /><@s.m "directive.content.tpl.params.rollSpeed.help"/><br/>
+		<@s.m "directive.content.tpl.params.rollSleepTime"/>
+		<input name="rollSleepTime"  /><@s.m "directive.content.tpl.params.rollSleepTime.help"/><br/>
+		<@s.m "directive.content.tpl.params.rollRows"/>
+		<input name="rollRows"  /><@s.m "directive.content.tpl.params.rollRows.help"/><br/>
+		<@s.m "directive.content.tpl.params.rollSpan"/>
+		<input name="rollSpan"  /><@s.m "directive.content.tpl.params.rollSpan.help"/><br/>
+		<@s.m "directive.content.tpl.params.isSleep"/>
+		<@s.m "global.true"/><input type="radio" name="isSleep" value="1" />
+		<@s.m "global.false"/><input type="radio" name="isSleep" value="0" checked="checked"/>
+</div>
+<div id="tpl3-params" style="display: none;">
+		<@s.m "directive.content.tpl.params.flashWidth"/>
+		<input name="flashWidth"  /><@s.m "directive.content.tpl.params.height.help"/><br/>
+		<@s.m "directive.content.tpl.params.flashHeight"/>
+		<input name="flashHeight"  /><@s.m "directive.content.tpl.params.height.help"/><br/>
+		<@s.m "directive.content.tpl.params.textHeight"/>
+		<input name="textHeight"  /><@s.m "directive.content.tpl.params.height.help"/><br/>
+</div>
+
+<div id="tpl-params" style="display: none;">
+		<@s.m "directive.content.tpl.params.showTitleStyle"/>
+		<@s.m "global.true"/><input type="radio" name="showTitleStyle" value="1" />
+		<@s.m "global.false"/><input type="radio" name="showTitleStyle" value="0" checked="checked"/><br/>
+		<@s.m "directive.content.tpl.params.useShortTitle"/>
+		<@s.m "global.true"/><input type="radio" name="useShortTitle" value="1" checked="checked"/>
+		<@s.m "global.false"/><input type="radio" name="useShortTitle" value="0" /><br/>
+</div>
+<@s.m "directive.content.source"/>&nbsp;&nbsp;<@s.m "directive.content.source.help"/><br/>
+<@s.m "directive.content.source.tag"/><input type="text" name="tag" >
+<@s.m "directive.content.source.topic"/><input type="text" name="topic" /><br/>
+<@s.m "directive.content.source.channelId"/><input type="text" name="channelId" />
+<@s.m "directive.content.source.channelPath"/><input type="text" name="channelPath"  />
+<br/>
+<@s.m "directive.content.channelOption"/>&nbsp;&nbsp;
+<@s.m "directive.content.channelOption.0"/><input  type="radio" name="channelOption" value="0" />
+<@s.m "directive.content.channelOption.1"/><input type="radio" name="channelOption" value="1" checked="checked"/>
+<@s.m "directive.content.channelOption.2"/><input type="radio" name="channelOption" value="2" />
+<br/>
+<@s.m "directive.content.type"/>&nbsp;&nbsp;
+<#list types as t>
+${t.name!}<input name="typeId" value="${t.id}" type="checkbox">
+</#list>
+<br/>
+<@s.m "directive.recommend"/>&nbsp;&nbsp;
+<@s.m "global.all"/><input  type="radio" name="recommend" value="all" checked="checked"/>
+<@s.m "global.true"/><input  type="radio" name="recommend" value="1" />
+<@s.m "global.false"/><input type="radio" name="recommend" value="0"/>
+<br/>
+<@s.m "directive.content.image"/>&nbsp;&nbsp;
+<@s.m "global.all"/><input  type="radio" name="image" value="all" checked="checked"/>
+<@s.m "global.true"/><input  type="radio" name="image" value="1" />
+<@s.m "global.false"/><input type="radio" name="image" value="0" />
+<br/>
+<div id="newDiv">
+<@s.m "directive.content.new"/>&nbsp;&nbsp;
+<@s.m "global.true"/><input  type="radio" name="new" value="1" />
+<@s.m "global.false"/><input type="radio" name="new" value="0" checked="checked"//>
+<br/>
+</div>
+<@s.m "directive.content.tpl.params.dateFormat"/><input name="dateFormat"  value="yyyy-MM-dd"/><br/>
+
+<@s.m "directive.content.tpl.params.target"/>
+<@s.m "global.true"/><input type="radio" name="target" value="1"  checked="checked"/>
+<@s.m "global.false"/><input type="radio" name="target" value="0" /><br/>
+<@s.m "directive.content.title"/>&nbsp;&nbsp;
+<input  type="text" name="title"/>
+<br/>
+<@s.m "directive.orderBy"/>&nbsp;&nbsp;
+<select name="orderBy">
+<#list 0..21 as i>
+<option value="${i}"><@s.m "content.orderBy.${i}"/></option>
+</#list>
+</select>
+<br/>
+<@s.m "directive.titleLen"/>
+<input name="titLen"  required="true" class="required digits" maxlength="10"/><br/>
+
+<div id="showDesc">
+<@s.m "directive.content.showDesc"/>&nbsp;&nbsp;
+<@s.m "global.true"/><input  type="radio" name="showDesc" onclick="disableDesc()" value="1" />
+<@s.m "global.false"/><input type="radio" name="showDesc" onclick="disableDesc()" value="0" checked="checked"/>
+</div>
+<div id="descLen" style="display: none;">
+<@s.m "directive.descLen"/>
+<input name="descLen"  required="true" class="required digits" maxlength="10"/><br/>
+</div>
+<@s.m "directive.count"/>
+<input name="count"  required="true" class="required digits" maxlength="10"/><br/>
+</div>

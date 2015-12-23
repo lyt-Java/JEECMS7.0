@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.cms.entity.assist">
+	<class
+		name="CmsFile"
+		table="jc_file"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="filePath"
+			type="string"
+			column="file_path"
+		>
+			<generator class="assigned"/>
+		</id>
+
+		<property
+			name="fileName"
+			column="file_name"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="fileIsvalid"
+			column="file_isvalid"
+			type="boolean"
+			not-null="true"
+		/>
+		<many-to-one
+			name="content"
+			column="content_id"
+			class="com.jeecms.cms.entity.main.Content"
+			not-null="false"
+		>
+		</many-to-one>
+
+
+	</class>	
+</hibernate-mapping>

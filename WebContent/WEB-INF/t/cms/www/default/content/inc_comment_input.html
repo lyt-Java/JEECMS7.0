@@ -1,0 +1,96 @@
+<div class="pinglun">
+	<div class="LanMu01-2">
+        <div class="LanMu01-1"></div>
+        <span>我来说两句</span>
+        <div class="LanMu01-3"></div>
+    </div>
+    
+    <div class="clear-10"></div>
+    <div class="pltable">
+  	[#if content.channel.commentControl==0 || (content.channel.commentControl==1 && user??)]
+    <form id="commentForm" action="${base}/comment.jspx" method="post">
+    <div class="plfl1">评论内容：</div>
+    <div class="plfr1"><textarea name="text" class="cinput" cols="60" rows="5"></textarea></div>
+    <div class="clear"></div>
+    <div class="plfl2">验&nbsp;&nbsp;证&nbsp;&nbsp;码：</div>
+    <div class="plfr1">
+    <div style="float:left; margin-top:10px;">
+    <input name="captcha" type="text" id="captcha" vld="{required:true}" class="plcode"/>
+    </div>
+    <div style="float:left;">
+    <img id="commentCaptcha" src="${base}/captcha.svl" onclick="this.src='${base}/captcha.svl?d='+new Date()"/>
+    </div>
+    </div>
+    <div class="clear"></div>
+    <div class="plfl1">&nbsp;</div>
+    
+    <div class="plfr1">
+    <input type="hidden" name="contentId" value="${content.id}"/>
+    <input type="submit" name="Submit" value=" 马上发表 " class="published" />
+    （网友评论仅供其表达个人看法，并不表明本站同意其观点或证实其描述。）
+    </div>
+    </form>
+    </div>
+	<script type="text/javascript">
+    $(function() {
+    /*
+        $("#commentForm").validate( {
+            submitHandler : function(form) {
+                $(form).ajaxSubmit( {
+                    "success" : function(data) {
+                        if(data.success) {
+                            alert("评论成功");
+                            location.href=location.href;
+                        } else {
+                            alert("评论失败");
+                        }
+                    },
+                    "dataType" : "json"
+                });
+            }
+        });
+    */
+        Cms.comment(function(data) {
+            if(data.status==0) {
+                alert("评论成功");
+                location.href=location.href;
+            } else if(data.status==1) {	
+                alert("验证码错误");
+                $("#commentCaptcha").click();
+            } else if(data.status==2) {	
+                alert("内容不存在");
+                $("#commentCaptcha").click();
+            } else if(data.status==3) {	
+                alert("评论关闭");
+                $("#commentCaptcha").click();
+            } else if(data.status==4) {	
+                alert("需要登录评论");
+                $("#commentCaptcha").click();
+            }else if(data.status==5) {	
+                alert("已经评论过，不能重复评论");
+                $("#commentCaptcha").click();
+            } else if(data.status==100) {	
+                alert("内容不存在");
+                $("#commentCaptcha").click();
+            } else if(data.status==101) {	
+                alert("评论不能为空");
+                $("#commentCaptcha").click();
+            } else {
+                alert("评论失败");
+                $("#commentCaptcha").click();
+            }
+        });
+    });
+    </script>
+
+    [#elseif channel.commentControl==1 && !user??]
+    [#--登录评论，且未登录--]
+    <div style="width:96%;font-size:14px;color:red;margin:10px;">
+    您尚未登录，请登录后发布评论！ 【<a href="${base}/login.jspx?returnUrl=/">马上登录</a>】
+    </div>
+    [#else]
+    [#--不允许评论--]
+    [/#if]
+</div>
+
+

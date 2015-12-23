@@ -1,0 +1,1 @@
+[@cms_content id='#{id}'][#if tag_bean??]<a href="${tag_bean.url}">${tag_bean.title}</a>[#else]没有找到该内容[/#if][/@cms_content]

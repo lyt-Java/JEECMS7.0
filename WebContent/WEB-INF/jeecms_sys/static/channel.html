@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+function createChannels() {
+	var button = $("#createButton");
+	var value = button.val();
+	button.val("<@s.m 'cmsStatic.wait'/>").attr("disabled","disabled");
+	$.post("o_channel.do",
+		{
+			channelId:$("#channelId option:selected").val(),
+			containChild:$("input[name='containChild']:checked").val()
+		},
+		function(data) {
+		button.val(value).removeAttr("disabled");
+		if(data.success) {
+			$.alert("<@s.m 'global.prompt'/>","<@s.m 'global.success'/>");
+		} else {
+			$.alert("<@s.m 'global.prompt'/>",data.msg);			
+		}
+	},"json");
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "cmsStatic.function"/> - <@s.m "cmsStatic.channel"/></div>
+	<form class="ropt">
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_channel.do">
+<@p.select label="cmsStatic.channel" name="channelId" id="channelId"  list=channelList listKey="id" listValue="name" listDeep="deep" headerKey="" headerValue="cmsStatic.allChannel"/>
+<@p.radio label="cmsStatic.containChild" name="containChild" id="containChild" value="true" list={"true":"global.true","false":"global.false"}/>
+<@p.td>
+	<input class="generate-channel-page" id="createButton" type="button" value="<@s.m "cmsStatic.channelStatic"/>" onclick="createChannels()"/>
+</@p.td>
+</@p.form>
+</div>
+</body>
+</html>

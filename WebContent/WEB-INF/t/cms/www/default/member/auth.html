@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户授权返回</title>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+[#if site.config.qqEnable]
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="${site.config.qqID!}" data-redirecturi="http://${site.domain}/public_bind.jspx" charset="utf-8"></script>
+<script type="text/javascript">
+QC.Login.getMe(function(openId, accessToken){
+ $.cookie("openId",openId);
+ $.post("${base}/public_auth_login.jspx", {
+	 key:openId,
+	 source:"QQ"
+	}, function(data) {
+		//绑定用户
+		if(!data.succ){
+			location="${base}/public_bind.jspx";
+		}else{
+			opener.location.reload();
+	        window.close();
+        }
+	}, "json");
+});
+</script>
+[/#if]
+[#if site.config.sinaEnable]
+<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=${site.config.sinaID!}" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+if(WB2.checkLogin()){
+	/*weibo 登录*/
+	//var uid;
+	WB2.anyWhere(function (W) {
+	/***获取授权用户id***/
+		W.parseCMD("/account/get_uid.json", function (sResult, bStatus) 
+			{
+			if (!!bStatus) {
+			/**请求uid成功后调用以获取用户数据**/
+				getData(W, sResult);
+				$.post("${base}/public_auth_login.jspx", {
+					 key:sResult.uid,
+					 source:"SINA"
+				}, function(data) {
+					//绑定用户
+					if(!data.succ){
+						location="${base}/public_bind.jspx";
+					}else{
+						location="${base}/";
+			        }
+				}, "json");
+				
+			}else{
+				alert("授权失败或错误");
+			}
+			}, {}, {
+				method: 'GET'
+			});
+	});
+	function getData(W, User) 
+	{
+		W.parseCMD("/users/show.json", function(sResult, bStatus){
+			   // alert(sResult.name);
+			    
+			    var uid = User.uid;
+			  //  alert(nickname);
+			  //   xmlhttp.open("GET","http://localhost/CI/index.php/SaveInfo/save_wb_nickname?uid="+uid,true);
+			  //	xmlhttp.send();
+			},{
+					/* 传递参数 */
+				uid : User.uid
+				},{method: 'GET'});
+	};
+}
+</script>
+[/#if]
+[#if site.config.qqWeboEnable]
+<script type="text/javascript" src="http://mat1.gtimg.com/app/openjs/openjs.js"></script>
+<script type="text/javascript">
+ var qqWeboId=$.cookie("qqWeboId");
+T.init({
+	    appkey: ${site.config.qqWeboID!}, //执行初始化
+	});
+if (T.loginStatus()) {
+	    //用户已登录
+		 $.post("${base}/public_auth_login.jspx", {
+			 key:qqWeboId,
+			 source:"QQWEBO"
+			}, function(data) {
+				//绑定用户
+				if(!data.succ){
+					location="${base}/public_bind.jspx";
+				}else{
+					opener.location.reload();
+			        window.close();
+		        }
+			}, "json");
+} 
+</script>
+[/#if]
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.jeecms.cms.entity.main">
+	<class name="ChannelCount" table="jc_channel_count">
+		<meta attribute="sync-DAO">false</meta>
+		<cache usage="read-write"/>
+		<id name="id" type="java.lang.Integer" column="channel_id">
+			<generator class="foreign"><param name="property">channel</param></generator>
+		</id>
+		<property name="views" column="views" type="java.lang.Integer" not-null="true" length="19"/>
+		<property name="viewsMonth" column="views_month" type="integer" not-null="true" length="10"/>
+		<property name="viewsWeek" column="views_week" type="integer" not-null="true" length="10"/>
+		<property name="viewsDay" column="views_day" type="integer" not-null="true" length="10"/>
+		<one-to-one name="channel" class="Channel" constrained="true"/>
+	</class>
+</hibernate-mapping>

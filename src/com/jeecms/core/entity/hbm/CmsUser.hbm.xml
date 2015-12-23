@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.jeecms.core.entity">
+	<class name="CmsUser" table="jc_user">
+		<meta attribute="sync-DAO">false</meta>
+		<cache usage="read-write"/>
+		<id name="id" type="java.lang.Integer" column="user_id"><generator class="assigned"/></id>
+		<property name="username" column="username" type="string" not-null="true" length="100"/>
+		<property name="email" column="email" type="string" not-null="false" length="100"/>
+		<property name="registerTime" column="register_time" type="timestamp" not-null="true" length="19"/>
+		<property name="registerIp" column="register_ip" type="string" not-null="true" length="50"/>
+		<property name="lastLoginTime" column="last_login_time" type="timestamp" not-null="false" length="19"/>
+		<property name="lastLoginIp" column="last_login_ip" type="string" not-null="false" length="50"/>
+		<property name="loginCount" column="login_count" type="integer" not-null="true" length="10"/>
+		<property name="rank" column="rank" type="integer" not-null="true" length="10"/>
+		<property name="uploadTotal" column="upload_total" type="java.lang.Long" not-null="true" length="19"/>
+		<property name="uploadSize" column="upload_size" type="integer" not-null="true" length="10"/>
+		<property name="uploadDate" column="upload_date" type="java.sql.Date" not-null="false" length="19"/>
+		<property name="admin" column="is_admin" type="java.lang.Boolean" not-null="true"/>
+		<property name="selfAdmin" column="is_self_admin" type="java.lang.Boolean" not-null="true"/>
+		<property name="disabled" column="is_disabled" type="java.lang.Boolean" not-null="true"/>
+		<many-to-one name="group" column="group_id" class="CmsGroup" not-null="true"></many-to-one>
+		<map name="attr" table="jc_user_attr" cascade="all-delete-orphan">
+			<cache usage="read-write"/>
+			<key column="user_id" not-null="true"/>
+			<map-key column="attr_name" type="string" length="30"/>
+			<element column="attr_value" type="string" length="255"/>
+		</map>
+		<set name="userExtSet" inverse="true" cascade="delete-orphan">
+			<cache usage="read-write"/>
+			<key column="user_id"/>
+			<one-to-many class="CmsUserExt"/>
+		</set>
+		<set name="userSites" inverse="true" cascade="delete">
+			<key column="user_id"/>
+			<one-to-many class="CmsUserSite"/>
+		</set>
+		<set name="roles" table="jc_user_role" lazy="false" >
+			<key column="user_id"/>
+			<many-to-many column="role_id" class="CmsRole"/>
+		</set>
+		<set name="channels" table="jc_channel_user" inverse="true">
+			<cache usage="read-write"/>
+			<key column="user_id"/>
+			<many-to-many column="channel_id" class="com.jeecms.cms.entity.main.Channel"/>
+		</set>
+		<set name="collectContents" table="jc_user_collection"  cascade="delete">
+			<key column="user_id"/>
+			<many-to-many column="content_id" class="com.jeecms.cms.entity.main.Content"/>
+		</set>
+		<set name="sendMessages" inverse="true" cascade="delete">
+			<key column="msg_send_user"/>
+			<one-to-many class="com.jeecms.cms.entity.assist.CmsMessage"/>
+		</set>
+		<set name="receivMessages" inverse="true" cascade="delete">
+			<key column="msg_receiver_user"/>
+			<one-to-many class="com.jeecms.cms.entity.assist.CmsMessage"/>
+		</set>
+		<set name="sendReceiverMessages" inverse="true" cascade="delete">
+			<key column="msg_send_user"/>
+			<one-to-many class="com.jeecms.cms.entity.assist.CmsReceiverMessage"/>
+		</set>
+		<set name="receivReceiverMessages" inverse="true" cascade="delete">
+			<key column="msg_receiver_user"/>
+			<one-to-many class="com.jeecms.cms.entity.assist.CmsReceiverMessage"/>
+		</set>
+		<set name="userResumeSet" inverse="true" cascade="delete-orphan">
+			<cache usage="read-write"/>
+			<key column="user_id"/>
+			<one-to-many class="CmsUserResume"/>
+		</set>
+		<set name="jobApplys" inverse="true" cascade="delete">
+			<key column="user_id"/>
+			<one-to-many class="com.jeecms.cms.entity.assist.CmsJobApply"/>
+		</set>
+		<set name="logs" inverse="true" cascade="delete">
+			<key column="user_id"/>
+			<one-to-many class="CmsLog"/>
+		</set>
+		<set name="menus" inverse="true" cascade="delete">
+			<key column="user_id"/>
+			<one-to-many class="com.jeecms.cms.entity.assist.CmsUserMenu"/>
+		</set>
+
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,11 @@
+<dl class="rmpl">
+[#list list as c]
+  <dt><span>${(c.commentUser.username)!"匿名网友"}</span> 于 ${c.createTime} 评论道:</dt>
+  <dd>${c.textHtml!}</dd>
+  [#if c.replayHtml??]
+  <dt><span>${(c.replayUser.username)!"管理员"}</span> 于 ${c.replayTime?string("yyyy-MM-dd HH:mm:ss")} 回复:${(c.commentUser.username)!"匿名网友"}</dt>
+  <dd>${c.replayHtml!}</dd>
+  [/#if]
+  <dd class="line"></dd>
+[/#list]
+</dl>

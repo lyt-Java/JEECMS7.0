@@ -1,0 +1,5 @@
+[@cms_content_list  ids='#{ids}' titLen='#{titleLen}' dateFormat='#{dateFormat}'  siteId=site.id  append='...']
+[#list tag_list as a]
+	<li><a href="${a.url}" title="${a.title}" [#if (target?? && target) || target=='1'] target="_blank"[/#if]>[@text_cut s=a.title len=titLen append=append/]</a>&nbsp;&nbsp;${a.releaseDate?string(dateFormat)}</li>
+[/#list]
+[/@cms_content_list]

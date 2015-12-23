@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function() {
+	$("#jvForm").validate();
+});
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>:  <@s.m "cmsScoreGroup.function"/> - <@s.m "global.edit"/></div>
+	<form class="ropt">
+		<input class="return-button" type="submit" value="<@s.m "global.backToList"/>" onclick="this.form.action='v_list.do';"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_update.do">
+<@p.text label="cmsScoreGroup.name" name="name" value=group.name required="true" class="required" maxlength="100"/><@p.tr/>
+<@p.radio label="cmsScoreGroup.enable" value=group.enable  list={"true":"global.true","false":"global.false"}   name="enable" /><@p.tr/>
+<@p.radio label="cmsScoreGroup.def" value=group.def  list={"true":"global.true","false":"global.false"}   name="def" /><@p.tr/>
+<@p.textarea maxlength="500" rows="3" cols="70"  label="cmsScoreGroup.description" name="description" value=group.description  colspan="2" width="100"/><@p.tr/>
+<@p.td><@p.hidden name="id" value=group.id/><@p.submit code="global.submit"/> &nbsp; <@p.reset code="global.reset"/></@p.td>
+</@p.form>
+</div>
+</body>
+</html>

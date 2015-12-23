@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>jeecms-left</title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function() {
+	$("div[id^='div_']").each(function(i){
+		$(this).next().hide();
+		if(i==0){
+			$(this).addClass("leftCurr");
+		}else{
+			$(this).addClass("leftNol");
+		}
+		$(this).click( function () {
+			$("div[id^='div_']").each(function(i){
+				if(i!=0){
+					$(this).next().hide();
+				}
+				$(this).removeClass();
+				$(this).addClass("leftNol");
+			});
+            $(this).removeClass();
+			$(this).addClass("leftCurr");
+		    $(this).next().show(); 
+		});
+	});
+});
+</script>
+</head>
+<body class="lbody">
+<div class="left">
+	<#include "/jeecms_sys/date.html"/>
+     <ul class="w-lful">
+         <@cms_perm url="/statistic/member/v_list.do">
+            <div  id="div_0">
+	         <li><a href="../statistic/member/v_list.do" target="rightFrame"><@s.m "statistic.function.member"/></a></li>
+	     	</div>
+         </@cms_perm>
+            <div id="div_1"><@s.m 'cms.function.contentstatic'/></div>
+            <div style="margin:0; padding:0;" >
+                <@cms_perm url="/statistic/content/v_list.do">
+                <div class="leftmenuBG"><a href="../statistic/content/v_list.do" target="rightFrame"><@s.m "statistic.function.content"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/workloadstatistic/v_list.do">
+                <div class="leftmenuBG"><a href="../workloadstatistic/v_list.do" target="rightFrame"><@s.m "cms.workload.statistic.function"/></a></div>
+                </@cms_perm>
+            </div>
+            <div id="div_2"><@s.m 'cms.function.interactive'/></div>
+            <div style="margin:0; padding:0;">
+                <@cms_perm url="/statistic/comment/v_list.do">
+                <div class="leftmenuBG" ><a href="../statistic/comment/v_list.do" target="rightFrame"><@s.m "statistic.function.comment"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/statistic/guestbook/v_list.do">
+                <div class="leftmenuBG"><a href="../statistic/guestbook/v_list.do" target="rightFrame"><@s.m "statistic.function.guestbook"/></a></div>
+                </@cms_perm>
+            </div>
+            <div id="div_3"><@s.m 'cms.function.flow'/></div>
+            <div style="margin:0; padding:0;">
+                <@cms_perm url="/statistic/channel/v_list.do">
+                <div class="leftmenuBG"><a href="../statistic/channel/v_list.do" target="rightFrame"><@s.m "statistic.function.channel"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/flow/pv/v_list.do">
+                <div class="leftmenuBG"><a href="../flow/pv/v_list.do" target="rightFrame"><@s.m "statistic.function.trend"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/flow/source/v_list.do">
+                <div class="leftmenuBG"><a href="../flow/source/v_list.do?type=source" target="rightFrame"><@s.m "statistic.function.source"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/flow/source/v_list.do">
+                <div class="leftmenuBG"><a href="../flow/source/v_list.do?type=engine" target="rightFrame"><@s.m "cmsAccess.engine"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/flow/source/v_list.do">
+                <div class="leftmenuBG"><a href="../flow/source/v_list.do?type=keyword" target="rightFrame"><@s.m "cmsAccess.keyword"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/flow/source/v_list.do">
+                <div class="leftmenuBG"><a href="../flow/source/v_list.do?type=link" target="rightFrame"><@s.m "cmsAccess.externallink"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/flow/area/v_list.do">
+                <div class="leftmenuBG"><a href="../flow/area/v_list.do" target="rightFrame"><@s.m "cmsAccess.area"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/flow/visitor/v_list.do">
+                <div class="leftmenuBG"><a href="../flow/visitor/v_list.do" target="rightFrame"><@s.m "cmsAccess.visitor"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/flow/pages/v_list.do">
+                <div class="leftmenuBG"><a href="../flow/pages/v_list.do" target="rightFrame"><@s.m "cmsAccess.pages"/></a></div>
+                </@cms_perm>
+                <@cms_perm url="/flow/enterpage/v_list.do">
+                <div class="leftmenuBG"><a href="../flow/enterpage/v_list.do" target="rightFrame"><@s.m "cmsAccess.enterpages"/></a></div>
+                </@cms_perm>
+            </div>
+            <div id="div_4"><@s.m 'cms.content.rank'/></div>
+            <div style="margin:0; padding:0;">
+                <#list 6..21 as i>
+                <@cms_perm url="/content/rank_list.do">
+                 <div class="leftmenuBG"><a href="../content/rank_list.do?orderBy=${i}" target="rightFrame"><@s.m "content.orderBy.${i}"/></a></div>
+                </@cms_perm>
+                </#list>
+            </div>
+     </ul>
+</div>
+</body>
+</html>

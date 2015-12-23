@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$.extend($.validator.messages, {
+	required : "该项为必填项",
+	remote : "请修正该字段",
+	email : "请输入正确格式的电子邮件",
+	url : "请输入合法的网址",
+	date : "请输入合法的日期",
+	dateISO : "请输入合法的日期 ",
+	number : "请输入合法的数字",
+	digits : "只能输入整数",
+	creditcard : "请输入合法的信用卡号",
+	equalTo : "请再次输入相同的值",
+	accept : "请输入拥有合法后缀名的字符串",
+	maxlength : $.format("请输入一个长度最多是 {0} 的字符串"),
+	minlength : $.format("请输入一个长度最少是 {0} 的字符串"),
+	rangelength : $.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+	range : $.format("请输入一个介于 {0} 和 {1} 之间的值"),
+	max : $.format("该项不能大于 {0}"),
+	min : $.format("该项不能小于 {0}")
+});
+$(function() {
+	$("#jvForm").validate();
+	$("span[id$='Span']").each(function(){
+		$(this).hide();
+	});
+	$("#attr_channel_id").parent().hide();
+	$("#attr_channel_id").prop("disabled","disabled");
+	controlInput(1);
+});
+function selectTaskType(){
+	var type=$("#type").val();
+	$("#acqu").hide();
+	$("#attr_acqu_id").prop("disabled","disabled");
+	$("#floderTable").hide();
+	$("#ftp").hide();
+	$("#attr_ftp_id").prop("disabled","disabled");
+	$("#attr_channel_id").parent().hide();
+	$("#attr_channel_id").prop("disabled","disabled");
+	if(type==1){
+		$("#jobClass").val("com.jeecms.cms.task.job.IndexStaticJob");
+	}else if(type==2){
+		$("#jobClass").val("com.jeecms.cms.task.job.ChannelStaticJob");
+		$("#attr_channel_id").parent().show();
+		$("#attr_channel_id").prop("disabled","");
+	}else if(type==3){
+		$("#jobClass").val("com.jeecms.cms.task.job.ContentStaticJob");
+		$("#attr_channel_id").parent().show();
+		$("#attr_channel_id").prop("disabled","");
+	}else if(type==4){
+		$("#jobClass").val("com.jeecms.cms.task.job.AcquisiteJob");
+		$("#acqu").show();
+		$("#attr_acqu_id").prop("disabled","");
+	}else if(type==5){
+		$("#jobClass").val("com.jeecms.cms.task.job.DistributeJob");
+		$("#floderTable").show();
+		$("#ftp").show();
+		$("#attr_ftp_id").prop("disabled","");
+	}
+}
+function execycleSelect(){
+	var execycleValue=1;
+	$("input[name='execycle']").each(function(){
+		if($(this).prop("checked")){
+			execycleValue=$(this).val();
+		}
+	});
+	if(execycleValue==1){
+		$("#dayOfMonthInput").prop("disabled","");
+		$("#dayOfWeekInput").prop("disabled","");
+		$("#hourInput").prop("disabled","");
+		$("#minuteInput").prop("disabled","");
+		$("#intervalHourInput").prop("disabled","");
+		$("#intervalMinuteInput").prop("disabled","");
+		$("#intervalUnit").prop("disabled","");
+		$("#cronExpression").prop("disabled","disabled");
+	}else{
+		$("#dayOfMonthInput").prop("disabled","disabled");
+		$("#dayOfWeekInput").prop("disabled","disabled");
+		$("#hourInput").prop("disabled","disabled");
+		$("#minuteInput").prop("disabled","disabled");
+		$("#intervalHourInput").prop("disabled","disabled");
+		$("#intervalMinuteInput").prop("disabled","disabled");
+		$("#intervalUnit").prop("disabled","disabled");
+		$("#cronExpression").prop("disabled","");
+	}
+}
+function selectUnit(){
+	var intervalUnitValue=$("#intervalUnit").val();
+	controlInput(intervalUnitValue);
+}
+function controlInput(intervalUnitValue){
+	$("span[id$='Span']").each(function(){
+		$(this).hide();
+	});
+	$("input[id$='Input']").each(function(){
+		$(this).prop("disabled","disabled");
+	});
+	if(intervalUnitValue==1){
+		$("#intervalMinuteSpan").show();
+		$("#intervalMinuteInput").prop("disabled","");
+	}else if(intervalUnitValue==2){
+		$("#intervalHourSpan").show();
+		$("#intervalHourInput").prop("disabled","");
+	}else if(intervalUnitValue==3){
+		$("#hourSpan").show();
+		$("#minuteSpan").show();
+		$("#hourInput").prop("disabled","");
+		$("#minuteInput").prop("disabled","");
+	}else if(intervalUnitValue==4){
+		$("#dayOfWeekSpan").show();
+		$("#hourSpan").show();
+		$("#minuteSpan").show();
+		$("#dayOfWeekInput").prop("disabled","");
+		$("#hourInput").prop("disabled","");
+		$("#minuteInput").prop("disabled","");
+	}else if(intervalUnitValue==5){
+		$("#dayOfMonthSpan").show();
+		$("#hourSpan").show();
+		$("#minuteSpan").show();
+		$("#dayOfMonthInput").prop("disabled","");
+		$("#hourInput").prop("disabled","");
+		$("#minuteInput").prop("disabled","");
+	}
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "cms.task.function"/> - <@s.m "global.add"/></div>
+	<form class="ropt">
+		<input class="return-button" type="submit" value="<@s.m "global.backToList"/>" onclick="this.form.action='v_list.do';"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_save.do">
+<@p.td  label="cms.task.type"  colspan="2">
+<@p.select id="type" onchange="selectTaskType()" list={"1":"cms.task.type.1","2":"cms.task.type.2","3":"cms.task.type.3","4":"cms.task.type.4","5":"cms.task.type.5"}  name="type" width="30"/>
+<span id="acqu" style="display: none;">
+<@s.m "cms.task.param.acqu.source"/>
+<select name="attr_acqu_id" id="attr_acqu_id" disabled="disabled">
+<#list acquList as acqu>
+<option value="${acqu.id}">${acqu.name}</option>
+</#list>
+</select>
+</span>
+<span id="ftp" style="display: none;">
+<@s.m "cms.task.distribute.ftp"/>
+<select name="attr_ftp_id" id="attr_ftp_id" disabled="disabled">
+<#list ftpList as ftp>
+<option value="${ftp.id}">${ftp.name}</option>
+</#list>
+</select>
+<button onclick="addFloderLine()"  class="add_folder" type="button"><@s.m'cms.task.floder.add'/></button>
+</span>
+<table id="floderTable" border="0" style="display:none">
+<tr>
+	<td align="center"></td>
+	<td align="center"><@s.m "cms.task.floder"/>&nbsp;&nbsp;<@s.m "cms.task.floder.help"/></td>
+</tr>
+</table>
+<textarea id="floderTr" style="display:none">
+<tr id="floderTr{0}">
+	<td align="center"><a onclick="$('#floderTr{0}').remove();" href="javascript:void(0);" class="pn-opt"><@s.m "cms.task.floder.delete"/></a></td>
+	<td align="center"><input type="text" id="floder_{0}" name="attr_floder_{0}"/></td>
+</tr>
+</textarea>
+<script type="text/javascript">
+var floderIndex = 1;
+var floderTpl = $.format($("#floderTr").val());
+function addFloderLine() {
+	$('#floderTable').append(floderTpl(floderIndex++));
+}
+</script>
+<span id="channel" style="display: none;">
+<@s.m "cmsStatic.channel"/>
+<select id="attr_channel_id" name="attr_channel_id">
+	<option value="0"><@s.m "cmsStatic.allChannel"/></option>
+	<#if channelList?size gt 0>
+	<#assign origDeep=channelList[0].deep+1/>
+	<#list channelList as c>
+		<option value="${c.id}"><#if c.deep gte origDeep><#list origDeep..c.deep as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+	</#list>
+	</#if>
+</select>
+</span>
+</@p.td>
+<@p.tr/>
+<@p.text colspan="2" label="cms.task.name" name="name" required="true" class="required" maxlength="100"/><@p.tr/>
+<@p.td label="cms.task.execycle" colspan="2" width="100">
+<input name="execycle"  type="radio" value="1" onclick="execycleSelect()" checked="checked"/>
+<@p.select name="intervalUnit" onchange="selectUnit()" id="intervalUnit" list={"1":"cms.task.interval.unit.1","2":"cms.task.interval.unit.2","3":"cms.task.interval.unit.3","4":"cms.task.interval.unit.4","5":"cms.task.interval.unit.5"}/>
+	<span id="dayOfMonthSpan"><input name="dayOfMonth" id="dayOfMonthInput" vld="{range:[1,31]}"/><@s.m "cms.task.dayOfMonth"/></span>
+	<span id="dayOfWeekSpan"><input name="dayOfWeek" id="dayOfWeekInput" vld="{range:[1,7]}"/><@s.m "cms.task.dayOfWeek"/></span>
+	<span id="hourSpan"><input name="hour" id="hourInput"  vld="{range:[0,23]}"/><@s.m "cms.task.hour"/></span>
+	<span id="minuteSpan"><input name="minute" id="minuteInput"  vld="{range:[0,59]}"/><@s.m "cms.task.minute"/></span>
+	<span id="intervalHourSpan"><@s.m "cms.task.interval"/><input name="intervalHour" vld="{digits:true,range:[0,23]}" id="intervalHourInput"/><@s.m "cms.task.interval.Hour"/></span>
+	<span id="intervalMinuteSpan"><@s.m "cms.task.interval"/><input name="intervalMinute" vld="{digits:true,range:[0,59]}" id="intervalMinuteInput"/><@s.m "cms.task.interval.Minute"/></span>
+</@p.td>
+<@p.tr/>
+
+<@p.td colspan="2" label="cms.task.cronExpression">
+<input name="execycle"  type="radio" value="2" onclick="execycleSelect()"/>
+<input name="cronExpression" id="cronExpression"/>
+</@p.td><@p.tr/>
+
+<@p.radio width="100" colspan="2" label="cms.task.status" name="enable" value="true" list={"true":"cms.task.enable","false":"cms.task.disable"} required="true"/><@p.tr/>
+<@p.text width="100" colspan="2" label="cms.task.remark" name="remark" size="30" maxlength="100"/><@p.tr/>
+<input type="hidden" id="jobClass" name="jobClass" value="com.jeecms.cms.task.job.IndexStaticJob"/>
+<@p.td colspan="2"><@p.submit code="global.submit"/> &nbsp; <@p.reset code="global.reset"/></@p.td>
+</@p.form>
+</div>
+</body>
+</html>

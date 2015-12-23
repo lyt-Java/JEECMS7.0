@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>${title} - ${site.name} - Powered by JEECMS</title>
+<meta http-equiv="keywords" content="${content.tagStr!}"/>
+<meta http-equiv="description" content="${content.description!}"/>
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<script src="${resSys}/jquery.js"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/responsiveslides.min.js"></script>
+
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script src="/${res}/js/common.js" type="text/javascript"></script>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<link href="/${res}/css/album.css" rel="stylesheet" media="screen" type="text/css">
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="/${res}/css/responsiveslides.css">
+<link rel="stylesheet" href="/${res}/css/pic_content.css">
+<script type="text/javascript">
+$(function() {
+  Cms.attachment("${base}","${content.id}","${content.attachments?size}","attach");
+  Cms.viewCount("${base}","${content.id}");
+  Cms.siteFlow("${base}", location.href, document.referrer);
+});
+</script>
+<style type="text/css">  
+.box {height:66px; float:left; width:480px; overflow:hidden; position:relative;}  
+.box li { display:block; float:left; margin-left:5px; margin-right:5px; width:100px; height:70px; font-size:50px;color:#ccc;line-height:66px;text-decoration:none;text-align:center; cursor:pointer;}  
+.box li:hover { color:#999; }  
+.box li.active { background-position:-174px 0; color:#555;cursor:default;}  
+a.prev, a.next {background:url(/r/cms/www/red/img/pic/left_02.png) no-repeat 0 0; display:block;width:40px;height:40px; float:left; margin:15px 0 0 0; cursor:pointer;}  
+a.next { background-image:url(/r/cms/www/red/img/pic/right_02.png)}  
+.scroll_list{position:absolute;}  
+.tkxtb/*小图片*/{ width:100px; height:62px; overflow:hidden;}
+.tkxtblist{ margin:auto;}
+</style>  
+<script type="text/javascript">
+$(function() {
+$("#slider4").responsiveSlides({
+	manualControls: '#slider4-pager',
+        auto: false,
+        pager: false,
+        nav: true,
+        speed: 500,
+        namespace: "callbacks",
+        before: function () {
+        },
+        after: function () {
+        }
+      });
+var page= 1;  
+      var i = 4;//每版四个图片  
+            
+    //向右滚动  
+     $(".next").click(function(){ //点击事件  
+        
+             var v_wrap = $(this).parents(".scroll"); // 根据当前点击的元素获取到父元素  
+             var v_show = v_wrap.find(".scroll_list"); //找到视频展示的区域  
+             var v_cont = v_wrap.find(".box"); //找到视频展示区域的外围区域  
+               
+             var v_width = v_cont.width();  
+             var len = v_show.find("li").length; //我的视频图片个数  
+             var page_count = Math.ceil(len/i); //只要不是整数，就往大的方向取最小的整数  
+  
+         if(!v_show.is(":animated")){  
+             if(page == page_count){  
+                 v_show.animate({left:'0px'},"slow");  
+                 page =1;   
+                }else{  
+                 v_show.animate({left:'-='+v_width},"slow");  
+                 page++;  
+             }  
+         }  
+           
+      });  
+        
+     //向左滚动  
+          $(".prev").click(function(){ //点击事件  
+        
+             var v_wrap = $(this).parents(".scroll"); // 根据当前点击的元素获取到父元素  
+             var v_show = v_wrap.find(".scroll_list"); //找到视频展示的区域  
+             var v_cont = v_wrap.find(".box"); //找到视频展示区域的外围区域  
+               
+             var v_width = v_cont.width();  
+             var len = v_show.find("li").length; //我的视频图片个数  
+             var page_count = Math.ceil(len/i); //只要不是整数，就往大的方向取最小的整数  
+  
+         if(!v_show.is(":animated")){  
+             if(page == 1){  
+             v_show.animate({left:'-='+ v_width*(page_count-1)},"slow");  
+             page =page_count;   
+             }else{  
+             v_show.animate({left:'+='+ v_width},"slow");  
+             page--;  
+         }  
+         }  
+      });   
+});
+</script>
+</head>
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+	<div class="website mt10">当前位置：<a href="${base}/">首页</a> > [#list channel.nodeList as n]<a href="${n.url}" target="_blank">${n.name}</a>[#if n_has_next] > [/#if][/#list] > 正文</div>
+    <div class="clear"></div>
+    <div class="newsTex">
+    	<h1 style="color:#122E67;">${content.title}</h1>
+        <div class="msgbar">发布时间： ${content.releaseDate} &nbsp; 作者：${content.author!'本站编辑'} &nbsp; 来源： ${content.origin!'本站原创'} &nbsp; 浏览次数：<span id="views"></span>
+        [#if user??]
+        <script type="text/javascript">
+        $(function() {
+        Cms.collectexist("${base}","${content.id}","cancelSpan","comfirmSpan");
+        });
+        </script>
+        [/#if]
+        </div>
+    </div>
+    
+	[#if pic??]
+	<div class="callbacks_container">
+      <ul class="rslides" id="slider4">
+            [#list content.pictures as p]
+            <li>
+            <p align=center>
+            
+            <table border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center"><img src="${p.imgPath!}"/></td>
+              </tr>
+            </table>
+
+            </p>
+            <p class="caption">${p.description!}</p>
+            </li>
+            [/#list]
+        </ul>
+        <table border="0" align="center" cellpadding="0" cellspacing="0" class="tkxtblist">
+        <tr>
+        <td align="center">
+        <div class="scroll">  
+        <!-- "prev page" link -->  
+        <a class="prev" href="#"></a>  
+        <div class="box">  
+        <div class="scroll_list">  
+        <ul id="slider4-pager" >
+        [#list content.pictures as p]
+        <li style="padding-right:0px; padding-left:0px; float:left; padding-bottom:0px; width: 108px; padding-top:8px; text-align:center;">
+        <a href="#">
+        <div class="tkxtb">
+        <img src="${p.imgPath!}" />
+        </div>
+        </a>
+        </li>
+        [/#list]
+        </ul>
+        </div>  
+        </div>  
+        <!-- "next page" link -->  
+        <a  class="next" href="#"></a>
+        </div>  
+        </td>
+        </tr>
+        </table>
+    </div>
+	[#else]
+    <div class="prompt">
+        <dl>
+            <dt></dt>
+            <dd class="msg">尚未添加图集图片！</dd>
+        </dl>
+    </div>		
+    [/#if]
+	[#include "../include/friend_link.html"/]
+	[#include "../include/footer.html"/]
+</div>
+</body>
+</html>

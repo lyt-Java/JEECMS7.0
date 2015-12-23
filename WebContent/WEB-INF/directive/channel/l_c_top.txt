@@ -1,0 +1,7 @@
+[@cms_channel_list hasContent='#{hasContent}']
+    [#list tag_list as c]
+    	[#if !c.parent??]
+      		<a href="${c.url}" target="_blank">${c.name!}</a>
+      	[/#if]
+	[/#list]
+[/@cms_channel_list]

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script src="${base}/thirdparty/swfupload/swfupload.js" type="text/javascript"></script>
+<script src="${base}/thirdparty/swfupload/swfupload.queue.js" type="text/javascript"></script>
+<script src="${base}/thirdparty/swfupload/fileprogress.js" type="text/javascript"></script>
+<script src="${base}/thirdparty/swfupload/handlers.js" type="text/javascript"></script>
+<link href="${base}/thirdparty/swfupload/process.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+function getTableForm() {
+	return document.getElementById("tableForm");
+}
+function optDelete() {
+	if(Pn.checkedCount('names')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	$.confirm(doDelete,"<@s.m 'global.confirm'/>","<@s.m 'global.confirm.delete'/>");
+}
+function doDelete(){
+	var f = getTableForm();
+	f.action="o_delete.do";
+	f.submit();
+}
+function optExport() {
+	if(Pn.checkedCount('names')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	var f = getTableForm();
+	f.action="o_export.do";
+	f.submit();
+}
+</script>
+</head>
+<body>
+<div id="sd" style="display:none;position:absolute;height:300px;width:300px"></div>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "cms.function.db"/> - <@s.m "db.dir"/></div>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<form id="tableForm" method="post">
+<@p.table value=list;file,i,has_next><#rt/>
+	<@p.column title="<input type='checkbox' onclick='Pn.checkbox(\"names\",this.checked)'/>" width="20">
+		<input type="checkbox" name="names" value="${file.name}" /><#t/>
+	</@p.column><#t/>
+	<@p.column title=" " width="20" align="center"><img src="${base}/res/common/img/file/${file.ico}.gif"/></@p.column><#t/>
+	<@p.column code="resource.filename">
+		${file.filename}
+	</@p.column><#t/>
+	<@p.column code="resource.size" align="right">${file.size} KB</@p.column><#t/>
+	<@p.column code="resource.lastModified" align="center">${file.lastModifiedDate?string('yyyy-MM-dd HH:mm:ss')}</@p.column><#t/>
+	<@p.column code="global.operate" align="center">
+		<@cms_perm url="/data/o_delete_single.do">
+		<a href="o_export.do?names=${file.name}" class="pn-opt"><@s.m "db.download"/></a><#t/>
+		</@cms_perm>
+		<@cms_perm url="/data/v_rename.do">
+		<a href="v_rename.do?name=${file.name?url}" class="pn-opt"><@s.m "resource.rename"/></a> | <#rt/>
+		</@cms_perm>
+		<@cms_perm url="/data/o_delete_single.do">
+		<a href="o_delete_single.do?name=${file.name?url}" onclick="if(!$.confirmToUrl(this.href)) {return false;}" class="pn-opt"><@s.m "global.delete"/></a><#t/>
+		</@cms_perm>
+	</@p.column><#t/>
+</@p.table>
+<div style="margin-top:15px;">
+	<@cms_perm url="/data/o_export.do">
+	<input type="button" class="download" value="<@s.m "db.download"/>" onclick="optExport();" class="del-button"/>
+	</@cms_perm>
+	<@cms_perm url="/data/o_delete.do">
+	<input type="button" value="<@s.m "global.delete"/>" onclick="optDelete();" class="del-button"/>
+	</@cms_perm>
+</div>
+</form>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

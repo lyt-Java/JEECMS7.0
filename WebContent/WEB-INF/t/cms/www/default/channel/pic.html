@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>${channel.title!channel.name} - ${site.name} - Powered by JEECMS</title>
+<meta http-equiv="keywords" content="${channel.keywords!}"/>
+<meta http-equiv="description" content="${channel.description!}"/>
+<head>
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+<script src="/${res}/js/foucs.js" type="text/javascript"></script>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+$(function() {
+	Cms.siteFlow("${base}", location.href, document.referrer);
+});
+</script>
+</head>
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+	<!-- 焦点图代码_begin -->
+    <div class="jdt mt10">
+        <div class="mod_focus_show" id="divimgplay">
+            <ul class="mod_focus_pic" id="divimginfog_imgPlayer">
+            	[@cms_content_list typeId='3' count='10' titLen='8' channelOption='1' channelId='42' orderBy='4']
+                [#list tag_list as a]
+                <li>
+                    <a href="${a.url}" target="_blank">
+                    <img src="${a.typeImg!site.defImg}" alt="${a.title}" />
+                    </a>
+                </li>
+                [/#list]
+                [/@cms_content_list]
+            </ul>
+            <ul class="mod_focus_title" id="ptitleg_imgPlayer">
+                <li class="current">
+                    <h3><a href="#" target="_blank"></a></h3>
+                    <p></p>
+                </li>
+            </ul>
+            <ul class="mod_focus_list" id="divpageinfog_imgPlayer">
+                [@cms_content_list typeId='3' count='10' titLen='8' channelOption='1' channelId='42' orderBy='4']
+                [#list tag_list as a]
+                <li>
+                    <a href="${a.url}" target="_blank">
+                    <img src="${a.typeImg!site.defImg}" alt="${a.title}" width="60" height="60" />
+                    <span class="border"></span>
+                    <span class="mask"></span>
+                    </a>
+                </li>
+                [/#list]
+                [/@cms_content_list]
+            </ul>
+            
+        </div>
+        <script type="text/javascript">
+            foucsbox(2500);
+        </script>
+    </div>
+    <!-- 焦点图代码_end -->
+    <!-- 热点关注_begin -->
+    <div class="tukuw270">
+    	<div class="clear"></div>
+    	<div class="rim05 mt10">
+            <div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>热点关注</span>
+                <div class="LanMu01-3"></div>
+            </div>
+            <div class="HotAttention">
+                <ul>
+                    [@cms_content_list typeId='2' count='6' titLen='8' channelOption='1' channelId='42' orderBy='7']
+                    [#list tag_list as a]
+                    <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    <img src="${a.typeImg!site.defImg}" alt="${a.title}" /></a>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    <p>[@text_cut s=a.stit len=titLen append=append/]</p>
+                    </a>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 热点关注_end -->
+    <div class="clear-10"></div>
+    <!-- 娱乐图集_begin -->
+    <div class="w980">
+    	<div class="rim05">
+        	<div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>娱乐图集</span>
+                <em>
+                [@cms_channel id='43']
+                <a href="${tag_bean.url}" target="_blank">更多>></a>
+                [/@cms_channel]
+                </em>
+                <div class="LanMu01-3"></div>
+            </div>
+            <div class="Beauty">
+          		<ul>
+                    [@cms_content_list typeId='2' count='6' titLen='10' channelOption='1' channelId='43' orderBy='4']
+                    [#list tag_list as a]
+                      <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    	<img src="${a.typeImg!site.defImg}" alt="${a.title}" />
+                    </a>
+                    <a href="${a.url}" title="${a.title}" target="_blank">   
+                    <p>[@text_cut s=a.stit len=titLen append=append/]</p>
+                    </a>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 娱乐图集_end -->
+    <div class="clear"></div>
+    <!-- 娱乐新闻_begin -->
+    <div class="w700 mt10">
+    	<div class="rim05">
+        	<div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>娱乐新闻</span>
+                <em>
+                [@cms_channel id='44']
+                <a href="${tag_bean.url}" target="_blank">更多>></a>
+                [/@cms_channel]
+                </em>
+                <div class="LanMu01-3"></div>
+            </div>
+            <div class="hundred100">
+                <ul class="box">
+                    [@cms_content_list typeId='2' count='8' titLen='20' channelOption='1' channelId='44' orderBy='4']
+                    [#list tag_list as a]
+                    <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                        <div class="toll_img">
+                            <img src="${a.typeImg!site.defImg}" alt="${a.title}" width="155" height="110" />
+                        </div>
+                        <div class="toll_info">
+                        <p>[@text_cut s=a.stit len=titLen append=append/]</p>
+                        </div>
+                    </a>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!-- 娱乐新闻_end -->
+    <!-- 每周点击排行榜_begin -->
+    <div class="w270">
+    	<div class="rim05 mt10">
+        	<div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>每周点击排行榜</span>
+                <div class="LanMu01-3"></div>
+            </div>
+            <div class="weeklist">
+                <ul>
+                    [@cms_content_list count='10' titLen='18' orderBy='7' channelId='42' channelOption='1']
+                    [#list tag_list as a]
+                      <li><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a></li>
+                    [/#list]
+                    [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 每周点击排行榜_end -->
+    <div class="clear-10"></div>
+    <!-- 文化校园_begin -->
+    <div class="w980">
+    	<div class="rim05">
+        	<div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>文化校园</span>
+                <em>
+                [@cms_channel id='45']
+                <a href="${tag_bean.url}" target="_blank">更多>></a>
+                [/@cms_channel]
+                </em>
+                <div class="LanMu01-3"></div>
+            </div>
+            <div class="Beauty">
+                <ul>
+                    [@cms_content_list typeId='2' count='6' titLen='10' channelOption='1' channelId='45' orderBy='4']
+                    [#list tag_list as a]
+                      <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    	<img src="${a.typeImg!site.defImg}" alt="${a.title}" />
+                    </a>
+                    <a href="${a.url}" title="${a.title}" target="_blank">   
+                    <p>[@text_cut s=a.stit len=titLen append=append/]</p>
+                    </a>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 文化校园_end -->
+    [#include "../include/friend_link.html"/]
+    [#include "../include/footer.html"/]
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>职位搜索列表 - ${site.name} - Powered by JEECMS</title>
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/front.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script src="/${res}/js/common.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+
+	<div class="w700 mt10">
+  		<div class="rim05">
+            <div class="LanMu01-2">
+                <div class="LanMu01-1"></div>
+                <span>职位搜索列表</span>
+                <div class="LanMu01-3"></div>
+            </div>
+        	<div class="clear-10"></div>
+            <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center">[#include "../include/job_search_header.html"/]</td>
+              </tr>
+            </table>
+            <div class="sousuoCon">
+            [#if q??]
+            [@cms_lucene_page q=q category=queryCategory workplace=queryWorkplace channelId='61' count="10" titLen="25" descLen='50' append='...' ]
+            <div class="search_msg">
+            您搜索的<span class="red">“${q!}”</span>， 共有 <span class="red">${tag_list?size} 条</span> 查询结果，[@process_time/]
+            </div>
+            [#list tag_list as content]
+            <dl class="ssjob">
+            <dt><span> <a href="${content.url}" title="${content.title}" target="_blank">[@text_cut s=content.title len=titLen append=append/]</a></dt>
+            <dd class="zy">
+            <dt>
+            工作地点：${content.attr.workplace!}&nbsp;&nbsp;工作性质：	${content.attr.nature!}<br/>
+            工作经验：${content.attr.experience!}&nbsp;&nbsp;	最低学历：${content.attr.education!}	
+            [@text_cut s=content.txt len=descLen append=append/]
+            <br/>
+            </dt>
+            </dd>
+            <dd>公司： ${content.companyName!'本站原创'} &nbsp;&nbsp; 浏览次数：${content.views}次 &nbsp;&nbsp; 发布时间： ${content.releaseDate?string("yyy-MM-dd")} </dd>
+            </dl>
+            [/#list]
+            <div class="clear-10"></div>
+            <div class="pagesite">[@cms_pagination sysPage='1'/]</div>
+            [/@cms_lucene_page]	  
+            [/#if]
+            </div>
+        </div>
+	</div>  
+  	[#include "../include/right1.html"/]
+	[#include "../include/friend_link.html"/]
+    [#include "../include/footer.html"/]
+</div>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.cms.entity.assist">
+	<class
+		name="CmsVoteReply"
+		table="jc_vote_reply"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="id"
+			type="integer"
+			column="votereply_id"
+		>
+			<generator class="native"/>
+		</id>
+
+		<property
+			name="reply"
+			column="reply"
+			type="string"
+			not-null="false"
+		/>
+		<many-to-one
+			name="subTopic"
+			column="subtopic_id"
+			class="CmsVoteSubTopic"
+			not-null="false"
+		>
+		</many-to-one>
+
+
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>jeecms-left</title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function(){
+	Cms.leftLi();
+});
+</script>
+</head>
+<body class="lbody">
+<div class="left">
+<#include "/jeecms_sys/date.html"/>
+     <ul class="w-lful">
+     	<@cms_perm url="/plug/v_list.do">
+		<li><a href="../plug/v_list.do" target="rightFrame"><@s.m "plug.function"/></a></li>
+		</@cms_perm>
+		<#list menuPrioritys as p>
+		<@cms_perm url="${menuPerms[p]}">
+        <li><a href="../${menuUrls[p]}" target="rightFrame"><@s.m '${menuNames[p]}'/></a></li>
+        </@cms_perm>
+		</#list>
+     </ul>
+</div>
+</body>
+</html>

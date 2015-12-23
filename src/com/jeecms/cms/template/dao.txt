@@ -1,0 +1,17 @@
+package #{dao_p};
+
+import com.jeecms.common.hibernate3.Updater;
+import com.jeecms.common.page.Pagination;
+import #{entity_p}.#{Entity};
+
+public interface #{Entity}Dao {
+	public Pagination getPage(int pageNo, int pageSize);
+
+	public #{Entity} findById(Integer id);
+
+	public #{Entity} save(#{Entity} bean);
+
+	public #{Entity} updateByUpdater(Updater<#{Entity}> updater);
+
+	public #{Entity} deleteById(Integer id);
+}

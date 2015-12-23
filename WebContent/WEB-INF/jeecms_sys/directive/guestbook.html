@@ -1,0 +1,30 @@
+<@s.m "directive.list.page"/>&nbsp;&nbsp;
+<@s.m "global.true"/><input  type="radio" name="page" value="true" />
+<@s.m "global.false"/><input type="radio" name="page" value="false" checked="checked"/>
+<br/>
+<@s.m "directive.recommend"/>&nbsp;&nbsp;
+<@s.m "global.all"/><input  type="radio" name="recommend" value="all" checked="checked"/>
+<@s.m "global.true"/><input  type="radio" name="recommend" value="true" />
+<@s.m "global.false"/><input type="radio" name="recommend" value="false" />
+<br/>
+<@s.m "directive.checked"/>&nbsp;&nbsp;
+<@s.m "global.all"/><input  type="radio" name="checked" value="all" />
+<@s.m "global.true"/><input  type="radio" name="checked" value="true" checked="checked"/>
+<@s.m "global.false"/><input type="radio" name="checked" value="false" />
+<br/>
+<@s.m "directive.titleLen"/>
+<input name="titleLen"  required="true" class="required digits" maxlength="10"/><br/>
+<@s.m "directive.contentLen"/>
+<input name="contentLen"  required="true" class="required digits" maxlength="10"/><br/>
+
+<@s.m "directive.count"/>
+<input name="count"  required="true" class="required digits" maxlength="10"/><br/>
+
+<select id="ctgId" name="ctgId">
+<option value="0"><@s.m "directive.type"/></option>
+<#if ctgList?size gt 0>
+<#list ctgList as c>
+	<option value="${c.id}">${c.name}</option>
+</#list>
+</#if>
+</select>

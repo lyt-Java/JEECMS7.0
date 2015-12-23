@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<title>${content.title} - ${site.name} - Powered by JEECMS</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta content="${content.title!}" http-equiv="keywords" />
+<meta content="${content.title!}" http-equiv="description" />
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script src="/${res}/js/common.js" type="text/javascript"></script>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script type="text/javascript" src="${base}/thirdparty/flexpaper/js/flexpaper_flash.js"></script>
+<script type="text/javascript" src="${base}/thirdparty/flexpaper/js/flexpaper_flash_debug.js"></script>
+<script type="text/javascript">
+$(function() {
+  Cms.siteFlow("${base}", location.href, document.referrer);
+  Cms.viewCount("${base}","${content.id}");
+});
+</script>
+<style type="text/css" media="screen"> 
+html, body{ height:100%;}
+body{ margin:0; padding:0; overflow:auto;}   
+#flashContent{ display:none;}
+.menufl{ float:left; margin:20px 1%; height:35px; line-height:35px; font-size:12px;}
+.hundred98{ width:98%; margin:auto;}
+</style> 
+</head>
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+    
+    <div class="hundred100 mt10">
+    	<div class="website">当前位置：<a href="${base}/">首页</a> > [#list channel.nodeList as n]<a target="_blank" href="${n.url}">${n.name}</a>[#if n_has_next] > [/#if][/#list] > 正文</div>
+        <div class="clear"></div>
+        
+        <div class="w700 mt10">
+        	<div class="wkrim">
+            	<div class="wktitle">
+                <img src="../../${res}/img/h5/wk_lx1.png" width="16" height="16">
+                	${content.title!}
+                	<span class="wklrcs"><span id="views"></span>人阅读</span><br>
+                    <div style="font-size:12px; font-weight:normal; color:#818181; font-family:宋体;">${content.description!}</div>
+                </div>
+            	
+                <div class="wkCon">
+                <a id="viewerPlaceHolder" style="width:100%;height:650px;display:block"></a>
+                <script type="text/javascript"> 
+                var fp = new FlexPaperViewer(	
+                        '${base}/thirdparty/flexpaper/FlexPaperViewer',
+                        'viewerPlaceHolder', { config : {
+                        SwfFile : escape('${content.swfPath!}'),
+                        Scale : 1, 
+                        ZoomTransition : 'easeOut',
+                        ZoomTime : 0.5,
+                        ZoomInterval : 0.2,
+                        FitPageOnLoad : false,
+                        FitWidthOnLoad : false,
+                        FullScreenAsMaxWindow : false,
+                        ProgressiveLoading : false,
+                        MinZoomSize : 0.2,
+                        MaxZoomSize : 5,
+                        SearchMatchAll : false,
+                        InitViewMode : 'SinglePage',
+                        
+                        ViewModeToolsVisible : true,
+                        ZoomToolsVisible : true,
+                        NavToolsVisible : true,
+                        CursorToolsVisible : true,
+                        SearchToolsVisible : true,
+                        
+                        localeChain: 'en_US'
+                        }});
+                </script>  
+                </div>
+            	<div class="clear"></div>
+                
+                <div class="wkXinXi">
+                [#if user??]
+                <span onclick="Cms.collect('${base}','${content.id}',1)" id="comfirmSpan" style="cursor: pointer;">
+                	<span class="menufl"><img src="../../${res}/img/h5/menu_sc.gif"></span>
+                </span>
+                <span onclick="Cms.collect('${base}','${content.id}',0)" id="cancelSpan"  style="cursor: pointer;">
+                	<span class="menufl"><img src="../../${res}/img/h5/menu_qxsc.gif"></span>
+                </span>
+                <script type="text/javascript">
+                $(function() {
+                Cms.collectexist("${base}","${content.id}","cancelSpan","comfirmSpan");
+                });
+                </script>
+                [/#if]
+                <span class="menufl">
+                <a href="${base}/downdoc.jspx?cid=${content.id}">
+                <img src="../../${res}/img/h5/menu_xz.gif"></a></span>
+                <span class="menufl">需要财富值：${content.downNeed!}&nbsp;&nbsp;</span>
+                <span class="menufl">评分：${content.avgScore!}</span>
+                </div>
+            
+            	<div class="clear"></div>
+                <div class="hundred98">
+                    <div class="rim06">
+                        <!--网友评论_Begin-->
+                        [#include "inc_score_comment_input.html"/]
+                        [#include "inc_comment_list.html"/]
+                        <!--网友评论_End-->
+                    </div>
+                </div>
+                <div class="clear-10"></div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="w270">
+            <!-- 你可能喜欢_begin -->
+            <div class="rim02 mt10">
+                <div class="LanMu01-2">
+                    <div class="LanMu01-1"></div>
+                    <span>你可能喜欢</span>
+                    <div class="LanMu01-3"></div>
+                </div>
+                <div class="jrhtList">
+                    <ul>
+                    [@cms_content_list count='10' orderBy='4' titLen='16' channelId='64'  channelOption='1']
+                    [#list tag_list as a]
+                      <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    [@text_cut s=a.title len=titLen /]
+                    </a>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                    </ul>
+                </div>
+            </div>
+            <!-- 你可能喜欢_end -->
+            <div class="clear-10"></div>
+        </div>
+        
+    </div>
+    [#include "../include/friend_link.html"/] 
+    [#include "../include/footer.html"/]
+</div>
+</body>
+</html>

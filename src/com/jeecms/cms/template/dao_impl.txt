@@ -1,0 +1,41 @@
+package #{dao_impl_p};
+
+import org.hibernate.Criteria;
+import org.springframework.stereotype.Repository;
+
+import com.jeecms.common.hibernate3.HibernateBaseDao;
+import com.jeecms.common.page.Pagination;
+import #{dao_p}.#{Entity}Dao;
+import #{entity_p}.#{Entity};
+
+@Repository
+public class #{Entity}DaoImpl extends HibernateBaseDao<#{Entity}, Integer> implements #{Entity}Dao {
+	public Pagination getPage(int pageNo, int pageSize) {
+		Criteria crit = createCriteria();
+		Pagination page = findByCriteria(crit, pageNo, pageSize);
+		return page;
+	}
+
+	public #{Entity} findById(Integer id) {
+		#{Entity} entity = get(id);
+		return entity;
+	}
+
+	public #{Entity} save(#{Entity} bean) {
+		getSession().save(bean);
+		return bean;
+	}
+
+	public #{Entity} deleteById(Integer id) {
+		#{Entity} entity = super.get(id);
+		if (entity != null) {
+			getSession().delete(entity);
+		}
+		return entity;
+	}
+	
+	@Override
+	protected Class<#{Entity}> getEntityClass() {
+		return #{Entity}.class;
+	}
+}

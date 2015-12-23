@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>jeecms-left</title>
+<#include "/jeecms_sys/head.html"/>
+<script>
+	$(function() {
+		$("#tabs").tabs({
+			event: "mouseover"
+		});
+		$("#contentTabs").tabs({
+			event: "mouseover"
+		});
+		$("a[id^='check_']").each(function(i){
+		   var contentId=$(this).prop("id").split("check_")[1];
+		   $(this).bind('click', function() {
+			   $.post("content/o_ajax_check.do", {
+					  ids:contentId
+					}, function(data) {
+						if(data.success){
+							 $("#tr_"+contentId).remove();
+							 $.alert("<@s.m 'global.prompt'/>","<@s.m 'global.success'/>");
+						}else{
+							 $.alert("<@s.m 'global.prompt'/>","<@s.m 'global.failed'/>");
+						}
+				 }, "json");
+			});	
+		});
+		$("#dialog-reject-form").dialog({
+			autoOpen: false,
+			height: 300,
+			width: 350,
+			modal: true,
+			buttons: {
+				"<@s.m code='global.submit'/>": function rejectSubmit() {
+					$.post("content/o_ajax_reject.do", {
+						ids:$("#contentId").val(),
+						rejectOpinion:$("#rejectOpinion").val()
+					}, function(data) {
+						if(data.success){
+							 $("#tr_"+contentId).remove();
+							 $.alert("<@s.m 'global.prompt'/>","<@s.m 'global.success'/>");
+						}else{
+							 $.alert("<@s.m 'global.prompt'/>","<@s.m 'global.failed'/>");
+						}
+					 }, "json");
+					 $( this ).dialog( "close" );
+				},
+				"<@s.m code='global.reset'/>": function() {
+					$("#rejectForm")[0].reset();
+				}
+			}
+		});
+		$("a[id^='reject_']").each(function(i){
+		  contentId=$(this).prop("id").split("reject_")[1];
+		  $("#contentId").val(contentId);
+		  $(this).bind('click', function() {
+			  $( "#dialog-reject-form" ).dialog("open");
+		  });	
+		});
+	});
+	
+</script>
+</head>
+<body>
+  	    <div class="box-positon">
+        	 <h1><@s.m "global.position"/>: <@s.m "global.admin.home"/> - <@s.m "global.admin.index"/> </h1>
+        </div>
+        <div class="welcom-con">
+        	 <div class="we-txt">
+                <ul>
+                    <li>
+                    	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td width="35" align="center"><img src="${base}/res/jeecms/img/admin/h1_icon.gif" /></td>
+                            <td>
+                            欢迎<#if user.realname??> ${user.realname}<#else>${user.username}</#if>&nbsp;&nbsp;&nbsp;登录${site.name!}&nbsp;&nbsp;
+                    <@cms_perm url="/personal/v_profile.do">
+                    [ <a href="personal/v_profile.do" target="rightFrame"><@s.m "cmsPersonal.function"/></a> ]
+                    </@cms_perm> 
+                            </td>
+                          </tr>
+                        </table>
+                    </li>    
+                    <li>    
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td width="35" align="center"><img src="${base}/res/jeecms/img/admin/h2_icon.gif" /></td>
+                            <td>JEECMS程序版本： jeecmsv7&nbsp;&nbsp;&nbsp;[ <a href="http://www.jeecms.com" target="_blank">查看最新版本</a> ]</td>
+                          </tr>
+                        </table>
+                    </li>    
+                    <li>   
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td width="35" align="center"><img src="${base}/res/jeecms/img/admin/h3_icon.gif" /></td>
+                            <td><@s.m "welcome.lastlogintime"/>：${user.lastLoginTime?string('yyyy-MM-dd')}</td>
+                          </tr>
+                        </table>
+                    </li>    
+                    <li>    
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td width="35" align="center"><img src="${base}/res/jeecms/img/admin/h4_icon.gif" /></td>
+                            <td><@s.m "welcome.usedMemory"/>：<span style="color:#0078ff;">${(usedMemory/1024/1024)?string("0.##")}MB</span>&nbsp;&nbsp;&nbsp;&nbsp;<@s.m "welcome.useableMemory"/>：<span style="color:#ff8400;">${(useableMemory/1024/1024)?string("0.##")}MB </span>&nbsp;&nbsp;&nbsp;&nbsp;<@s.m "welcome.maxMemory"/>：<span style="color:#00ac41;">${(maxMemory/1024/1024)?string("0.##")}MB</span></td>
+                          </tr>
+                        </table>
+                    </li>
+                </ul>
+             </div>
+             <ul class="ms">
+             	<li class="wxx">
+                	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="background:url(${base}/res/jeecms/img/admin/phbBG2.gif); border-bottom:1px solid #ffffff; border-right:1px solid #ffffff;">
+                      <tr>
+                        <td style="background:url(${base}/res/jeecms/img/admin/phbBG1.gif) no-repeat; text-indent:1.7em;"><@s.m "content.unchecked"/></td>
+                      </tr>
+                    </table>
+                </li>
+                <li class="attribute">
+                	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="background:url(${base}/res/jeecms/img/admin/phbBG2.gif); border-bottom:1px solid #ffffff; border-right:1px solid #ffffff;">
+                      <tr>
+                        <td style="background:url(${base}/res/jeecms/img/admin/phbBG1.gif) no-repeat; text-indent:1.7em;"><@s.m "content.visit.leaderboard"/></td>
+                      </tr>
+                    </table>
+                </li>
+             </ul>
+             <div class="ms-xx">
+                 <div class="xx-xx">
+	               	<div id="contentTabs">
+						<ul>
+							<li><a href="#tabs-11"><@s.m "content.newcontents"/></a></li>
+							<li><a href="#tabs-12"><@s.m "content.unchecked"/></a></li>
+						</ul>
+						<div id="tabs-11">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		             	      <#list newcontents as c>
+		             	       <tr>
+		                        <td width="75%" height="27" align="left" style="background-color:#dceef4; border-bottom:1px solid #ffffff; text-indent:1.5em;">
+		                        <a href="${c.url}" title="${c.title}" target="_blank">
+				                    <span><@text_cut s=c.title len=titLen /></span>
+				                </a>
+		                        </td>
+		                        <td width="25%" align="center" style="background-color:#dceef4; border-bottom:1px solid #ffffff;">
+		                        	${c.releaseDate?string("yyyy-MM-dd")}
+		                        </td>
+			                   </tr>
+			                   </#list>
+			               	  </table>
+					  </div>
+						<div id="tabs-12">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		             	      <#list contents as c>
+		             	       <tr id="tr_${c.id}">
+		                        <td width="75%" height="27" align="left" style="background-color:#dceef4; border-bottom:1px solid #ffffff; text-indent:1.5em;">
+		                        <a href="${c.url}" title="${c.title}" target="_blank">
+				                    <span><@text_cut s=c.title len=titLen /></span>
+				                </a>
+		                        </td>
+		                        <td width="25%" style="background-color:#dceef4; border-bottom:1px solid #ffffff;">
+		                        	${c.releaseDate?string("yyyy-MM-dd")}
+		                        	<a href="#" id="check_${c.id}" ><@s.m "content.opt.check"/></a>&nbsp;
+		                        	<a href="#" id="reject_${c.id}" ><@s.m "content.opt.reject"/></a>
+		                        </td>
+			                   </tr>
+			                   </#list>
+		               	  </table>
+						</div>
+					</div>
+                 </div>
+                 <div class="attribute-xx" style="float:left">
+                 <div id="tabs">
+					<ul>
+						<li><a href="#tabs-1"><@s.m "content.viewMonth"/></a></li>
+						<li><a href="#tabs-2"><@s.m "content.viewWeek"/></a></li>
+						<li><a href="#tabs-3"><@s.m "content.viewDay"/></a></li>
+					</ul>
+					<div id="tabs-1">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	                 	  <@cms_content_list count='10' titLen='12' orderBy='8' channelOption='1' >
+		                    <#list tag_list as a>
+		                    <tr>
+	                            <td width="85%" height="27" align="left" style="background-color:#dceef4; border-bottom:1px solid #ffffff; text-indent:1.5em;">
+		                             <a href="${a.url}" title="${a.title}" target="_blank">
+				                    <span><@text_cut s=a.title len=titLen /></span>
+				                    </a>
+		                    	</td>
+	                            <td style="background-color:#dceef4; border-bottom:1px solid #ffffff;"><em>${a.viewsMonth!}</em></td>
+	                        </tr>
+		                    </#list>
+		                    </@cms_content_list>
+	                     </table>  
+					</div>
+					<div id="tabs-2">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	                 	  <@cms_content_list count='10' titLen='12' orderBy='7' channelOption='1' >
+		                    <#list tag_list as a>
+		                    <tr>
+	                            <td width="85%" height="27" align="left" style="background-color:#dceef4; border-bottom:1px solid #ffffff; text-indent:1.5em;">
+		                             <a href="${a.url}" title="${a.title}" target="_blank">
+				                    <span><@text_cut s=a.title len=titLen /></span>
+				                    </a>
+		                    	</td>
+	                            <td style="background-color:#dceef4; border-bottom:1px solid #ffffff;"><em>${a.viewsWeek!}</em></td>
+	                        </tr>
+		                    </#list>
+		                    </@cms_content_list>
+	                     </table>  
+					</div>
+					<div id="tabs-3">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	                 	  <@cms_content_list count='10' titLen='12' orderBy='6' channelOption='1' >
+		                    <#list tag_list as a>
+		                    <tr>
+	                            <td width="85%" height="27" align="left" style="background-color:#dceef4; border-bottom:1px solid #ffffff; text-indent:1.5em;">
+		                             <a href="${a.url}" title="${a.title}" target="_blank">
+				                    <span><@text_cut s=a.title len=titLen /></span>
+				                    </a>
+		                    	</td>
+	                            <td style="background-color:#dceef4; border-bottom:1px solid #ffffff;"><em>${a.viewDay!}</em></td>
+	                        </tr>
+		                    </#list>
+		                    </@cms_content_list>
+	                     </table>  
+					</div>
+				</div>
+               </div>
+             </div>
+	  </div>
+	  <div id="dialog-reject-form" title="<@s.m 'content.rejectOpinion'/>">
+	   <form action="" id="rejectForm">
+		 <input name="rejectOpinion" id="rejectOpinion"/>
+		 <input type="hidden" id="contentId"/>
+		</form>
+	  </div>
+</body>
+</html>

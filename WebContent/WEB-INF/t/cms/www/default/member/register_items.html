@@ -1,0 +1,40 @@
+<script src="${base}/thirdparty/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+[#list items as item]
+[#assign type=item.dataType/]
+[#assign name="attr_"+item.field/]
+[#assign help=item.help!/]
+[#assign helpPosition=item.helpPosition!/]
+[#assign cols=item.cols!/]
+[#assign rows=item.rows!/]
+[#assign list=item.optValue!/]
+[#assign value=item.defValue!/]
+[#assign required=item.required!/]
+[#assign size=item.size!/]
+ <tr>
+      <td align="right" width="187" height="30">${item.label!}:</td>
+      <td>
+      	[#if required]
+      		[#assign vld="{required:true}"/]
+      	[/#if]
+      	[#if type==1 || type==2 || type==3]
+			[#if type==1][#if required][#assign vld="{required:true,maxlength:255}"/][#else][#assign vld="{maxlength:255}"/][/#if]
+			[#elseif type==2][#if required][#assign vld="{required:true,digits:true,maxlength:20}"/][#else][#assign vld="{digits:true,maxlength:20}"/][/#if]
+			[#elseif type==3][#if required][#assign vld="{required:true,number:true,maxlength:20}"/][#else][#assign vld="{number:true,maxlength:20}"/][/#if]
+			[/#if]
+			[@p.text colspan="1" width="50" label=label  name=name value=value size=size help=help helpPosition=helpPosition vld=vld/]
+		[#elseif type==4]
+		[@p.textarea colspan="1" width="50" label=label  name=name value=value help=help cols=cols?string rows=rows?string helpPosition=helpPosition maxlength="255"  vld=vld/]
+		[#elseif type==5]
+		[@p.text colspan="1" width="50" label=label  name=name value=value readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate" size=size?string help=help helpPosition=helpPosition  vld=vld/]
+		[#elseif type==6]
+		[@p.select colspan="1" width="50" label=label  name=name value=value help=help list=list!?split(",") helpPosition=helpPosition  vld=vld/]
+		[#elseif type==7]
+		[@p.checkboxlist colspan="1" width="50" label=label  name=name valueList=value!?split(",") list=list!?split(",") help=help helpPosition=helpPosition  /]
+		[#elseif type==8]
+		[@p.radio colspan="1" width="50" label=label  name=name value=value list=list!?split(",") help=help helpPosition=helpPosition /]
+		[#else]
+		not support type: "${type}"
+		[/#if]
+      </td>
+ </tr>
+[/#list]

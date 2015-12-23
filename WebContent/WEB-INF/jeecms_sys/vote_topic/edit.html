@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function() {
+	$("#jvForm").validate();
+	processButton();
+});
+var subTopicSize=${cmsVoteTopic.subtopics?size};
+function up(subTopicId){
+	if(subTopicId!=0){
+		var subTopicHtml=$("#subTopic"+subTopicId).html().replace("up('"+subTopicId+"')","up('"+(subTopicId-1)+"')");
+		var subBeforeTopicHtml=$("#subTopic"+(subTopicId-1)).html().replace("up('"+(subTopicId-1)+"')","up('"+subTopicId+"')");
+	//	subTopicHtml=subTopicHtml.replaceAll("typeId"+subTopicId,"typeId"+(subTopicId-1));
+	//	subBeforeTopicHtml=subBeforeTopicHtml.replaceAll("typeId"+(subTopicId-1),"typeId"+subTopicId);
+	    
+		$("#subTopic"+subTopicId).html(subBeforeTopicHtml);
+		$("#subTopic"+(subTopicId-1)).html(subTopicHtml);
+		//交换排序
+		$("input[name='subPriority']").each(function(i){
+			$(this).val(i*1+1);
+		});
+		$("input[name^='subtitle']").each(function(i){
+			$(this).attr("id","subtitle"+i);
+		});
+		$("input[name='typeId"+subTopicId+"']").attr("name","typeId-1");
+		$("input[name='typeId"+(subTopicId-1)+"']").attr("name","typeId"+subTopicId);
+		$("input[name='typeId-1']").attr("name","typeId"+(subTopicId-1));
+		$("input[name='typeId"+subTopicId+"']").bind('click', function() {
+			changeAddItemButton(subTopicId,this.value);
+		});
+		$("input[name='typeId"+(subTopicId-1)+"']").bind('click', function() {
+			changeAddItemButton(subTopicId-1,this.value);
+		});
+		$("span[id^='voteItemMsg']").each(function(i){
+			$(this).attr("id","voteItemMsg"+i);
+		});
+		processButton();
+	}
+}
+function down(subTopicId){
+	if(subTopicId!=(subTopicSize-1)){
+		var subTopicHtml=$("#subTopic"+subTopicId).html().replace("down('"+subTopicId+"')","down('"+(subTopicId*1+1)+"')");
+		var subAfterTopicHtml=$("#subTopic"+(subTopicId*1+1)).html().replace("down('"+(subTopicId*1+1)+"')","down('"+subTopicId+"')");
+		//subTopicHtml=subTopicHtml.replace("typeId"+subTopicId,"typeId"+(subTopicId*1+1));
+		//subAfterTopicHtml=subAfterTopicHtml.replace("typeId"+(subTopicId*1+1),"typeId"+subTopicId);
+		$("#subTopic"+subTopicId).html(subAfterTopicHtml);
+		$("#subTopic"+(subTopicId*1+1)).html(subTopicHtml);
+		
+		//交换排序
+		$("input[name='subPriority']").each(function(i){
+			$(this).val(i*1+1);
+		});
+		$("input[name^='subtitle']").each(function(i){
+			$(this).attr("id","subtitle"+i);
+		});
+		$("input[name='typeId"+subTopicId+"']").attr("name","typeId+1");
+		$("input[name='typeId"+(subTopicId*1+1)+"']").attr("name","typeId"+subTopicId);
+		$("input[name='typeId+1']").attr("name","typeId"+(subTopicId*1+1));
+		$("input[name='typeId"+subTopicId+"']").bind('click', function() {
+			changeAddItemButton(subTopicId,this.value);
+		});
+		$("input[name='typeId"+(subTopicId*1+1)+"']").bind('click', function() {
+			changeAddItemButton(subTopicId*1+1,this.value);
+		});
+		$("span[id^='voteItemMsg']").each(function(i){
+			$(this).attr("id","voteItemMsg"+i);
+		});
+		processButton();
+	}
+}
+function processButton(){
+	$("input[id^='upButton']").each(function(i){
+		$(this).attr("disabled","");
+		$(this).attr("class","up");
+		if(i==0){
+			$(this).attr("disabled","disabled");
+			$(this).attr("class","up_disabled");
+		}
+		$(this).unbind();
+		$(this).bind('click', function() {
+			  up(i);
+		});		
+	});
+	$("input[id^='downButton']").each(function(i){
+		$(this).attr("disabled","");
+		$(this).attr("class","down");
+		if(i==subTopicSize-1){
+			$(this).attr("disabled","disabled");
+			$(this).attr("class","down_disabled");
+		}
+		$(this).unbind();
+		$(this).bind('click', function() {
+			  down(i);
+		});	
+	});
+	$("input[name^='typeId']").bind('click', function() {
+		changeAddItemButton($(this).parent().attr("id").split("subTopic")[1],this.value);
+	});
+	$("input[name^='itemTitle']").each(function(i){
+		$(this).attr("id",$(this).parent().parent().attr("id").split("subTopic")[1]+"_"+i);
+	});
+}
+</script>
+<style type="text/css">
+.items{padding-top:1px;}
+</style>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>:  <@s.m "cmsVoteTopic.function"/> - <@s.m "global.edit"/></div>
+	<form class="ropt">
+		<input type="submit" class="return-button" value="<@s.m "global.backToList"/>" onclick="this.form.action='v_list.do';"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_update.do">
+
+<@p.text label="cmsVoteTopic.title" name="title" value=cmsVoteTopic.title required="true" class="required" style="width:400px" maxlength="255"/>
+<@p.textarea label="cmsVoteTopic.description" name="description" value=cmsVoteTopic.description rows="3" style="width:400px" maxlength="255"/>
+<@p.td label="cmsVoteTopic.time">
+<table>
+	<tr>
+		<td><@s.m "cmsVoteTopic.startTime"/></td>
+		<td><input type="text" name="startTime" value="${cmsVoteTopic.startTime!}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="Wdate"/></td>
+		<td rowspan="2" valign="middle"><span class="pn-fhelp"><@s.m "cmsVoteTopic.time.help"/></span></td>
+	</tr>
+	<tr>
+		<td><@s.m "cmsVoteTopic.endTime"/></td>
+		<td><input type="text" name="endTime" value="${cmsVoteTopic.endTime!}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="Wdate"/></td>
+	<tr/>
+</table>
+</@p.td><@p.tr/>
+<@p.text label="cmsVoteTopic.repeateHour" name="repeateHour" value=cmsVoteTopic.repeateHour class="digits" maxlength="10" help="cmsVoteTopic.repeateHour.help"/>
+<@p.radio label="cmsVoteTopic.restrictMember" name="restrictMember" value=cmsVoteTopic.restrictMember list={"true":"global.true","false":"global.false"} help="cmsVoteTopic.restrictMember.help"/>
+<@p.radio label="cmsVoteTopic.restrictIp" name="restrictIp" value=cmsVoteTopic.restrictIp list={"true":"global.true","false":"global.false"}/>
+<@p.radio label="cmsVoteTopic.restrictCookie" name="restrictCookie" value=cmsVoteTopic.restrictCookie list={"true":"global.true","false":"global.false"} help="cmsVoteTopic.restrictCookie.help"/>
+<@p.td label="cmsVoteTopic.multiSelect" required="true">
+<input type="text" name="multiSelect" value=${cmsVoteTopic.multiSelect} class="required digits" style="width:100px"/>
+<label style="padding-left:20px"><input type="checkbox" onclick="$('#def').val(this.checked);"<#if cmsVoteTopic.def> checked="checked"</#if>/><@s.m "cmsVoteTopic.def"/><input type="hidden" id="def" name="def" value="${cmsVoteTopic.def?string}"/></label>
+<label style="padding-left:10px"><input type="checkbox" onclick="$('#disabled').val(this.checked);"<#if cmsVoteTopic.disabled> checked="checked"</#if>/><@s.m "cmsVoteTopic.disabled"/><input type="hidden" id="disabled" name="disabled" value="${cmsVoteTopic.disabled?string}"/></label>
+</@p.td><@p.tr/>
+<@p.td>
+<div>
+	<div class="items"><@s.m "cmsVoteTopic.subTopics"/>&nbsp; <input type="button" class="add_subTopic" value="<@s.m "cmsVoteTopic.addSubTopic"/>" onclick="addSubTopic();"/></div>
+	<#assign total="${cmsVoteTopic.subtopics?size}"/>
+	<#list cmsVoteTopic.subtopics as subTopic>
+		<div class="items" id="subTopic${subTopic_index}">
+		<@s.m "cmsVoteItem.title"/>: <input type="text" name="subtitle" id="subtitle${subTopic_index}" value="${subTopic.title!}" style="width:300px"/>
+		&nbsp; <@s.m "cmsVoteItem.priority"/>: <input type="text" id="subPriority${subTopic_index}" name="subPriority" value="${subTopic.priority!}" style="width:30px"/>
+		<@s.m "cmsVoteTopic.type"/>: <input type="radio" name="typeId${subTopic_index}" value="1"  <#if subTopic.type==1>checked="checked"</#if>><@s.m "cmsVoteTopic.type.single"/></input><input type="radio" name="typeId${subTopic_index}" value="2"  <#if subTopic.type==2>checked="checked"</#if>><@s.m "cmsVoteTopic.type.mul"/></input><input type="radio" name="typeId${subTopic_index}" value="3"  <#if subTopic.type==3>checked="checked"</#if>><@s.m "cmsVoteTopic.type.text"/></input>
+		<input type="hidden" name="subTopicId" value="${subTopic.id}"/>
+		&nbsp; <input class="del-button" type="button" value="<@s.m "global.delete"/>" onclick="$(this).parent().remove();"/>
+		<span id="voteItemMsg${subTopic_index}" style="color: red;"></span>
+		<span><@s.m "cmsVoteTopic.items"/>&nbsp; <input id="addItem${subTopic_index}" type="button" class="add_item" <#if subTopic.isText>disabled="disabled"</#if> value="<@s.m "cmsVoteItem.addLines"/>" onclick="addLines(${subTopic_index});"/></span><input class="up" type="button" id="upButton${subTopic_index}"  <#if subTopic_index==0>disabled="disabled"</#if> value="<@s.m 'cmsVote.item.up'/>"></input><input type="button" class="down" id="downButton${subTopic_index}"  <#if !subTopic_has_next>disabled="disabled"</#if> value="<@s.m 'cmsVote.item.down'/>"></input>
+			<input type="hidden" name="itemTitle" value="<@s.m "cmsVoteItem.splitchar"/>"/>
+			<#list subTopic.voteItems as vote>
+				<div class="items">
+					<@s.m "cmsVoteItem.title"/>: <input type="text" id="${subTopic_index}_${vote_index}" name="itemTitle" value="${vote.title!}" style="width:300px"/>
+					&nbsp; <@s.m "cmsVoteItem.voteCount"/>: <input type="text" name="itemVoteCount" value="${vote.voteCount!}"  style="width:50px"/>
+					&nbsp; <@s.m "cmsVoteItem.priority"/>: <input type="text" name="itemPriority" value="${vote.priority!}" style="width:30px"/>
+					&nbsp; <input class="del-button" type="button" value="<@s.m "global.delete"/>" onclick="$(this).parent().remove();"/>
+					</div>
+			</#list>
+			<div id="itemsContainer${subTopic_index}"></div>
+			<input type="hidden" name="itemTitle" value="<@s.m "cmsVoteItem.splitchar"/>"/>
+		</div>
+	</#list>
+	<div id="subTopicContainer"></div>
+</div>
+</@p.td>
+<@p.tr/>
+<@p.td><@p.hidden name="id" value=cmsVoteTopic.id/><@p.submit code="global.submit" onclick="return checkVoteItem()"/> &nbsp; <@p.reset code="global.reset"/></@p.td>
+</@p.form>
+</div>
+
+<textarea id="subTopicTpl" style="display:none;">
+<div class="items">
+<@s.m "cmsVoteItem.title"/>: <input type="text" name="subtitle" id="subtitle{0}" style="width:300px"/>
+&nbsp; <@s.m "cmsVoteItem.priority"/>: <input type="text" name="subPriority" value="{0}" style="width:30px"/>
+<@s.m "cmsVoteTopic.type"/>: <input type="radio" name="typeId{0}" value="1"  checked="checked"><@s.m "cmsVoteTopic.type.single"/></input><input type="radio" name="typeId{0}" value="2" ><@s.m "cmsVoteTopic.type.mul"/></input><input type="radio" name="typeId{0}" value="3" ><@s.m "cmsVoteTopic.type.text"/></input>
+<input type="hidden" name="subTopicId" value=""/>
+&nbsp; <input class="del-button" type="button" value="<@s.m "global.delete"/>" onclick="$(this).parent().remove();"/>
+<span id="voteItemMsg{0}" style="color: red;"></span>
+<span><@s.m "cmsVoteTopic.items"/>&nbsp; <input id="addItem{0}" type="button" class="add_item" value="<@s.m "cmsVoteItem.addLines"/>" onclick="addLines({0});"/></span>
+<input type="hidden" name="itemTitle" value="<@s.m "cmsVoteItem.splitchar"/>"/>
+<div id="itemsContainer{0}"></div>
+<input type="hidden" name="itemTitle" value="<@s.m "cmsVoteItem.splitchar"/>"/>
+</div>
+</textarea>
+
+<textarea id="itemTpl" style="display:none;">
+<div class="items">
+<@s.m "cmsVoteItem.title"/>: <input type="text" id="{0}_{1}" name="itemTitle" style="width:300px"/>
+&nbsp; <@s.m "cmsVoteItem.voteCount"/>: <input type="text"  name="itemVoteCount" value="0" style="width:50px"/>
+&nbsp; <@s.m "cmsVoteItem.priority"/>: <input type="text" name="itemPriority" value="{1}" style="width:30px"/>
+&nbsp; <input class="del-button" type="button" value="<@s.m "global.delete"/>" onclick="$(this).parent().remove();"/>
+</div>
+</textarea>
+<script type="text/javascript">
+var tpl = $.format($("#itemTpl").val());
+var index = ${cmsVoteTopic.items?size}+1;
+function addLines(ind) {
+	$("#itemsContainer"+ind).append(tpl(ind,index++));
+}
+var subtpl = $.format($("#subTopicTpl").val());
+var subindex = ${cmsVoteTopic.subtopics?size}+1;
+function addSubTopic() {
+	$("#subTopicContainer").append(subtpl(subindex++));
+}
+function changeAddItemButton(index,value){
+	if(value==3){
+			$("#addItem"+index).attr("disabled","disabled");
+			$("#itemsContainer"+index).html("");
+			$("#voteItemMsg"+index).html("");
+		}else{
+			$("#addItem"+index).attr("disabled","");
+			}
+}
+function checkVoteItem(){
+	var subIndexId,subTypeName,subTypeObject,flag=true,voteItemMsgId;
+	$("input[name='subtitle']").each(function(){
+			subIndexId=$(this).attr("id").split("subtitle")[1];
+			subTypeName="typeId"+subIndexId;
+			$("input[name='"+subTypeName+"']").each(function(i){
+				subTypeObject=$(this);
+				if(subTypeObject.prop("checked")&&subTypeObject.val()!=3){
+					var i=0;
+					$("input[id^='"+subIndexId+"']").each(function(){
+							i++;
+						});
+					if(i==0){
+							$("#voteItemMsg"+subIndexId).html("<@s.m 'cmsVoteItem.hasNoOne'/>");
+							flag= false;
+						}
+				}
+			});
+		});
+	return flag;
+}
+</script>
+
+</body>
+</html>

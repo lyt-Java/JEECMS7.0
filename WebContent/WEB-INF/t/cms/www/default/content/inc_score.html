@@ -1,0 +1,80 @@
+<!-- 评分页面 -->
+<div>
+  [@cms_score_group]
+  <!-- 系统默认的2号分组是星级评分 -->
+  <!-- 平均评分有二级缓存，评分后不会立即显示新的平均评分 -->
+  [#if tag_bean??]
+  [#if tag_bean.id==2]
+  <div>
+    <div>
+	    <div id="function-score"></div>
+	    <div id="function-hint"></div>
+  	</div>
+  </div>
+  <script type="text/javascript" src="${resSys}/raty/jquery.raty.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      var scored=$.cookie("_cms_score_" +${content.id});
+      var readOnly=false;
+      if(scored==1)readOnly=true;
+      $.fn.raty.defaults.path = '${resSys}/raty/img';
+      var scores=new Array();
+      [#list tag_bean.orderItems as item]
+        scores.push(${item.id!});
+	  [/#list]
+      $('#function-score').raty({
+	  	number: ${tag_bean.items?size},//多少个星星设置		
+	 	[#if content.scoreAvg!=0]score: ${content.scoreAvg},[/#if]//之前有评分，初始值是设置
+		targetType: 'hint',//类型选择，number是数字值，hint，是设置的数组值
+        path      : '${resSys}/raty/img',
+		hints     : [
+						[#list tag_bean.orderItems as item]
+							'${item.name!}'[#if item_has_next],[/#if]
+						[/#list]
+		     		],
+        cancelOff : 'cancel-off-big.png',
+        cancelOn  : 'cancel-on-big.png',
+        size      : 24,
+        starHalf  : 'star-half-big.png',
+        starOff   : 'star-off-big.png',
+        starOn    : 'star-on-big.png',
+        target    : '#function-hint',
+        cancel    : false,
+        targetKeep: true,
+		targetText: '请选择评分',
+		readOnly:readOnly,
+        click: function(score, evt) {
+          var succ=Cms.score('${base}',${content.id},scores[score-1]);
+          if(!succ){
+      		  alert("您已经评分过了！");
+      		  $('#function-score').raty('score', ${content.scoreAvg});
+          }else{
+  			alert("评分成功！");
+     		  $('#function-score').raty('readOnly', true);
+          }
+        }
+      }); 
+    });   
+  </script>
+  [#else]
+  <!-- 其他 -->
+  <ul>
+      [#list tag_bean.orderItems as item]
+      <li style="float:left;cursor: pointer;" onclick="Cms.score('${base}',${content.id},${item.id});">
+         <p> <span id="score-item-${item.id}">0</span>票</p>
+         [#if item.imagePath??]<p><img src="${item.imagePath}"/></p>[/#if]
+         <p>${item.name!}</p>
+      </li>
+      [/#list]
+   </ul>   
+   <script type="text/javascript">
+	$(function() {
+		Cms.scoreCount("${base}","${content.id}");
+	});
+</script>
+  [/#if]
+  [/#if]
+  [/@cms_score_group]
+</div>
+
+

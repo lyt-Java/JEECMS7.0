@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>${channel.title!channel.name} - ${site.name} - Powered by JEECMS</title>
+<meta http-equiv="keywords" content="${channel.keywords!}"/>
+<meta http-equiv="description" content="${channel.description!}"/>
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/front.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script src="/${res}/js/common.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+	Cms.siteFlow("${base}", location.href, document.referrer);
+});
+</script>
+</head>
+
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+
+	<div class="w700 mt10">
+    	<!-- 教育_begin -->
+  		<div class="wklanMuBox">
+        	<div class="wklanMuBg">
+                <div class="fl-black">教育</div>
+                <div class="fr-black">
+                    [@cms_channel id='65']
+                    <a href="${tag_bean.url}" target="_blank">
+                    更多>>
+                    </a>
+                    [/@cms_channel]
+                </div>
+            </div>
+            <div class="clear"></div>
+            
+            <div class="wkList">
+                <ul>
+                [@cms_content_list count='10' orderBy='4' titLen='20' channelId='65' channelOption='1' dateFormat='yyyy-MM-dd' open='1']
+                [#list tag_list as a]
+                    <li>
+                        <a href="${a.url}" title="${a.title}" target="_blank">
+                        [@text_cut s=a.title len=titLen /]
+                        </a>
+                        <span>${a.downNeed!}财富值</span>
+                        <em>${a.date?string(dateFormat)}</em>
+                    </li>
+                [/#list]
+                [/@cms_content_list]
+                </ul>
+            </div>
+    	</div>
+        <!-- 教育_end -->
+        <div class="clear-10"></div>
+        <!-- 计算机_begin -->
+  		<div class="wklanMuBox">
+        	<div class="wklanMuBg">
+                <div class="fl-black">计算机</div>
+                <div class="fr-black">
+                    [@cms_channel id='66']
+                    <a href="${tag_bean.url}" target="_blank">
+                    更多>>
+                    </a>
+                    [/@cms_channel]
+                </div>
+            </div>
+            <div class="clear"></div>
+            
+            <div class="wkList">
+                <ul>
+                [@cms_content_list count='10' orderBy='4' titLen='20' channelId='66' channelOption='1' dateFormat='yyyy-MM-dd' open='1']
+                [#list tag_list as a]
+                    <li>
+                        <a href="${a.url}" title="${a.title}" target="_blank">
+                        [@text_cut s=a.title len=titLen /]
+                        </a>
+                        <span>${a.downNeed!}财富值</span>
+                        <em>${a.date?string(dateFormat)}</em>
+                    </li>
+                [/#list]
+                [/@cms_content_list]
+                </ul>
+            </div>
+    	</div>
+        <!-- 计算机_end -->
+        
+	</div>
+    [#include "../include/right2.html"/]
+	[#include "../include/friend_link.html"/]
+	[#include "../include/footer.html"/]
+</div>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>${topic.name} - ${site.name}专题 - Powered by JEECMS</title>
+<meta http-equiv="keywords" content="${topic.keywords!}"/>
+<meta http-equiv="description" content="${topic.description!}"/>
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<script src="/${res}/js/indexshow.js" type="text/javascript"></script>
+<script src="/${res}/js/imgFlip.js" type="text/javascript"></script>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script src="/${res}/js/common.js" type="text/javascript"></script>
+<link href="/${res}/css/layout.css" rel="stylesheet" type="text/css" >
+<style type="text/css">
+body{margin:0;font:14px Verdana, Arial, Helvetica, sans-serif,"宋体"; color:#42515A; background:#dbf1fc; word-break:break-all;}
+ol,ul,li{ list-style:none; list-style-image:none;}
+.b01{border: 1px #D0EAFF solid;}
+h2{color:#0066CC; font-weight:bold;}
+ul.list li.toptext a h3{text-align:center; font-weight:bold; font-size:16px; color:#f54100;}
+.rgt{font-size:12px;}
+dl.zt{width:260px; margin:5px; padding-bottom:10px;}
+dl.zt dt,dl.zt dd.text{width:160px;}
+
+
+.container{ width:980px; margin:auto; background:#fff;}
+.hundred100/*页面百分比*/{ width:960px; margin:10px auto auto auto;}
+.w280{ float:left; width:280px; margin-left:1%;}
+.w670{ float:left; width:670px;}
+.w310{ float:left; width:310px;}
+.w350{ float:right; width:350px;}
+
+.theTop/*顶栏*/{ background:#f6f6f6; width:100%; border-bottom:1px solid #dedede; font-size:12px; height:30px; line-height:30px;}
+.theTop a{ font-size:12px;}
+.theTopLeft{ float:left;}
+.theTopRight{ float:right;}
+
+.topbanner{ width:98%; margin:5px auto;}
+
+/*热门评论*/
+#plcon{ padding-left:10px; padding-right:5px; margin:auto; overflow:hidden; background-color:#FFF; font-size:12px;}
+#plcon ul{ margin:0px;padding:0;}
+#plcon ul li{ width:100%; border-bottom:1px dashed #d6d6d6; padding:10px 0; _padding:8px 0; overflow:hidden; line-height:1.5;}
+
+/*精彩专题*/
+.m-list li{ overflow:hidden; color:#c1c1c1;}
+.list-tweet{ overflow:hidden;}
+.list-tweet li,.list-tweet i{ -webkit-transition:all .3s; -moz-transition:all .3s; -o-transition:all .3s;transition:all .3s;}
+.list-tweet li{ overflow:hidden; padding:0 1% 0 2%; border-bottom:1px solid #E3E6EB; *float:left;}
+.list-tweet i{ float:right; width:17px; height:17px; overflow:hidden; margin-top:13px; *display:inline;}
+.list-tweet h3{ line-height:33px; height:33px; overflow:hidden; font-size:14px;}
+.list-tweet img{ float:left; margin-right:9px; width:90px; height:64px;}
+.list-tweet p{ font-size:12px; height:75px; line-height:21px; color:#666;}
+.clearfix{ *zoom:1;}
+.clearfix:after{ display:block; overflow:hidden; clear:both; height:0; visibility:hidden; content:".";}
+.drink-me{ height:36px;}
+.drink-me i{ font-size:14px; opacity:1; text-indent:-10em;}
+.tweet-xxl{ color:#A62F3A; background-position:left -599px;}
+.tweet-xl{ color:#C35A4D; background-position:left -618px;}
+.tweet-l{ color:#DC754B; background-position:left -638px;}
+.tweet-m{ color:#F4904B; background-position:left -658px;}
+.tweet-s{ color:#E1E1E1; background-position:left -658px;}
+.cBlue,.cBlue:visited,.cBlue a{ color:#1E50A2; font-size:12px;}
+.eat-me{ height:110px;}
+.eat-me:hover{}
+.eat-me i{ *display:none; opacity:0;}
+.eat-me h3{ font-weight:bold;}
+.tab-bd-con{ display:none; overflow:hidden;}
+
+/*焦点图代码*/
+.block{ margin:10px 10px 0;}
+.temp{ margin:1px;}
+.slideshow{ clear:both;}
+.slideshow li{ position:relative; overflow:hidden;}
+.slideshow span.title{ position:absolute; bottom:0; left:0; margin-bottom:0; width:100%; height:32px; line-height:32px; font-size:14px; text-indent:10px;}
+.slideshow span.title, .slidebar li { background: rgba(0,0,0,0.3); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = #30000000,endColorstr = #30000000); color:#FFF; overflow:hidden;}
+.slidebar li{ float:left; margin-right:1px; width:20px; height:20px; line-height:20px; text-align:center; font-size:10px; cursor:pointer;}
+.slidebar li.on{ background:rgba(255,255,255,0.5); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = #50FFFFFF,endColorstr = #50FFFFFF); color:#000; font-weight:700;}
+.frame{ background:none; border:0px solid #fff; margin-bottom:0px;}
+.temp{ margin:0;}
+.slidebar{ position:absolute; top:5px; left:4px;}
+.slideshow span.title, .slidebar li{ background:rgba(0,0,0,0.3); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = #90000000,endColorstr = #90000000); color:#FFF; overflow:hidden;}
+.slidebar li.on{ background:rgba(255,255,255,0.5); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = #90000000,endColorstr = #90000000); color:#ff0; font-weight:700;}
+.slideshow SPAN.title{ text-indent:10px; font-weight:bold;}
+.block{ margin:0;position:relative;}
+#frameHlicAe{ margin:0px !important; border:0px !important;}
+.comiis_wrap960, .comiis_wrapad/*宽310*/{ margin:0 auto; width:100%;}
+.comiis_wrapad{ float:left;}
+.comiis_wrapad{ overflow:hidden;}
+.comiis_wrapad img{ float:left; margin-top:0px; width:100%;}
+#slidesImgs li{ width:100%; display:none;}
+
+.ztzxkList/*专题资讯库列表*/{ width:98%; margin:auto;}
+.ztzxkList ul{}
+.ztzxkList ul li{ line-height:30px; height:30px; overflow:hidden; border-bottom:1px #D5D6D6 dotted; background:url(${base}/r/cms/head-mark2.gif) no-repeat 1px 13px; text-indent:10px; width:100%;}
+.ztzxkList ul li a{ float:left;}
+.ztzxkList ul li em{ float:right; font-size:12px; color:#666;}
+
+.ztjctw/*专题精彩图文*/{ width:100%;}
+.ztjctw ul{}
+.ztjctw ul li{ width:17%; float:left; margin:15px 1.5% 0 1.5%;}
+.ztjctw ul li img{ width:100%;}
+.ztjctw ul li p{ height:30px; line-height:30px; text-align:center;}
+.ztjctw ul li a{ font-size:12px;}
+
+
+
+
+@media screen and (min-width:200px) and (max-width:979px){
+.container{ margin:auto; width:98%;}
+.hundred100/*页面百分比*/{ width:98%; margin:10px auto auto auto;}
+.w280{ float:none; width:100%; margin-left:0;}
+.w670{ float:none; width:100%;}
+}
+
+@media screen and (min-width:400px) and (max-width:810px){
+.w310{ float:left; width:46.268656%;}/* 310px / 670px */
+.w350{ float:left; width:52.238805%;}
+}
+
+@media screen and (min-width:150px) and (max-width:450px){
+.ztzxkList ul li a{ float:none;}
+.ztzxkList ul li em{ float:none; font-size:12px; color:#666; display:none;}
+}
+
+@media screen and (min-width:200px) and (max-width:400px){
+.w310{ float:none; width:98%; margin:auto;}
+.w350{ float:none; width:100%;}
+}
+
+@media screen and (max-width:700px){
+.ztjctw ul li{ width:111px; float:left; margin:15px 1.5% 0 1.5%;}
+.ztjctw ul li img{ width:111px; height:80px;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+                <div class="theTop">
+                    <div class="theTopLeft">
+                    【<a href="${base}/" target="_blank">JEECMS演示站</a>】
+                    </div>
+                    <div class="theTopRight">
+                    <a href="${base}/tag.jspx">TAG标签</a> | <a href="${base}/search.jspx">搜索</a> | <a href="${base}/rss.jspx">RSS订阅</a> | <a href="#">WAP版</a> | <a onclick="SetHome(window.location)"href="javascript:void(0)">设为首页</a> |
+                                <a onclick="AddFavorite(window.location,document.title)"href="javascript:void(0)">加入收藏</a>&nbsp;
+                    </div>
+                </div>
+				<script type="text/javascript" language="javascript">
+				   //加入收藏
+					   function AddFavorite(sURL, sTitle) {
+						   sURL =encodeURI(sURL); 
+					   try{   
+						  window.external.addFavorite(sURL, sTitle);   
+					   }catch(e) {   
+						  try{   
+							  window.sidebar.addPanel(sTitle, sURL, "");   
+						   }catch (e){   
+							  alert("您的浏览器不支持自动加入收藏功能，请使用Ctrl+D进行添加，或手动在浏览器里进行设置！");
+						  }   
+					   }
+				   }
+				   
+				   //设为首页
+				   function SetHome(url){
+					   if (document.all) {
+						  document.body.style.behavior='url(#default#homepage)';
+							 document.body.setHomePage(url);
+					   }else{
+						   alert("您的浏览器不支持自动设置页面为首页功能，请您手动在浏览器里设置该页面为首页！");
+					   }
+				   }
+				</script>
+                
+                <div class="topbanner">
+                <img src="${topic.contentImg!'/${res}/img/topic/no_banner.jpg'}" width="100%"/>
+                </div>
+                <table width="98%" border="0" align="center" cellpadding="8" cellspacing="1" bgcolor="#D0EAFF" style="line-height:1.6em; font-size:14px; margin-top:5px;" >
+                <tr>
+                <td bgcolor="#F1F9FF"><strong>专题概要：</strong>	${topic.description!}</td>
+                </tr>
+                </table>
+            
+                <div class="hundred100">
+                    <div class="w670">
+                        <table border="0" cellpadding="0" cellspacing="0" class="b01">
+                        <tr>
+                        <td width="40" background="/${res}/img/topic/lmbj.gif"><img src="/${res}/img/topic/lm_2.gif"/></td>
+                        <td width="100%" align="left" background="/${res}/img/topic/lmbj.gif"><h2>专题资讯头条</h2></td>
+                        </tr>
+                        <tr>
+                        <td colspan="2" valign="top" bgcolor="#FFFFFF">
+                        
+                        <div class="w310">
+                        <!-- 焦点图代码宽310_begin -->
+                        <div class="comiis_wrapad" id="slideContainer">
+                            <div id="frameHlicAe" class="frame cl">
+                                <div class="temp"></div>
+                                <div class="block">
+                                    <div class="cl">
+                                        <ul class="slideshow" id="slidesImgs">
+                                        [@cms_content_list count='2' orderBy='4' typeId='3' titLen='18' channelOption='1' topicId=topic.id]
+                                        [#list tag_list as a]
+                                        <li>
+                                            <a href="${a.url}" target="_blank">
+                                            <img src="${a.typeImg!site.defImg}" alt="${a.title}" width="310" height="210"/>
+                                            </a>
+                                            <span class="title">
+                                            [@text_cut s=a.title len=titLen /]
+                                            </span>
+                                        </li>
+                                        [/#list]
+                                        [/@cms_content_list]
+                                        </ul>
+                                    </div>
+                                    <div class="slidebar" id="slideBar">
+                                        <ul>
+                                            <li class="on">1</li>
+                                            <li>2</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            SlideShow(3000);
+                        </script>
+                        <!-- 焦点图代码宽310_end -->
+                        </div>
+                        
+                        <div class="w350">
+                        [@cms_content_list topicId=topic.id count='9' orderBy='4' titLen='15'  append='...' channelOption='1']
+                        <ul class="list">
+                        [#list tag_list as a]
+                        <li style="background:url(${base}/r/cms/head-mark2.gif) no-repeat 1px 10px; text-indent:10px;"><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=20 append=append/]</a></li>
+                        [/#list]
+                        </ul>
+                        [/@cms_content_list]
+                        </div>	
+                        
+                        </td>
+                        </tr>
+                        </table>
+                        
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="b01 mt5">
+                        <tr>
+                        <td width="40" background="/${res}/img/topic/lmbj.gif"><img src="/${res}/img/topic/lm_2.gif"/></td>
+                        <td width="100%" background="/${res}/img/topic/lmbj.gif"><h2>专题精彩图文</h2></td>
+                        </tr>
+                        <tr>
+                        <td colspan="2" bgcolor="#FFFFFF">
+                        <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                        <td height="170">
+                        <div class="ztjctw">
+                            <ul>
+                                [@cms_content_list typeId='2' count='10' titLen='8' channelOption='1' topicId=topic.id orderBy='4']
+                                [#list tag_list as a]
+                                  <li>
+                                <a href="${a.url}" title="${a.title}" target="_blank">
+                                    <img src="${a.typeImg!site.defImg}" alt="${a.title}" />
+                                </a>
+                                <a href="${a.url}" title="${a.title}" target="_blank">   
+                                <p>[@text_cut s=a.stit len=titLen append=append/]</p>
+                                </a>
+                                </li>
+                                [/#list]
+                                [/@cms_content_list]
+                            </ul>
+                        </div>
+                        </td>
+                        </tr>
+                        </table>
+                        </td>
+                        </tr>
+                        </table>
+                        
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="b01 mt5">
+                        <tr>
+                        <td width="40" background="/${res}/img/topic/lmbj.gif"><img src="/${res}/img/topic/lm_2.gif"/></td>
+                        <td width="100%" background="/${res}/img/topic/lmbj.gif"><h2>专题资讯库</h2></td>
+                        </tr>
+                        <tr>
+                        <td colspan="2" valign="top" bgcolor="#FFFFFF">	
+                        <div class="ztzxkList">		
+                        [@cms_content_page topicId=topic.id count='15' titLen='30' append='...' orderBy='2' dateFormat='MM-dd' channelOption='1']
+                        <ul>
+                        [#list tag_pagination.list as a]
+                        <li><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen append=append/]</a><em>[${a.date?string(dateFormat)}]</em></li>
+                        [/#list]
+                        </ul>
+                        [/@cms_content_page]
+                        </div>
+                        </td>	
+                        </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="w280">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="b01">
+                        <tr>
+                        <td width="40" background="/${res}/img/topic/lmbj.gif">
+                        <img src="/${res}/img/topic/lm_2.gif"/>
+                        </td>
+                        <td width="100%" background="/${res}/img/topic/lmbj.gif"><h2>专题资讯关注排行</h2></td>
+                        </tr>
+                        <tr>
+                        <td colspan="2" bgcolor="#FFFFFF">
+                        <ul class="order">
+                        [@cms_content_list topicId=topic.id count='10' titLen='17' orderBy='8' channelOption='1']
+                        [#list tag_list as a]
+                        <li><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen append=append/]</a></li>
+                        [/#list]
+                        [/@cms_content_list]
+                        </ul>
+                        </td>
+                        </tr>
+                        </table>
+                        
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="b01 mt5">
+                        <tr>
+                        <td width="40" background="/${res}/img/topic/lmbj.gif">
+                        <img src="/${res}/img/topic/lm_2.gif"/>
+                        </td>
+                        <td width="100%" background="/${res}/img/topic/lmbj.gif"><h2>专题热评资讯</h2></td>
+                        </tr>
+                        <tr>
+                        <td colspan="2" bgcolor="#FFFFFF">
+                        <div id="plcon">
+                            <ul>
+                                [@cms_comment_list count='8' checked='1' textLen='50' append='...']
+                                [#list tag_list as c]
+                                <li>
+                                    <span style="color:#E66100;">${(c.commentUser.username)!"匿名网友"}</span>
+                                    <span style="color:#aaaaaa;">&nbsp;对&nbsp;</span>
+                                    <a href="${c.content.url}" target="_blank"><span style="color:#1C77BA;">${c.content.title}</span></a>
+                                    <span style="color:#aaaaaa;">评论道：</span>
+                                    <span style="color:#000000;">[@text_cut s=c.textHtml len=textLen append=append/]</span>
+                                </li>
+                                [/#list]
+                                [/@cms_comment_list]
+                            </ul>
+                        </div>
+                        </td>
+                        </tr>
+                        </table>
+                        <script src="/${res}/js/shensuo.js" type="text/javascript"></script>
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="b01 mt5">
+                        <tr>
+                        <td width="40" background="/${res}/img/topic/lmbj.gif">
+                        <img src="/${res}/img/topic/lm_2.gif"/>
+                        </td>
+                        <td width="100%" align="left" background="/${res}/img/topic/lmbj.gif"><h2>其它热门专题</h2></td>
+                        </tr>
+                        <tr>
+                        <td colspan="2" bgcolor="#FFFFFF">				
+                        <ul class="m-list list-tweet">
+                        [@cms_topic_list count='7' recommend='1' descLen='35' append='...']
+                        [#list tag_list as t]
+                        <li>
+                        <h3 onMouseOver=javascript:ShowFLT(${t_index+1}) href="javascript:void(null)">
+                        <a href="${base}/topic/${t.id}.jspx">
+                        ${t.name}
+                        </a>
+                        </h3>
+                        <p id=LM${t_index+1} [#if t_index!=0]style="display:none;"[/#if] class="drink-me clearfix">
+                        <a href="${base}/topic/${t.id}.jspx">
+                        <img src="${t.titleImg!site.defImg}" width="90" height="64"/>
+                        </a>
+                        [@text_cut s=t.description len=descLen append=append/]
+                        <span class="cBlue"><a href="${base}/topic/${t.id}.jspx"> 详细&gt;&gt;</a></span>
+                        </p>
+                        </li>
+                        [/#list]
+                        [/@cms_topic_list]
+                        </ul>	
+                        </td>
+                        </tr>
+                        </table>
+                    </div>
+                </div>
+            	<div style="clear:both; height:10px;"></div>
+                <table width="98%" border="0" align="center" cellpadding="8" cellspacing="1" bgcolor="#D0EAFF" class="mt5 rgt">
+                <tr>
+                <td height="20" align="center" bgcolor="#F1F9FF">
+                <a target="_blank" href="/about.jhtml">关于我们</a> - 
+                <a target="_blank" href="http://www.jeecms.com/lxwm.htm">联系我们</a> - 
+                <a target="_blank" href="http://www.jeecms.com/zhaopin.htm">诚聘英才</a> -
+                <a target="_blank" href="http://www.jeecms.com">友情链接</a> - 
+                <a target="_blank" href="http://www.jeecms.com/download/index.htm">程序下载</a> - 
+                <a target="_blank" href="http://www.jeecms.com">合作服务</a> - 
+                <a target="_blank" href="http://www.jeecms.com/xkxy.htm">许可协议</a> - 
+                <a onclick="SetHome(window.location)"href="javascript:void(0)">设为首页</a> -		<a onclick="AddFavorite(window.location,document.title)"href="javascript:void(0)">加入收藏</a> - 
+                <a target="_blank" href="${base}/jeeadmin/jeecms/index.do">管理登录</a>
+                </td>
+                </tr>
+                </table>	
+                <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" class="mt5 rgt" style="line-height:1.8em;">
+                <tr>
+                <td height="50" align="center">
+                电话：0791-6538070、13576281815　传真：0791-6538070  [@process_time/]<br />
+                Powered by <a target="_blank" href="http://www.jeecms.com">JEECMS</a> Copyright &copy; 2007-2013 www.jeecms.com, All Rights Reserved
+                </td>
+                </tr>
+                </table>
+                
+</div>
+</body>
+</html>

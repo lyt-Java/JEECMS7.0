@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>${channel.title!channel.name} - ${site.name} - Powered by JEECMS</title>
+<meta http-equiv="keywords" content="${channel.keywords!}"/>
+<meta http-equiv="description" content="${channel.description!}"/>
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+
+<link href="${resSys}/front.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script src="/${res}/js/common.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  Cms.siteFlow("${base}",location.href, document.referrer);
+});
+</script>
+</head>
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+
+	<div class="w700 mt10">
+        <div class="hundred100">
+        	<div class="LineTitle02">
+                <h1>${channel.name!}</h1>
+                <em>
+                当前位置：<a href="${base}/">首页</a> > [#list channel.nodeList as n]<a href="${n.url}" target="_blank">${n.name}</a>[#if n_has_next] > [/#if][/#list]
+                </em>
+            </div>
+            <div class="clear"></div>
+            <div class="HorLine3"></div>
+            <div class="HorLine4"></div>
+            <div class="clear"></div>
+            <div class="downContent3">
+            	<ul>
+                [@cms_content_page count='10' orderBy='4' channelId=channel.id channelOption='1' dateFormat='yyyy-MM-dd']
+                [#list tag_pagination.list as d]
+                	<li>
+                    	<div class="downImg">
+                            <a href="${d.url}" class="figure" target="_blank">
+                            <img src="${d.titleImg!site.defImg}" width="100%"/>
+                            </a>
+                        </div>
+                        <div class="downTex">
+                            <a href="${d.url}" title="${d.title}" target="_blank">${d.title}</a>
+                            <p>[@text_cut s=d.desc len=12 /]</p>
+                            <p>
+                            <a href="${d.url}" target="_blank">
+                            <img src="../../${res}/img/index/downMenu.gif" width="61" height="23">
+                            </a>
+                            </p>
+                        </div>
+                    </li>
+                    [/#list]
+                    <div class="clear"></div>
+                    <div class="pagesite">[@cms_pagination sysPage='1'/]</div>
+                    <div class="clear-10"></div>
+                    [/@cms_content_page]
+                </ul>
+            </div>
+        </div>
+        
+	</div>
+    [#include "../include/right2.html"/]
+	[#include "../include/friend_link.html"/]
+    [#include "../include/footer.html"/]
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+[#assign p=tag_pagination/]
+[#if p.firstPage]
+	<a disabled="disabled"><</a>
+[#else]
+	<a href="#" onclick="location.href=encodeURI('${hrefFormer}[#if p.prePage gt 1]_${p.prePage}[/#if]${hrefLatter}');"><</a>[#t/]
+[/#if]
+
+[#if p.pageNo lte 3]
+[#if p.totalPage gt 3]
+	[#list 1..3 as i]
+		<a href="#" onclick="location.href=encodeURI('${hrefFormer}_${i}${hrefLatter}');"><span [#if i==p.pageNo]style="color: red;"[/#if]>${i}</span></a>
+	[/#list]
+[#else]
+	[#list 1..p.totalPage as i]
+		<a href="#" onclick="location.href=encodeURI('${hrefFormer}_${i}${hrefLatter}');"><span [#if i==p.pageNo]style="color: red;"[/#if]>${i}</span></a>
+	[/#list]
+[/#if]
+[#else]
+[#if p.totalPage-p.pageNo gte 2]
+[#assign first=p.pageNo/]
+[#assign last=p.pageNo+2/]
+[#else]
+[#assign first=p.pageNo-2/]
+[#assign last=p.pageNo/]
+[/#if]
+[#list first..last as i]
+	<a href="#" onclick="location.href=encodeURI('${hrefFormer}_${i}${hrefLatter}');"><span [#if i==p.pageNo]style="color: red;"[/#if]>${i}</span></a>
+[/#list]
+[/#if]
+
+[#if p.lastPage]
+	&nbsp;<a disabled="disabled">></a> 
+[#else]
+	&nbsp;<a href="#" onclick="location.href=encodeURI('${hrefFormer}_${p.nextPage}${hrefLatter}');">></a> 
+[/#if]&nbsp;
+
+</div>

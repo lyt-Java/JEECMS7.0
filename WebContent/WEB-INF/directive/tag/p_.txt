@@ -1,0 +1,11 @@
+[@cms_tag_page  count='#{count}' ]
+   <div >
+                共有 <span>${ tag_pagination.list?size} 个</span> Tag标签，参照格式<span>： Tag名[相关文章数]</span>
+   </div>
+    <ul>
+     [#list  tag_pagination.list as t]
+        <li><a href="${base}/tag/${t.id}.jspx">${t.name}[${t.count}]</a></li>
+     [/#list]
+   	</ul>
+   	<div class="pagebar">[@cms_pagination sysPage='1'/]</div>
+[/@cms_tag_page]

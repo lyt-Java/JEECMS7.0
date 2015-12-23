@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.cms.entity.assist">
+	<class
+		name="CmsPlug"
+		table="jc_plug"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="id"
+			type="integer"
+			column="plug_id"
+		>
+			<generator class="identity"/>
+		</id>
+
+		<property
+			name="name"
+			column="name"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="path"
+			column="path"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="description"
+			column="description"
+			type="string"
+			not-null="false"
+		/>
+		<property
+			name="author"
+			column="author"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="uploadTime"
+			column="upload_time"
+			type="timestamp"
+			not-null="true"
+			length="19"
+		/>
+		<property
+			name="installTime"
+			column="install_time"
+			type="timestamp"
+			not-null="false"
+			length="19"
+		/>
+		<property
+			name="uninstallTime"
+			column="uninstall_time"
+			type="timestamp"
+			not-null="false"
+			length="19"
+		/>
+		<property
+			name="fileConflict"
+			column="file_conflict"
+			type="boolean"
+			not-null="true"
+		/>
+		<property
+			name="used"
+			column="is_used"
+			type="boolean"
+			not-null="true"
+		/>
+		<property
+			name="plugPerms"
+			column="plug_perms"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<script type="text/javascript">
+function listSelect(){
+	var list=$('input:radio[name=list]:checked').val();
+	if(list=="true"){
+		$("#voteId").hide();
+		$("#count").show();
+	}else{
+		$("#voteId").show();
+		$("#count").hide();
+	}
+}
+
+</script>
+<@s.m "directive.list.label"/>&nbsp;&nbsp;
+<@s.m "directive.list"/><input onclick="listSelect(this.value)" type="radio" name="list" value="true" checked="checked"/>
+<@s.m "directive.single"/><input onclick="listSelect(this.value)" type="radio" name="list" value="false"/>
+<br/>
+<div id="count" >
+<@s.m "directive.count"/>
+<input name="count"  required="true" class="required digits" maxlength="10"/><br/>
+</div>
+
+<select id="voteId" name="voteId" style="display: none;">
+<#if voteList?size gt 0>
+<#list voteList as c>
+	<option value="${c.id}">${c.title}</option>
+</#list>
+</#if>
+</select>

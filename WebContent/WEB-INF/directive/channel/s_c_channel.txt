@@ -1,0 +1,1 @@
+<a href="${channel.url}" target="_blank">${channel.name}</a>

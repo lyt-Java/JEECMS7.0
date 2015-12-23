@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.cms.entity.assist">
+	<class
+		name="CmsSiteAccessPages"
+		table="jc_site_access_pages"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<cache usage="read-write"/>
+		<id
+			name="id"
+			type="integer"
+			column="access_pages_id"
+		>
+			<generator class="identity"/>
+		</id>
+
+		<property
+			name="accessPage"
+			column="access_page"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="sessionId"
+			column="session_id"
+			type="string"
+			not-null="true"
+			length="32"
+		/>
+		<property
+			name="accessTime"
+			column="access_time"
+			type="time"
+			not-null="true"
+			length="8"
+		/>
+		<property
+			name="accessDate"
+			column="access_date"
+			type="date"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="visitSecond"
+			column="visit_second"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="pageIndex"
+			column="page_index"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<many-to-one
+			name="site"
+			column="site_id"
+			class="com.jeecms.core.entity.CmsSite"
+			not-null="true"
+		>
+		</many-to-one>
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,9 @@
+[@cms_topic_list  count='#{count}' recommend='#{recommend}' descLen='#{descLen}' append='...']
+		   [#list tag_list as t]	
+			<dl>
+				<dt><a href="${base}/topic/${t.id}.jspx" target="_blank">${t.name}</a></dt>
+				<dd><a href="${base}/topic/${t.id}.jspx"><img src="${t.titleImg!site.defImg}"/></a></dd>
+				<dd>[@text_cut s=t.description len=descLen append=append/]</dd>
+			</dl>
+		   [/#list]
+[/@cms_topic_list]	

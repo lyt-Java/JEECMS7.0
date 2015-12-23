@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+function query() {
+	$("#queryTable").submit();
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "statistic.function.channel"/> - <@s.m "global.list"/></div>
+	<form class="ropt" action="v_list.do" method="post" id="queryTable">
+		<@p.radio name="channelLevel" list={"1":"channel.top","-1":"channel.bottom"} value="${channelLevel}" onclick="query()"/>
+		<@p.radio name="view" value="${view}" list={"view","channel.view","viewDay":"channel.viewsDay","viewMonth":"channel.viewsMonth","viewWeek":"channel.viewsWeek"} onclick="query()"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<form id="tableForm" method="post">
+<@p.table value=list;channel,i,has_next><#rt/>
+	<@p.column title="<input type='checkbox' onclick='Pn.checkbox(\"ids\",this.checked)'/>" width="20">
+		<input type='checkbox' name='ids' value='${channel.id}' onclick="Pn.selectCheckBox('${channel.id}',this.checked)"/><#t/>
+	</@p.column><#t/>
+	<@p.column title="ID">${channel.id}</@p.column><#t/>
+	<@p.column code="channel.name">${channel.name}</@p.column><#t/>
+	<#if view??>
+		<#if view=="view">
+			<@p.column code="channel.view">${channel.viewTotal!}</@p.column><#t/>
+		<#elseif view="viewDay">
+			<@p.column code="channel.viewsDay">${channel.viewsDayTotal!}</@p.column><#t/>
+		<#elseif view="viewMonth">
+			<@p.column code="channel.viewsMonth">${channel.viewsMonthTotal!}</@p.column><#t/>
+		<#elseif view="viewWeek">
+			<@p.column code="channel.viewsWeek">${channel.viewsWeekTotal!}</@p.column><#t/>
+		</#if>
+	</#if>
+</@p.table>
+<div style="margin-top:15px;">
+</div>
+</form>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

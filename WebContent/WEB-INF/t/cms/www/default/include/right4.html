@@ -1,0 +1,130 @@
+<div class="w300 mt10">
+    <!-- 今日话题_begin -->
+    <div class="rim04">
+        <div class="jrhtCon">
+            <img src="../../${res}/img/news/jrht.gif"/>
+            <div class="clear"></div>
+            <div class="Q-tpList">
+                [@cms_content_list count='1' orderBy='8' typeId='2' titLen='18' channelId='11,12' channelOption='1']
+                [#list tag_list as a]
+                <em><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a></em>
+                <div class="Q-tpWrap">
+                <a href="${a.url}" target="_blank">
+                <img src="${a.typeImg!site.defImg}" alt="${a.title}" / class="tpListPic">
+                </a>
+                <p>[@text_cut s=a.desc len=30 append='...'/]<span class="cBlue"><a href="${a.url}" title="${a.title}" target="_blank">详细&gt;&gt;</a></span></p>
+                </div>
+                [/#list]
+                [/@cms_content_list]
+            </div>
+            <div class="clear-10"></div>
+            <div class="jrhtList">
+                <ul>
+                [@cms_content_list count='6' orderBy='6' titLen='18' channelId='11,12'  channelOption='1']
+                [#list tag_list as a]
+                <li>
+                <a href="${a.url}" title="${a.title}" target="_blank">
+                [@text_cut s=a.title len=titLen /]
+                </a>
+                </li>
+                [/#list]
+                [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 今日话题_end -->
+    <div class="clear-10"></div>
+    <!-- 时事评论_begin -->
+    <div class="rim04">
+        <div class="cjbdCon">
+            <div class="titleBg1">
+                <h1>时事</h1><h2>评论</h2>
+                <em>
+                [@cms_channel id='14']<a href="${tag_bean.url}" target="_blank">
+            更多>></a>[/@cms_channel]
+                </em>
+            </div>
+            <div class="clear"></div>
+            <div class="cjbdPic">
+            </div>
+            <div class="jrhtList">
+                <ul>
+                [@cms_content_list count='8' orderBy='4' titLen='18' channelId='14'  channelOption='1']
+                [#list tag_list as a]
+                  <li>
+                <a href="${a.url}" title="${a.title}" target="_blank">
+                [@text_cut s=a.title len=titLen /]
+                </a>
+                </li>
+                [/#list]
+                [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 时事评论_end -->
+    <div class="clear-10"></div>
+    <!-- 图片新闻_begin -->
+    <div class="rim04">
+        <div class="cjbdCon">
+            <div class="titleBg1">
+                <h1>图片</h1><h2>新闻</h2>
+                <em>
+                [@cms_channel id='15']<a href="${tag_bean.url}" target="_blank">
+            更多>></a>[/@cms_channel]
+                </em>
+            </div>
+            <div class="clear"></div>
+            <div class="cjbdPic">
+                <ul>
+                    [@cms_content_list count='4' orderBy='4' typeId='2' titLen='10' channelId='15' channelOption='1']
+                    [#list tag_list as a]
+                    <li>
+                        <a href="${a.url}" target="_blank">
+                        <img src="${a.typeImg!site.defImg}" alt="${a.title}" />
+                        </a>
+                        <p>
+                        <a href="${a.url}" target="_blank">
+                        [@text_cut s=a.title len=titLen /]
+                        </a>
+                        </p>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 图片新闻_end -->
+    <div class="clear-10"></div>
+    <!-- 娱乐新闻_begin -->
+    <div class="rim04">
+        <div class="cjbdCon">
+            <div class="titleBg1">
+                <h1>娱乐</h1><h2>新闻</h2>
+                <em>
+                [@cms_channel id='44']<a href="${tag_bean.url}" target="_blank">
+            更多>></a>[/@cms_channel]
+                </em>
+            </div>
+            <div class="clear"></div>
+            <div class="cjbdPic">
+            </div>
+            <div class="jrhtList">
+                <ul>
+                [@cms_content_list count='8' orderBy='4' titLen='18' channelId='44'  channelOption='1']
+                [#list tag_list as a]
+                  <li>
+                <a href="${a.url}" title="${a.title}" target="_blank">
+                [@text_cut s=a.title len=titLen /]
+                </a>
+                </li>
+                [/#list]
+                [/@cms_content_list]
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 娱乐新闻_end -->
+</div>

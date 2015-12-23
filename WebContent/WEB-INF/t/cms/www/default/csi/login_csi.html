@@ -1,0 +1,50 @@
+[#if site.config.qqEnable]
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc.js#appId=${site.config.qqID!}" charset="utf-8"></script>
+[/#if]
+[#if site.config.sinaEnable]
+<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=${site.config.sinaID!}" type="text/javascript" charset="utf-8"></script>
+[/#if]
+[#if site.config.qqWeboEnable]
+<script type="text/javascript" src="http://mat1.gtimg.com/app/openjs/openjs.js"></script>
+[/#if]
+<script type="text/javascript">
+$(function() {
+	//优先执行第三方退出 在执行本地退出
+   $('#logout').click(function () {
+          [#if site.config.qqEnable]
+              //退出qq
+               if(QC.Login.check()){
+                     QC.Login.signOut();
+                     location="${base}/logout.jspx?returnUrl=/";
+                }
+          [/#if]
+          [#if site.config.sinaEnable]
+             if(WB2.checkLogin()){
+                WB2.logout(function() {
+		    		//callback function
+                    location="${base}/logout.jspx?returnUrl=/";
+	          	});
+             }
+          [/#if]
+          [#if site.config.qqWeboEnable]
+	         T.init({
+	   		    appkey: ${site.config.qqWeboID!}
+	   	     });
+            if(T.loginStatus()){
+            	T.logout(function (loginStatus) { // 登出用户
+            	    // 登录成功
+            		 location="${base}/logout.jspx?returnUrl=/";
+            	});
+            }
+         [/#if]
+         [#if !site.config.qqEnable&&!site.config.sinaEnable&&!site.config.qqWeboEnable]
+               location="${base}/logout.jspx?returnUrl=/";
+         [/#if]
+  });
+});
+</script>
+[#if user??]
+&nbsp;欢迎您：${user.username} &nbsp; ${user.group.name} &nbsp; <a href="${base}/member/index.jspx">会员中心</a> &nbsp; <a id="logout" >退出登录</a>
+[#else]
+&nbsp;您好，您还没有登录哦！ <a href="${base}/register.jspx">免费注册</a>&nbsp;|&nbsp;<a href="${base}/login.jspx?returnUrl=/">会员登录</a>&nbsp;|&nbsp;<a href="${base}/member/forgot_password.jspx">忘记密码</a>
+[/#if]

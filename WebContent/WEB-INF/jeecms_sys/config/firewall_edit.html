@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function() {
+	$("#jvForm").validate();
+});
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>:  <@s.m "cmsConfig.function"/> - <@s.m "cmsConfig.function.firewall"/> - <@s.m "global.edit"/></div>
+	<#include "inc_opt.html"/>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_firewall.do" labelWidth="10">
+
+<@p.radio width="100" colspan="2" label="cms.firewall.isopen" name="open" list={"1":"cms.firewall.open","0":"cms.firewall.close"} value=open required="true" class="required" /><@p.tr/>
+
+<@p.password width="50" colspan="1" label="cms.firewall.password" id="password" name="password" maxlength="100" help="cmsUser.password.help"/>
+<@p.password width="50" colspan="1" label="cmsUser.pwdAgain" equalTo="#password" help="cmsUser.password.help"/><@p.tr/>
+
+<@p.text colspan="1"  width="50" label="cms.firewall.domain" name="domain" value=domain style="width:300px" maxlength="100" />
+<@p.text colspan="1"  width="50" label="cms.firewall.ips" name="ips" value=ips style="width:300px"  maxlength="100" />
+<@p.tr/>
+
+<@p.td colspan="2" width="50" label="cms.firewall.hour">
+	 <#list 0..23  as hour>
+	 	<input type="checkbox" value="${hour}" name="hour" <#if hours?seq_contains(hour)>checked="checked"</#if>>${hour}<@s.m "cms.firewall.hourofday"/></input>
+	 </#list>
+</@p.td><@p.tr/>
+
+<@p.td colspan="2" width="50" label="cms.firewall.week">
+	 <#list 2..7  as week>
+	 	<input type="checkbox" value="${week}" name="week" <#if weeks?seq_contains(week)>checked="checked"</#if>><@s.m "cms.firewall.dayweek${week}"/></input>
+	 </#list>
+	 <input type="checkbox" value="1" name="week" <#if weeks?seq_contains(1)>checked="checked"</#if>><@s.m "cms.firewall.dayweek1"/></input>
+</@p.td>
+<@p.tr/>
+<@p.td colspan="2"><@p.submit code="global.submit"/> &nbsp; <@p.reset code="global.reset"/></@p.td>
+</@p.form>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+function optDelete() {
+	if(Pn.checkedCount('ids')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	$.confirm(doDelete,"<@s.m 'global.confirm'/>","<@s.m 'global.confirm.delete'/>");
+}
+function doDelete(){
+	var f = getTableForm();
+	f.action="o_delete.do";
+	f.submit();
+}
+$(function() {
+	$("#addForm").validate();
+	$("#editForm").validate();
+	$("#dialog-add-form").dialog({
+		autoOpen: false,
+		height: 300,
+		width: 500,
+		modal: true,
+		buttons: {
+			"<@s.m code='global.submit'/>": function() {
+				$("#addForm").submit();
+				var errorlength=$(".error").length;
+				if(errorlength<0){
+					$( this ).dialog( "close" );
+				}
+			},
+			"<@s.m code='global.reset'/>": function() {
+				$("#addForm")[0].reset();
+			}
+		}
+	});
+	$("#dialog-edit-form").dialog({
+		autoOpen: false,
+		height: 300,
+		width: 500,
+		modal: true,
+		buttons: {
+			"<@s.m code='global.submit'/>": function() {
+				$("#editForm").submit();
+				var errorlength=$(".error").length;
+				if(errorlength<0){
+					$( this ).dialog( "close" );
+				}
+			},
+			"<@s.m code='global.reset'/>": function() {
+				$("#editForm")[0].reset();
+			}
+		}
+	});
+	$(".add").click(function() {
+		$( "#dialog-add-form" ).dialog("open");
+	});
+	$("a[id^='edit_']").click(function() {
+		alert($(this).attr("id"));
+		getData($(this).attr("id").split("edit_")[1]);//获取json数据  
+		$( "#dialog-edit-form" ).dialog("open");
+	});
+});
+function getData(id){
+    $.getJSON("v_ajax_edit.do",{id:id},function(data){  
+        $("#editForm input[name='name']").val(data.name); 
+        $("#editForm input[name='id']").val(data.id); 
+        $("#editForm textarea[name='description']").val(data.description); 
+        $("#editForm input[name='enabled'][value='"+data.enabled+"']").attr("checked", "checked");
+  });  
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "cmsAdvertisingSpace.function"/> - <@s.m "global.list"/></div>
+	<input class="add"  value="<@s.m "global.add"/>"/>
+	<@cms_perm url="/advertising/v_list.do">
+			<a href="../advertising/v_list.do" target="rightFrame"><@s.m "cmsAdvertising.function"/></a>
+	</@cms_perm>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<form id="tableForm" method="post">
+<@p.table value=list;cmsAdvertisingSpace,i,has_next><#rt/>
+	<@p.column title="<input type='checkbox' onclick='Pn.checkbox(\"ids\",this.checked)'/>" width="20">
+		<input type='checkbox' name='ids' value='${cmsAdvertisingSpace.id}' onclick="Pn.selectCheckBox('${cmsAdvertisingSpace.id}',this.checked)"/><#t/>
+	</@p.column><#t/>
+	<@p.column title="ID">${cmsAdvertisingSpace.id}</@p.column><#t/>
+	<@p.column code="cmsAdvertisingSpace.name">${cmsAdvertisingSpace.name}</@p.column><#t/>
+	<@p.column code="cmsAdvertisingSpace.enabled" align="center"><#if cmsAdvertisingSpace.enabled><@s.m "global.true"/><#else><span style="color:red;"><@s.m "global.false"/></span></#if></@p.column><#t/>
+	<@p.column code="global.operate" align="center">
+		<a href="#" class="pn-opt" id="edit_${cmsAdvertisingSpace.id}"><@s.m "global.edit"/></a> | <#rt/>
+		<a href="o_delete.do?ids=${cmsAdvertisingSpace.id}" onclick="if(!$.confirmToUrl(this.href)) {return false;}" class="pn-opt"><@s.m "global.delete"/></a><#t/>
+	</@p.column><#t/>
+</@p.table>
+<div style="margin-top:15px;"><input class="del-button" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/></div>
+</form>
+
+<div id="dialog-add-form" title="<@s.m 'cmsAdvertisingSpace.function'/> - <@s.m 'global.add'/>">
+	<@p.form id="addForm" action="o_save.do">
+	<@p.text label="cmsAdvertisingSpace.name" name="name" required="true" class="required" maxlength="100"/>
+	<@p.textarea label="cmsAdvertisingSpace.description" name="description" cols="50" rows="3" maxlength="255"/>
+	<@p.radio label="cmsAdvertisingSpace.enabled" name="enabled" value="true" list={"true":"global.true","false":"global.false"} required="true" class="required"/>
+	</@p.form>
+</div>
+
+<div id="dialog-edit-form" title="<@s.m 'cmsAdvertisingSpace.function'/> - <@s.m 'global.edit'/>">
+	<@p.form id="editForm" action="o_update.do">
+	<@p.text label="cmsAdvertisingSpace.name" name="name"  required="true" class="required" maxlength="100"/>
+	<@p.textarea label="cmsAdvertisingSpace.description" name="description" cols="50" rows="3" maxlength="255"/>
+	<@p.radio label="cmsAdvertisingSpace.enabled" name="enabled" value="true" list={"true":"global.true","false":"global.false"} required="true" class="required"/>
+	<@p.hidden name="id" id="id"/>
+	</@p.form>
+</div>
+
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

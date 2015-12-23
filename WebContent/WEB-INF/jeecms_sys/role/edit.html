@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<link rel="stylesheet" href="${base}/res/ztree/css/ztree.css" type="text/css">
+<script type="text/javascript" src="${base}/res/ztree/js/jquery.ztree.all-3.5.min.js"></script>
+<style type="text/css">
+.perm-container{}
+.perm-layout-1{padding:3px 0;}
+.perm-layout-2{padding-left:30px;}
+</style>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>:  <@s.m "cmsRole.function"/> - <@s.m "global.edit"/></div>
+	<form class="ropt">
+		<input type="submit" value="<@s.m "global.backToList"/>" onclick="this.form.action='v_list.do';" class="return-button"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_update.do" labelWidth="15">
+<@p.text colspan="1" width="50" label="cmsRole.name" name="name" value=cmsRole.name required="true" class="required" maxlength="100"/>
+<@p.text colspan="1" width="50" label="cmsRole.priority" name="priority" value=cmsRole.priority required="true" class="required digits" maxlength="5" style="width:70px"/><@p.tr/>
+<@p.radio colspan="2" label="cmsRole.super" name="all" value=cmsRole.all list={"true":"global.true","false":"global.false"}/><@p.tr/>
+<@p.td colspan="2" label="cmsRole.perms"><#assign perms=cmsRole.perms/><#include "perms.html"/></@p.td><@p.tr/>
+<@p.td colspan="2"><@p.hidden name="id" value=cmsRole.id/><@p.submit code="global.submit" onclick="submitNodes()"/> &nbsp; <@p.reset code="global.reset"/></@p.td>
+<input type="hidden" id="perms" name="perms"/>
+</@p.form>
+</div>
+<script type="text/javascript">
+var perms = [<#list cmsRole.perms as p>"${p}"<#if p_has_next>,</#if></#list>];
+function disablePerms() {
+	var nodes = ztree.getNodes();
+	if($("input[name=all]:checked").val()=="true") {
+		ztree.checkAllNodes(false);
+		for(var i=0;i<nodes.length;i++){
+			  ztree.setChkDisabled(nodes[i], true,false,true);
+		}
+	} else {
+		for(var i=0;i<nodes.length;i++){
+			  ztree.setChkDisabled(nodes[i], false,false,true);
+		}
+	}
+}
+var isChecked = function(perm) {
+	return perms.indexOf(perm)!=-1;
+}
+function checkNodes(){
+	ztree.checkAllNodes(false);
+	var nodes = ztree.getCheckedNodes(false);
+	for(var i=0;i<nodes.length;i++){
+		if(nodes[i].perm!=null){
+			var nodePerms=nodes[i].perm.split(",");
+			if(perms.indexOf(nodes[i].perm)!=-1){
+				//单菜单权限节点
+				ztree.checkNode(nodes[i], true, true);
+			}else if((nodePerms.length>1&&perms.indexOf(nodePerms[0])!=-1)&&nodes[i].id!=1){
+			//	alert(nodes[i].perm);
+				//除根节点的带多个权限菜单的节点
+				ztree.checkNode(nodes[i], true, true);
+			}
+		}
+	}
+}
+$(function() {
+	disablePerms();
+	$("#jvForm").validate();
+	$("input[name=all]").bind("click",function(){
+		disablePerms();
+	});
+	//标识选中状态
+	checkNodes();
+});
+function submitNodes(){
+	var nodes = ztree.getCheckedNodes(true);
+	var str = "";
+	var perms = "";
+	for(var i=0;i<nodes.length;i++){
+		if(nodes[i].perm!=null){
+		    str += nodes[i].id+ ",";
+		    perms += nodes[i].perm+ ",";
+		}
+	}
+	if(perms.length>0) {
+		perms = perms.substring(0,perms.length-1);
+	}
+	$("#perms").val(perms);
+}
+</script>
+</body>
+</html>

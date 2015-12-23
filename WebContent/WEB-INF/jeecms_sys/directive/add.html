@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+$(function() {
+	$("#jvForm").validate();
+	$("#operator").load("module.do?module=channel");
+});
+function selectModule(){
+	var module=$("#module").val();
+	$("#operator").load("module.do?module="+module);
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "directive.function"/> - <@s.m "global.add"/></div>
+	<form class="ropt">
+		<input type="submit" value="<@s.m "global.backToList"/>" onclick="this.form.action='v_list.do';" class="return-button"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_save.do" labelWidth="12">
+<@p.td required="true" label='directive.module' colspan='2' width="100">
+<@p.select onchange="selectModule()" list={"channel":"directive.channel","content":"directive.content","comment":"directive.comment","topic":"directive.topic","vote":"directive.vote","guestbook":"directive.guestbook","advertise":"directive.advertise","link":"directive.link","tag":"directive.tag"} name="module" id="module" colspan="2" width="100"/>
+</@p.td>
+<@p.tr/>
+<@p.td colspan="2" label='directive.module.rule' colspan='2' width="100" >
+<div id="operator"></div>
+</@p.td><@p.tr/>
+<@p.text width="100" colspan="2" label="directive.name" name="name" required="true" class="required" maxlength="100"/>
+<@p.tr/>
+<@p.textarea  cols="50" rows="5" maxlength="500" label="directive.description" name="description" colspan="2" width="100"/>
+<@p.tr/>
+<@p.td colspan="2" width="100" ><@p.submit code="global.submit"/> &nbsp; <@p.reset code="global.reset"/></@p.td>
+</@p.form>
+</div>
+
+</body>
+</html>

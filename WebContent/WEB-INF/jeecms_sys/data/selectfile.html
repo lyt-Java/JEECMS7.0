@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script src="${base}/thirdparty/swfupload/swfupload.js" type="text/javascript"></script>
+<script src="${base}/thirdparty/swfupload/swfupload.queue.js" type="text/javascript"></script>
+<script src="${base}/thirdparty/swfupload/fileprogress.js" type="text/javascript"></script>
+<script src="${base}/thirdparty/swfupload/handlers.js" type="text/javascript"></script>
+<link href="${base}/thirdparty/swfupload/process.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+function getTableForm() {
+	return document.getElementById("tableForm");
+}
+function optDelete() {
+	if(Pn.checkedCount('ids')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	$.confirm(doDelete,"<@s.m 'global.confirm'/>","<@s.m 'global.confirm.delete'/>");
+}
+function doDelete(){
+	var f = getTableForm();
+	f.action="o_delete.do";
+	f.submit();
+}
+
+function optExport() {
+	if(Pn.checkedCount('names')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	var f = getTableForm();
+	f.action="o_export.do";
+	f.submit();
+}
+function selectFile(name)   
+{   
+	window.returnValue = name;   
+	window.close();   
+}  
+</script>
+</head>
+<body>
+<div id="sd" style="display:none;position:absolute;height:300px;width:300px"></div>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "cms.function.db"/> - <@s.m "db.dir"/></div>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<form id="tableForm" method="post">
+<@p.table value=list;file,i,has_next><#rt/>
+	<@p.column title=" " width="20" align="center"><img src="${base}/res/common/img/file/${file.ico}.gif"/></@p.column><#t/>
+	<@p.column code="resource.filename">
+		<span style="cursor: pointer;" onclick="selectFile('${file.filename}')">${file.filename}</span>
+	</@p.column><#t/>
+	<@p.column code="resource.size" align="right">${file.size} KB</@p.column><#t/>
+	<@p.column code="resource.lastModified" align="center">${file.lastModifiedDate?string('yyyy-MM-dd HH:mm:ss')}</@p.column><#t/>
+</@p.table>
+</form>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

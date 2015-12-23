@@ -1,0 +1,756 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>jeecms-main</title>
+<#include "/jeecms_sys/head.html"/>
+<script type="">
+$(function(){
+	$("a").each(function(){
+		$(this).bind('click', function() {
+			window.returnValue =$(this).attr("href")+";"+$(this).attr("target");
+			window.close();
+		});
+	});
+});
+</script>
+</head>
+<body>
+<div class="body-box">
+<div style="text-align:center; line-height:40px; height:40px; font-size:20px; font-weight:bold;">网站地图</div>
+<table width="98%" align="center" cellpadding="2" cellspacing="1" bgcolor="#CCCCCC" style="text-align:center; height:30px; line-height:30px;">
+	<tr>
+		<td bgcolor="#dfdfdf"><b><@s.m "global.admin.home"/></b></td>
+		<td bgcolor="#dfdfdf"><b><@s.m "cms.function.channel"/></b></td>
+		<td bgcolor="#dfdfdf"><b><@s.m "cms.function.content"/></b></td>
+		<td bgcolor="#dfdfdf"><b><@s.m "cms.function.template"/><@s.m "cms.function.resource"/></b></td>
+		<td bgcolor="#dfdfdf"><b><@s.m "cms.function.assistant"/></b></td>
+		<td bgcolor="#dfdfdf"><b><@s.m "cms.function.maintain"/></b></td>
+		<td bgcolor="#dfdfdf"><b><@s.m "cms.function.generate"/></b></td>
+		<td bgcolor="#dfdfdf"><b><@s.m "cms.function.user"/></b></td>
+		<td bgcolor="#dfdfdf"><b><@s.m "cms.function.config"/></b></td>
+	</tr>
+	<!-- 第一行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/personal/v_profile.do">
+			<a href="personal/v_profile.do" target="rightFrame">
+            <@s.m "cmsPersonal.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/frame/channel_main.do">			
+			 <a href="frame/channel_main.do" target="mainFrame">
+             <@s.m "cms.function.channel"/>
+             </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/frame/content_main.do">
+			<a href="frame/content_main.do" target="mainFrame">
+            <@s.m "cms.function.content"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/frame/template_main.do">
+			<a href="frame/template_main.do" target="mainFrame">
+            <@s.m "cms.function.template"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/comment/v_list.do">
+			<a href="comment/v_list.do" target="rightFrame">
+            <@s.m "cmsComment.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/task/v_list.do">
+			<a href="task/v_list.do" target="rightFrame">
+            <@s.m "cms.task.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/static/v_index.do">
+			<a href="static/v_index.do" target="rightFrame">
+            <@s.m "cmsStatic.function.index"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/member/v_list.do">
+			<a href="member/v_list.do" target="rightFrame">
+            <@s.m "cmsMember.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/config/v_system_edit.do">
+			<a href="config/v_system_edit.do" target="rightFrame">
+            <@s.m "cmsConfig.function.system"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第二行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/statistic_member/v_list.do">
+			<a href="statistic_member/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.member"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/model/v_list.do">	
+            <a href="model/v_list.do" target="rightFrame">
+            <@s.m "cmsModel.function"/>
+            </a>
+      	 	</@cms_perm>
+	     </td>
+	     <td bgcolor="#FFFFFF">
+			<@cms_perm url="/type/v_list.do">	
+            <a href="type/v_list.do" target="rightFrame">
+            <@s.m "contentType.function"/>
+            </a>
+      	 	</@cms_perm>
+	     </td>
+	      <td bgcolor="#FFFFFF">
+			<@cms_perm url="/template/v_setting.do">	
+            <a href="template/v_setting.do" target="rightFrame">
+            <@s.m "template.setting.solution"/>
+            </a>
+      	 	</@cms_perm>
+	     </td>
+	     <td bgcolor="#FFFFFF">
+			<@cms_perm url="/vote_topic/v_list.do">
+			<a href="vote_topic/v_list.do" target="rightFrame">
+            <@s.m "cmsVoteTopic.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/topic/v_list.do">
+			<a href="topic/v_list.do" target="rightFrame">
+            <@s.m "cmsTopic.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/static/v_channel.do">
+			<a href="static/v_channel.do" target="rightFrame">
+            <@s.m "cmsStatic.function.channel"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/member/v_add.do">
+			<a href="member/v_add.do" target="rightFrame">
+            <@s.m "cmsMember.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/config/v_login_edit.do">
+			<a href="config/v_login_edit.do" target="rightFrame">
+            <@s.m "cmsConfig.function.login"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第三行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/statistic_content/v_list.do">
+			<a href="statistic_content/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.content"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/model/v_add.do">	
+            <a href="model/v_add.do" target="rightFrame">
+            <@s.m "cmsModel.function.add"/>
+            </a>
+      	 	</@cms_perm>
+	     </td>
+	     <td bgcolor="#FFFFFF">
+			<@cms_perm url="/type/v_add.do">	
+            <a href="type/v_add.do" target="rightFrame">
+            <@s.m "contentType.function.add"/>
+            </a>
+      	 	</@cms_perm>
+	     </td>
+	     <td bgcolor="#FFFFFF">
+			<@cms_perm url="/frame/resource_main.do">
+			<a href="frame/resource_main.do" target="mainFrame">
+            <@s.m "cms.function.resource"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/vote_topic/v_add.do">
+			<a href="vote_topic/v_add.do" target="rightFrame">
+            <@s.m "cmsVoteTopic.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/tag/v_list.do">
+			<a href="tag/v_list.do" target="rightFrame">
+            <@s.m "contentTag.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/static/v_content.do">
+			<a href="static/v_content.do" target="rightFrame">
+            <@s.m "cmsStatic.function.content"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/group/v_list.do">
+			<a href="group/v_list.do" target="rightFrame">
+            <@s.m "cmsGroup.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/config/v_member_edit.do">
+			<a href="config/v_member_edit.do" target="rightFrame">
+            <@s.m "cmsConfig.function.member"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第四行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/statistic_comment/v_list.do">
+			<a href="statistic_comment/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.comment"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF"></td>
+	     <td bgcolor="#FFFFFF">
+			<@cms_perm url="/topic/v_list.do">	
+            <a href="topic/v_list.do" target="rightFrame">
+            <@s.m "cmsTopic.function"/>
+            </a>
+      	 	</@cms_perm>
+	     </td>
+	     <td bgcolor="#FFFFFF"></td>
+	     <td bgcolor="#FFFFFF">
+			<@cms_perm url="/guestbook/v_list.do">
+			<a href="guestbook/v_list.do" target="rightFrame">
+            <@s.m "cmsGuestbook.function"/></a></li>
+			</@cms_perm>
+	     </td>
+	     <td bgcolor="#FFFFFF">
+			<@cms_perm url="/keyword/v_list.do">
+			<a href="keyword/v_list.do" target="rightFrame">
+            <@s.m "cmsKeyword.function"/>
+            </a>
+			</@cms_perm>
+	     </td>
+	     <td bgcolor="#FFFFFF">
+	     	<@cms_perm url="/static/v_reset_generate.do">
+			<a href="static/v_reset_generate.do" target="rightFrame">
+            <@s.m "cmsContent.regenerateItem"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/group/v_add.do">
+			<a href="group/v_add.do" target="rightFrame">
+            <@s.m "cmsGroup.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/config/v_mark_edit.do">
+			<a href="config/v_mark_edit.do" target="rightFrame">
+            <@s.m "cmsConfig.function.mark"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第五行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/statistic_guestbook/v_list.do">
+			<a href="statistic_guestbook/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.guestbook"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/topic/v_add.do">	
+            <a href="topic/v_add.do" target="rightFrame">
+            <@s.m "cmsTopic.function.add"/>
+            </a>
+      	 	</@cms_perm>
+	     </td>
+	     <td bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/guestbook/v_add.do">	
+            <a href="guestbook/v_add.do" target="rightFrame">
+            <@s.m "cmsGuestbook.function.add"/>
+            </a>
+      	 	</@cms_perm>
+	     </td>
+	     <td bgcolor="#FFFFFF">
+			<@cms_perm url="/sensitivity/v_list.do">
+			<a href="sensitivity/v_list.do" target="rightFrame">
+            <@s.m "cmsSensitivity.function"/>
+            </a>
+			</@cms_perm>
+	     </td>
+	     <td bgcolor="#FFFFFF">
+	     	<@cms_perm url="/lucene/v_index.do">
+			<a href="lucene/v_index.do" target="rightFrame">
+            <@s.m "cmsLucene.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/admin_global/v_list.do">
+			<a href="admin_global/v_list.do" target="rightFrame">
+            <@s.m "cmsAdminGlobal.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/config/v_firewall.do">
+			<a href="config/v_firewall.do" target="rightFrame">
+            <@s.m "cmsConfig.function.firewall"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第六行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/flow_pv/v_list.do">
+			<a href="flow_pv/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.pv"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="3" bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/guestbook_ctg/v_list.do">
+			<a href="guestbook_ctg/v_list.do" target="rightFrame">
+            <@s.m "cmsGuestbookCtg.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/content_cycle/v_list.do">
+			<a href="content_cycle/v_list.do" target="rightFrame">
+            <@s.m "contentCycle.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+	     	<@cms_perm url="/acquisition/v_list.do">
+			<a href="acquisition/v_list.do" target="rightFrame">
+            <@s.m "cmsAcquisition.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/admin_global/v_add.do">
+			<a href="admin_global/v_add.do" target="rightFrame">
+            <@s.m "cmsAdminGlobal.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/site_config/v_base_edit.do">
+			<a href="site_config/v_base_edit.do" target="rightFrame">
+            <@s.m "cmsSiteConfig.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第七行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/flow_uniqueIp/v_list.do">
+			<a href="flow_uniqueIp/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.uniqueIp"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="3" bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/guestbook_ctg/v_add.do">
+			<a href="guestbook_ctg/v_add.do" target="rightFrame">
+            <@s.m "cmsGuestbookCtg.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/data/v_list.do">
+			<a href="data/v_list.do" target="rightFrame">
+            <@s.m "db.backup"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/acquisition/v_history.do">
+			<a href="acquisition/v_history.do" target="rightFrame">
+            <@s.m "cmsAcquisition.function.history"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/admin_local/v_list.do">
+			<a href="admin_local/v_list.do" target="rightFrame">
+            <@s.m "cmsAdminLocal.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/model/v_list.do">
+			<a href="model/v_list.do" target="rightFrame">
+            <@s.m "cmsModel.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第八行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/flow_uniqueVisitor/v_list.do">
+			<a href="flow_uniqueVisitor/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.uniqueVisitor"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="3" bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/advertising/v_list.do">
+			<a href="advertising/v_list.do" target="rightFrame">
+            <@s.m "cmsAdvertising.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/data/v_revert.do">
+			<a href="data/v_revert.do" target="rightFrame">
+            <@s.m "db.revert"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/acquisition/v_progress.do">
+			<a href="acquisition/v_progress.do" target="rightFrame">
+            <@s.m "cmsAcquisition.function.progress"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/admin_local/v_add.do">
+			<a href="admin_local/v_add.do" target="rightFrame">
+            <@s.m "cmsAdminLocal.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/type/v_list.do">
+			<a href="type/v_list.do" target="rightFrame">
+            <@s.m "contentType.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第九行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/flow_avgViews/v_list.do">
+			<a href="flow_avgViews/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.avgViews"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="3" bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/advertising/v_add.do">
+			<a href="advertising/v_add.do" target="rightFrame">
+            <@s.m "cmsAdvertising.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/data/v_listfiles.do">
+			<a href="data/v_listfiles.do" target="rightFrame">
+            <@s.m "db.dir"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/role/v_list.do">
+			<a href="role/v_list.do" target="rightFrame">
+            <@s.m "cmsRole.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/ftp/v_list.do">
+			<a href="ftp/v_list.do" target="rightFrame">
+            <@s.m "ftp.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第十行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/flow_refererWebSite/v_list.do">
+			<a href="flow_refererWebSite/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.refererWebSite"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="3" bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/advertising_space/v_list.do">
+			<a href="advertising_space/v_list.do" target="rightFrame">
+            <@s.m "cmsAdvertisingSpace.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/file/v_list.do">
+			<a href="file/v_list.do" target="rightFrame">
+            <@s.m "cms.function.attachment"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/role/v_add.do">
+			<a href="role/v_add.do" target="rightFrame">
+            <@s.m "cmsRole.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/ftp/v_add.do">
+			<a href="ftp/v_add.do" target="rightFrame">
+            <@s.m "ftp.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第十一行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/flow_refererPage/v_list.do">
+			<a href="flow_refererPage/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.refererPage"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="3" bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/advertising_space/v_add.do">
+			<a href="advertising_space/v_add.do" target="rightFrame">
+            <@s.m "cmsAdvertisingSpace.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/content/v_list_share.do">
+			<a href="content/v_list_share.do" target="rightFrame">
+            <@s.m "cms.function.share"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="1" bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/department/v_list.do">
+			<a href="department/v_list.do" target="rightFrame">
+            <@s.m "cms.department.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/site/v_list.do">
+			<a href="site/v_list.do" target="rightFrame">
+            <@s.m "cmsSite.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第十二行 -->
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/flow_refererKeyword/v_list.do">
+			<a href="flow_refererKeyword/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.refererKeyword"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="3" bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/friendlink/v_list.do">
+			<a href="friendlink/v_list.do" target="rightFrame">
+            <@s.m "cmsFriendlink.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="2" bgcolor="#FFFFFF"></td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/department/v_add.do">
+			<a href="department/v_add.do" target="rightFrame">
+            <@s.m "cms.department.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td bgcolor="#FFFFFF">
+			<@cms_perm url="/site/v_add.do">
+			<a href="site/v_add.do" target="rightFrame">
+            <@s.m "cmsSite.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第十三行 -->
+	<tr bgcolor="#FFFFFF">
+		<td>
+			<@cms_perm url="/flow_accessPage/v_list.do">
+			<a href="flow_accessPage/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.accessPage"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="3"></td>
+		<td>
+			<@cms_perm url="/friendlink/v_add.do">
+			<a href="friendlink/v_add.do" target="rightFrame">
+            <@s.m "cmsFriendlink.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="2"></td>
+		<td><@cms_perm url="/log/v_list_operating.do">
+			<a href="log/v_list_operating.do" target="rightFrame">
+            <@s.m "cmsLog.function.operating"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td><@cms_perm url="/workflow/v_list.do">
+			<a href="workflow/v_list.do" target="rightFrame">
+            <@s.m "cms.workflow.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第十四行 -->
+	<tr bgcolor="#FFFFFF">
+		<td>
+			<@cms_perm url="/flow_area/v_list.do">
+			<a href="flow_area/v_list.do" target="rightFrame">
+            <@s.m "statistic.function.area"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="3"></td>
+		<td>
+			<@cms_perm url="/friendlink_ctg/v_list.do">
+			<a href="friendlink_ctg/v_list.do" target="rightFrame">
+            <@s.m "cmsFriendlinkCtg.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="2"></td>
+		<td>
+			<@cms_perm url="/log/v_list_login_success.do">
+			<a href="log/v_list_login_success.do" target="rightFrame">
+            <@s.m "cmsLog.function.loginSuccess"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td>
+			<@cms_perm url="/workflow/v_add.do">
+			<a href="workflow/v_add.do" target="rightFrame">
+            <@s.m "ccms.workflow.function.add"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第十五行 -->
+	<tr bgcolor="#FFFFFF">
+		<td>
+			<@cms_perm url="/statistic_flow/v_init.do">
+			<a href="statistic_flow/v_init.do" target="rightFrame">
+            <@s.m "statistic.function.flowinit"/>
+            </a>
+	    	</@cms_perm>
+		</td>
+		<td colspan="3"></td>
+		<td>
+			<@cms_perm url="/workloadstatistic/v_list.do">
+			<a href="workloadstatistic/v_list.do" target="rightFrame">
+            <@s.m "cms.workload.statistic.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="2">
+		</td>
+		<td>
+			<@cms_perm url="/log/v_list_login_failure.do">
+			<a href="log/v_list_login_failure.do" target="rightFrame">
+            <@s.m "cmsLog.function.loginFailure"/>
+            </a>
+			</@cms_perm>
+		</td>
+        <td>
+        	<@cms_perm url="/site_config/v_company_edit.do">
+			<a href="site_config/v_company_edit.do" target="rightFrame">
+            <@s.m "cmsSiteConfig.function.company"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+	<!-- 第十六行 -->
+	<tr bgcolor="#FFFFFF">
+		<td colspan="4"></td>
+		<td>
+			<@cms_perm url="/jobapply/v_list.do">
+			<a href="jobapply/v_list.do" target="rightFrame">
+            <@s.m "cmsJobApply.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+		<td colspan="2"></td>
+		<td>
+			<@cms_perm url="/message/v_list.do">
+			<a href="message/v_list.do" target="rightFrame">
+            <@s.m "cmsMessage.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+        <td>
+       	   <@cms_perm url="/dictionary/v_list.do">
+			<a href="dictionary/v_list.do" target="rightFrame">
+            <@s.m "cmsDictionary.function"/>
+            </a>
+			</@cms_perm>
+		</td>
+	</tr>
+</table>
+</div>
+</body>
+</html>

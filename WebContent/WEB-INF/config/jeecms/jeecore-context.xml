@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+	default-lazy-init="true">
+	<!--HttpSession-->
+	<bean id="sessionProvider" class="com.jeecms.common.web.session.HttpSessionProvider"/>
+	<!--缓存Session
+		<bean id="sessionProvider" class="com.jeecms.common.web.session.CacheSessionProvider">
+			<property name="sessionCache" ref="sessionCache"/>
+			<property name="sessionIdGenerator" ref="sessionIdGenerator"/>
+		</bean>
+		-->
+	<!--Memcached缓存
+		<bean id="sessionCache" class="com.jeecms.common.web.session.cache.MemcachedDangaCache">		
+			<property name="servers">
+				<list>
+					<value>127.0.0.1:11211</value>
+				</list>
+			</property>
+			<property name="weights">
+				<list>
+					<value>1</value>
+				</list>
+			</property>
+		</bean>
+		-->
+	<!--Ehcache缓存
+		<bean id="sessionCache" class="com.jeecms.common.web.session.cache.EhcacheSessionCache">
+			<property name="cache" ref="ehSessionCache"/>
+		</bean>
+		-->
+	<!--SessionId生成器
+		<bean id="sessionIdGenerator" class="com.jeecms.common.web.session.id.JdkUUIDGenerator"/>
+		-->
+	<!--图片处理-->
+	<bean id="imageScale" class="com.jeecms.common.image.ImageScaleImpl" init-method="init">
+		<property name="tryMagick" value="true"/>
+	</bean>
+	<!--密码加密器-->
+	<bean id="pwdEncoder" class="com.jeecms.common.security.encoder.Md5PwdEncoder"/>
+		
+	<!--执行时间标签-->
+	<bean id="uuid" class="com.jeecms.common.web.freemarker.UUIDDirective"/>
+	<bean id="process_time" class="com.jeecms.common.web.freemarker.ProcessTimeDirective"/>
+	<bean id="text_cut" class="com.jeecms.common.web.freemarker.TextCutDirective"/>
+	<bean id="html_cut" class="com.jeecms.common.web.freemarker.HtmlCutDirective"/>
+	
+	<bean id="realPathResolver" class="com.jeecms.common.web.springmvc.ServletContextRealPathResolver"/>
+	<bean id="fileRepository" class="com.jeecms.common.upload.FileRepository"/>
+	<!--文件模板-->
+	<bean id="tplManager" class="com.jeecms.core.tpl.FileTplManagerImpl"/>
+	<!--数据库模板
+		<bean id="dbTplDao" class="com.jeecms.core.dao.impl.DbTplDaoImpl"/>
+		<bean id="tplManager" class="com.jeecms.core.manager.impl.DbTplMngImpl"/>
+		-->
+
+	<bean id="ipSeeker" class="com.jeecms.common.ipseek.IPSeekerImpl" init-method="init">
+		<property name="dir" value="/WEB-INF/ipseek"/>
+		<property name="filename" value="QQWry.Dat"/>
+	</bean>
+	<bean id="authenticationDao" class="com.jeecms.core.dao.impl.AuthenticationDaoImpl"/>
+	<bean id="dbFileDao" class="com.jeecms.core.dao.impl.DbFileDaoImpl"/>
+	<bean id="unifiedUserDao" class="com.jeecms.core.dao.impl.UnifiedUserDaoImpl"/>
+	<bean id="ftpDao" class="com.jeecms.core.dao.impl.FtpDaoImpl"/>
+	<bean id="configDao" class="com.jeecms.core.dao.impl.ConfigDaoImpl"/>
+	<bean id="configItemDao" class="com.jeecms.core.dao.impl.CmsConfigItemDaoImpl"/>
+	
+	<bean id="cmsSiteDao" class="com.jeecms.core.dao.impl.CmsSiteDaoImpl"/>
+	<bean id="cmsConfigDao" class="com.jeecms.core.dao.impl.CmsConfigDaoImpl"/>
+	<bean id="cmsUserDao" class="com.jeecms.core.dao.impl.CmsUserDaoImpl"/>
+	<bean id="cmsUserExtDao" class="com.jeecms.core.dao.impl.CmsUserExtDaoImpl"/>
+	<bean id="cmsUserSiteDao" class="com.jeecms.core.dao.impl.CmsUserSiteDaoImpl"/>
+	<bean id="cmsGroupDao" class="com.jeecms.core.dao.impl.CmsGroupDaoImpl"/>
+	<bean id="cmsRoleDao" class="com.jeecms.core.dao.impl.CmsRoleDaoImpl"/>
+	<bean id="cmsLogDao" class="com.jeecms.core.dao.impl.CmsLogDaoImpl"/>
+	<bean id="cmsDictionaryDao" class="com.jeecms.core.dao.impl.CmsDictionaryDaoImpl"/>
+	<bean id="cmsSiteCompanyDao" class="com.jeecms.core.dao.impl.CmsSiteCompanyDaoImpl"/>
+	<bean id="cmsUserResumeDao" class="com.jeecms.core.dao.impl.CmsUserResumeDaoImpl"/>
+
+	<bean id="authenticationMng" class="com.jeecms.core.manager.impl.AuthenticationMngImpl"/>
+	<bean id="dbFileMng" class="com.jeecms.core.manager.impl.DbFileMngImpl"/>
+	<bean id="unifiedUserMng" class="com.jeecms.core.manager.impl.UnifiedUserMngImpl"/>
+	<bean id="ftpMng" class="com.jeecms.core.manager.impl.FtpMngImpl"/>
+	<bean id="configMng" class="com.jeecms.core.manager.impl.ConfigMngImpl"/>
+	<bean id="configItemMng" class="com.jeecms.core.manager.impl.CmsConfigItemMngImpl"/>
+	
+	<bean id="cmsSiteMng" class="com.jeecms.core.manager.impl.CmsSiteMngImpl"/>
+	<bean id="cmsConfigMng" class="com.jeecms.core.manager.impl.CmsConfigMngImpl"/>
+	<bean id="cmsUserMng" class="com.jeecms.core.manager.impl.CmsUserMngImpl"/>
+	<bean id="cmsUserExtMng" class="com.jeecms.core.manager.impl.CmsUserExtMngImpl"/>
+	<bean id="cmsUserSiteMng" class="com.jeecms.core.manager.impl.CmsUserSiteMngImpl"/>
+	<bean id="cmsGroupMng" class="com.jeecms.core.manager.impl.CmsGroupMngImpl"/>
+	<bean id="cmsRoleMng" class="com.jeecms.core.manager.impl.CmsRoleMngImpl"/>
+	<bean id="cmsLogMng" class="com.jeecms.core.manager.impl.CmsLogMngImpl"/>
+	<bean id="cmsDictionaryMng" class="com.jeecms.core.manager.impl.CmsDictionaryMngImpl"/>
+	<bean id="cmsSiteCompanyMng" class="com.jeecms.core.manager.impl.CmsSiteCompanyMngImpl"/>
+	<bean id="cmsUserResumeMng" class="com.jeecms.core.manager.impl.CmsUserResumeMngImpl"/>
+	
+</beans>

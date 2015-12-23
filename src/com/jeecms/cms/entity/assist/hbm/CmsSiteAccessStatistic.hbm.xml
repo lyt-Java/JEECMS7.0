@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.jeecms.cms.entity.assist">
+	<class
+		name="CmsSiteAccessStatistic"
+		table="jc_site_access_statistic"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<cache usage="read-write"/>
+		<id
+			name="id"
+			type="integer"
+			column="access_statistic_id"
+		>
+			<generator class="identity"/>
+		</id>
+
+		<property
+			name="statisticDate"
+			column="statistic_date"
+			type="java.util.Date"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="pv"
+			column="pv"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="ip"
+			column="ip"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="visitors"
+			column="visitors"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="pagesAver"
+			column="pages_aver"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="visitSecondAver"
+			column="visit_second_aver"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="statisitcType"
+			column="statisitc_type"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="statisticColumnValue"
+			column="statistic_column_value"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<many-to-one
+			name="site"
+			column="site_id"
+			class="com.jeecms.core.entity.CmsSite"
+			not-null="true"
+		>
+		</many-to-one>
+
+
+	</class>	
+</hibernate-mapping>

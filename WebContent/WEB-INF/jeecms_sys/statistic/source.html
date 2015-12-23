@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<link href="${base}/res/common/css/jquery.flot.css" rel="stylesheet" type="text/css"/>
+<!--[if lte IE 8]><![endif]-->
+<script language="javascript" type="text/javascript" src="${base}/res/common/js/excanvas.min.js"></script>
+<script src="${base}/res/common/js/jquery.flot.min.js" type="text/javascript"></script>
+<script src="${base}/res/common/js/jquery.flot.time.min.js" type="text/javascript"></script>
+<script src="${base}/res/common/js/jquery.flot.pie.min.js" type="text/javascript"></script>
+<script src="${base}/res/common/js/jquery.flot.categories.min.js" type="text/javascript"></script>
+<script class="code" type="text/javascript">
+$(function() {
+	var engine = [],direct=[],link=[];
+	<#if flag==2||flag==0>
+		<#list keys as s>
+    		var values${s_index}=[];
+			<#list resultMap["${s}"] as v>
+		    	values${s_index}.push([${v[1]},${v[0]}]);
+		    </#list>
+		</#list>
+	<#else>
+		<#list keys as s>
+			var values${s_index}=[];
+			<#list resultMap["${s}"] as v>
+				var date="${v[1]}".split(" ")[0];
+				var timeArray=date.split("-");
+				var day=new Date(timeArray[0],timeArray[1]-1,timeArray[2]);
+				values${s_index}.push([day, ${v[0]}]);
+		    </#list>
+		</#list>
+	</#if>
+	var datasets = {
+		<#list keys as s>
+		"${s}": {
+			label: "${s}",
+			data: values${s_index}
+		}
+		<#if s_has_next>
+			,
+		</#if>
+		</#list>
+	};
+	var i = 0;
+	$.each(datasets, function(key, val) {
+		val.color = i;
+		++i;
+	});
+	// insert checkboxes 
+	var choiceContainer = $("#choices");
+	choiceContainer.find("input").click(plotAccordingToChoices);
+	
+	function plotAccordingToChoices() {
+		var data = [];
+		choiceContainer.find("input:checked").each(function () {
+			var key = $(this).attr("name");
+			if (key && datasets[key]) {
+				data.push(datasets[key]);
+			}
+		});
+		if (data.length > 0) {
+			$.plot("#placeholder", data, {
+				series: {
+					lines: {
+						show: true
+					},
+					points: {
+						show: true
+					}
+				},
+				grid: {
+					hoverable: true
+				},
+				yaxis: {
+					min: 0
+				},
+				<#if flag==2>
+				xaxis: {
+					ticks: [1, 2, 3, 4, 5,6,7,8,9,10,11,12],
+					min:1,
+					max:12,
+					tickDecimals: 0,
+				    tickFormatter:function (val, axis) {
+				    	  return val+"月";
+				    }
+				}
+				<#elseif flag==0>
+				xaxis: {
+					ticks: [0,1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+					min:0,
+					max:23,
+					tickDecimals: 0
+				 }	
+				<#elseif flag==1>
+				xaxis: {
+					inTickSize: [1, "day"],
+					mode: "time",timezone: "browser",
+					timeformat: "%m/%d"
+				  }
+				</#if>
+			});
+		}
+	}
+	plotAccordingToChoices();
+	$("<div id='tooltip'></div>").css({
+		position: "absolute",
+		display: "none",
+		border: "1px solid #fdd",
+		padding: "2px",
+		"background-color": "#fee",
+		opacity: 0.80
+	}).appendTo("body");
+
+	$("#placeholder").bind("plothover", function (event, pos, item) {
+		if (item) {
+			var x = item.datapoint[0].toFixed(0),
+				y = item.datapoint[1].toFixed(0);
+			$("#tooltip").html(item.series.label  +" = " + y)
+			.css({top: item.pageY+5, left: item.pageX+5})
+			.fadeIn(200);
+		} else {
+			$("#tooltip").hide();
+		}
+	});
+	//饼图
+	var data = [
+		<#list keys as s>
+		{ label: "${s}",  data: [[1,${totalMap["${s}"]}]]}
+		<#if s_has_next>,</#if>
+		</#list>
+	];
+	if (data.length > 0) {
+		$.plot('#pieplaceholder', data, {
+		    series: {
+		        pie: {
+		            show: true
+		        }
+		    },
+		    grid: {
+		        hoverable: true,
+		        clickable: true
+		    },
+		    legend: {
+		        show: false
+		    }
+		});
+	}
+});
+function labelFormatter(label, series) {
+	return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+}
+function statisticYear(){
+	var f = getTableForm();
+	$("#flag").val(2);
+	f.submit();
+}
+function statisticDays(){
+	var f = getTableForm();
+	$("#flag").val(1);
+	f.submit();
+}
+function statisticDay(){
+	var f = getTableForm();
+	$("#flag").val(0);
+	f.submit();
+}
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+</script>
+</head>
+<body>
+<form id="tableForm" action="v_list.do" method="post" style="padding-top:5px;">
+<div>
+<@s.m "statistic.function.year"/>:
+<input type="text" name="year" value="${year!}" style="width:100px" onclick="WdatePicker({dateFmt:'yyyy'})" class="Wdate"/>
+<@s.m "statistic.function.days"/>:
+<input type="text" name="begin" value="${begin!?string('yyyy-MM-dd')}" style="width:120px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate"/>
+<input type="text" name="end" value="${end!?string('yyyy-MM-dd')}" style="width:120px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate"/>
+<input id="flag" name="flag" type="hidden" value="1"/>
+<input id="type" name="type" type="hidden" value="${type!}"/>
+<select name="target">
+<option value="0" <#if target??><#if target==0>selected="selected"</#if></#if>>pv</option>
+<option value="1" <#if target??><#if target==1>selected="selected"</#if></#if>>ip</option>
+<option value="2" <#if target??><#if target==2>selected="selected"</#if></#if>><@s.m 'statistic.target.visitors'/></option>
+</select>
+<input class="query" type="button" onclick="statisticYear()" value="<@s.m 'statistic.function.year'/>"/>
+<input class="query" type="button" onclick="statisticDays()" value="<@s.m 'statistic.function.days'/>"/>
+<input class="query" type="button" onclick="statisticDay()" value="<@s.m 'statistic.function.day'/>"/>
+</div>
+</form>
+	<div id="header">
+		<#if target==0>pv<#elseif target==1>ip<#else><@s.m "statistic.target.visitors"/></#if>
+		<#if flag==1>
+		<@s.m "statistic.function.days"/>
+		<#elseif flag==2>
+		<@s.m "statistic.function.year"/>
+		<#else>
+		<@s.m "statistic.function.day"/>
+		</#if>
+		<div id="choices"  width:120px;">
+			<#list keys as s>
+			<input type="checkbox" name="${s}" id="id${s}" checked='checked'/>
+			<label for='id${s}'>${s}</label>
+			</#list>
+		</div>
+	</div>
+	<div id="content">
+		<#if keys?size  gt 0>
+		<div class="demo-container">
+			<div id="pieplaceholder" class="demo-pie-placeholder" style="float:left; width:300px;"></div>
+			<div id="placeholder" class="demo-placeholder" style="float:left; width:640px;"></div>
+		</div>
+		<#else>
+		<@s.m "statistic.noresult"/>
+		</#if>
+	</div>
+</body>
+</html>

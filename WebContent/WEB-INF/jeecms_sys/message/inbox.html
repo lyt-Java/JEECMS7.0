@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script src="${base}/res/common/js/message.js" type="text/javascript"></script>
+<script type="text/javascript">
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+function optDelete() {
+	if(Pn.checkedCount('ids')<=0) {
+		$.alert("<@s.m 'global.prompt'/>","<@s.m 'error.checkRecord'/>");
+		return;
+	}
+	$.confirm(doDelete,"<@s.m 'global.confirm'/>","<@s.m 'global.confirm.delete'/>");
+}
+function doDelete(){
+	var f = getTableForm();
+	f.action="o_delete.do";
+	f.submit();
+}
+function toList(box) {
+	$("#box").val(box);
+	$("#listFrom").submit();
+}
+</script>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"><@s.m "global.position"/>: <@s.m "cmsMessage.function"/> - <@s.m "cmsMessage.inbox"/></div>
+	<#include "inc_opt.html"/>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+<form id="tableForm" method="post">
+<input type="hidden" name="pageNo" value="${pageNo!}"/>
+<input type="hidden" name="box" value="${box!}"/>
+<@p.table value=pagination;message,i,has_next><#rt/>
+	<@p.column title="<input type='checkbox' onclick='Pn.checkbox(\"ids\",this.checked)'/>" width="25" align="center">
+		<input type='checkbox' name='ids' value='${message.id}' id="id_${message.id!}" onclick="Pn.selectCheckBox('${message.id}',this.checked)"/><#t/>
+	</@p.column><#t/>
+	<@p.column title="ID" align="center">${message.id}</@p.column><#t/>
+	<@p.column code="cmsMessage.title" align="center">
+		<#if message.msgStatus>
+			<a href="v_read.do?id=${message.id!}&&box=0"><@text_cut s=message.titleHtml len='15' append='...'/></a>
+		<#else>
+			<a href="v_read.do?id=${message.id!}&&box=0"><strong><@text_cut s=message.titleHtml len='15' append='...'/></strong></a>
+		</#if>
+	</@p.column><#t/>
+	<@p.column code="cmsMessage.sendUser" align="center">${message.msgSendUser.username!}</@p.column><#t/>
+	<@p.column code="cmsMessage.sendTime" align="center">${message.sendTime?string('yyyy-MM-dd HH:mm:ss')}</@p.column><#t/>
+</@p.table>
+<div style="background:url(${base}/res/common/img/theme/boxTitleBG.jpg) repeat-x; height:20px; overflow:hidden;">
+<input class="del-button" type="button" value="<@s.m "global.delete"/>" onclick="toTrash();"/ style="float:left; border-right:1px solid #ffffff;"><span id="msgDiv" style="color: red;"></span>
+</div>
+</form>
+</div>
+<#include "/common/alert_message.html"/>
+</body>
+</html>

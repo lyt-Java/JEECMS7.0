@@ -1,0 +1,9 @@
+[@cms_guestbook_list count='#{count}' ctgId='#{ctgId}' recommend='#{recommend}' checked='#{checked}' titleLen='#{titleLen}' contentLen='#{contentLen}' append='...' ]
+	 [#list tag_list as m]
+		<dl>
+			<dt><span>[${m.ctg.name!}]</span>[@text_cut s=m.titleHtml len=titleLen append=append/]</dt>
+			<dd>[@text_cut s=m.contentHtml len=contentLen append=append/]</dd>
+	   </dl>
+	 [/#list]		   
+[/@cms_guestbook_list]	
+

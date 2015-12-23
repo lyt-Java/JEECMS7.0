@@ -1,0 +1,446 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>首页 - ${site.name} - Powered by JEECMS</title>
+<meta http-equiv="keywords" content="${site.keywords!}"/>
+<meta http-equiv="description" content="${site.description!}"/>
+<head>
+<!--[if lt IE 9]>
+<script src="${resSys}/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link href="/${res}/css/html5.css" rel="stylesheet" type="text/css"/>
+<script src="/${res}/js/indexshow.js" type="text/javascript"></script>
+<script src="/${res}/js/imgFlip.js" type="text/javascript"></script>
+
+<link href="${resSys}/front.css" rel="stylesheet" type="text/css"/>
+<link href="${resSys}/jqueryUI/jquery.ui.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/jqueryUI/jquery-ui.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+	Cms.siteFlow("${base}", location.href, document.referrer);
+	$.cookie("_site_id_cookie","${site.id!}",{path: '${base}' });
+});
+</script>
+
+</head>
+<body>
+<div class="container">
+	[#include "../include/header.html"/]
+    [#include "../include/search_csi.html"/]
+    [#include "../include/navi.html"/]
+    <div class="main">
+    	<div class="w670">
+        	<div class="hundred100">
+                <div class="w310 mt10">
+                    <!-- 焦点图代码宽310_begin -->
+                    <div class="comiis_wrapad" id="slideContainer">
+                        <div id="frameHlicAe" class="frame cl">
+                            <div class="temp"></div>
+                            <div class="block">
+                                <div class="cl">
+                                    <ul class="slideshow" id="slidesImgs">
+                                    [@cms_content_list count='5' orderBy='4' typeId='3' titLen='18' channelOption='1' channelId='1']
+                                    [#list tag_list as a]
+                                    <li>
+                                        <a href="${a.url}" target="_blank">
+                                        <img src="${a.typeImg!site.defImg}" alt="${a.title}" width="100%" />
+                                        </a>
+                                        <span class="title">
+                                        [@text_cut s=a.title len=titLen /]
+                                        </span>
+                                    </li>
+                                    [/#list]
+                                    [/@cms_content_list]
+                                    </ul>
+                                </div>
+                                <div class="slidebar" id="slideBar">
+                                    <ul>
+                                        <li class="on">1</li>
+                                        <li>2</li>
+                                        <li>3</li>
+                                        <li>4</li>
+                                        <li>5</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        SlideShow(3000);
+                    </script>
+                    <!-- 焦点图代码宽310_end -->
+                    <div class="clear"></div>
+                    <!-- 资讯排行榜宽310_begin -->
+                    <div class="w308 rim02 mt10">
+                        <div class="LanMu02b">
+                            <div class="LanMu02a">资讯排行榜</div>
+                        </div>
+                        <div class="paihangbang">
+                            <ul>
+                                [@cms_content_list count='10' titLen='17' orderBy='7' channelOption='1' channelId='1']
+                                [#list tag_list as a]
+                                <li>
+                                <div class="v-rank1-order1 v-rank1-top1">${a_index+1}</div>
+                                <a href="${a.url}" title="${a.title}" target="_blank">
+                                [@text_cut s=a.title len=titLen /]
+                                </a>
+                                </li>
+                                [/#list]
+                                [/@cms_content_list]
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 资讯排行榜宽310_end -->
+                    <div class="clear"></div>
+                </div>
+            
+            	<!-- 新闻_begin -->
+                <div class="w350">
+                    <div class="LanMu01b rim01">
+                        <div class="LanMu01a"></div>
+                        <span>新闻资讯</span>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="xinwenzixun">
+                        <ul>
+                            [@cms_content_list count='6' orderBy='4' titLen='24' channelId='11'  channelOption='1']
+                            [#list tag_list as a]
+                            [#if a.id==448]
+                            <li><a href="${a.url}" title="${a.title}" target="_blank" style="color:#e66100;">[@text_cut s=a.title len=23 /]</a></li>
+                            [#else]
+                            <li><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a></li>
+                            [/#if]
+                            [/#list]
+                            [/@cms_content_list]
+                        </ul>
+                    </div>
+                    <div class="xinwenzixun">
+                        <ul>
+                            [@cms_content_list count='6' orderBy='4' titLen='24' channelId='12'  channelOption='1']
+                            [#list tag_list as a]
+                            [#if a.id==447]
+                            <li><a href="${a.url}" title="${a.title}" target="_blank" style="color:#e66100;">[@text_cut s=a.title len=23 /]</a></li>
+                            [#else]
+                            <li><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a></li>
+                            [/#if]
+                            [/#list]
+                            [/@cms_content_list]
+                        </ul>
+                    </div>
+                    <div class="xinwenzixun">
+                        <ul>
+                            [@cms_content_list count='6' orderBy='4' titLen='24' channelId='13'  channelOption='1']
+                            [#list tag_list as a]
+                            [#if a.id==445]
+                            <li><a href="${a.url}" title="${a.title}" target="_blank" style="color:#e66100;">[@text_cut s=a.title len=23 /]</a></li>
+                            [#else]
+                            <li><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a></li>
+                            [/#if]
+                            [/#list]
+                            [/@cms_content_list]
+                        </ul>
+                    </div>
+                </div>
+        		<!-- 新闻_end -->
+            </div>
+        	<div class="clear"></div>
+            <!-- 广告_begin -->
+            <div class="hundred100 mt10">
+                <a href="http://www.jeecms.com" target="_blank">
+                <img src="../../${res}/img/index/banner1.jpg" width="100%">
+                </a>
+        </div>
+            <!-- 广告_end -->
+			<div class="clear"></div>
+            <div class="hundred100 mt10">
+            	<!-- 视频_begin -->
+            	<div class="AreaTitle">电视剧 / 纪录片</div>
+                <div class="leftAreaContent2">
+                    <ul>
+                        [@cms_content_list count='4' orderBy='4' titLen='24' channelId='49'  channelOption='1']
+                        [#list tag_list as a]
+                        <li><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a></li>
+                        [/#list]
+                        [/@cms_content_list]
+                        
+                        [@cms_content_list count='4' orderBy='4' titLen='24' channelId='50'  channelOption='1']
+                        [#list tag_list as a]
+                        <li><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a></li>
+                        [/#list]
+                        [/@cms_content_list]
+                    </ul>
+                </div>
+                <div class="rightAreaContent2">
+                    <ul>
+                        [@cms_content_list count='4' orderBy='4' titLen='10' channelId='49'  channelOption='1']
+                        [#list tag_list as a]
+                        <li>
+                        	<a href="${a.url}" class="figure" target="_blank">
+                        	<img src="${a.titleImg!site.defImg}" alt="${a.title}" />
+                        	</a>
+                        	<div class="clear"></div>
+                            <span class="figure_mask">
+                            <em class="mask_txt">[@text_cut s=a.ctgName/]</em>
+                            </span>
+                            <p>
+                            <a href="${a.url}" class="figure" target="_blank">
+                            [@text_cut s=a.title len=titLen /]
+                            </a>
+                            </p>
+                        </li>
+                        [/#list]
+                        [/@cms_content_list]
+                    </ul>
+                </div>
+            <!-- 视频_end -->
+            </div>
+            <div class="clear"></div>
+            <div class="hundred100 mt10">
+            	<!-- 招聘_begin -->
+                <div class="AreaTitle">招聘</div>
+                <div class="jobTitleBg">
+                	<h1>职位名称</h1>
+                    <h2>公司名称</h2>
+                    <h3>工作地点</h3>
+                    <h4>日期</h4>
+                </div>
+                <div class="jobContent">
+                	<ul>
+                    [@cms_content_list count='12' orderBy='4' titLen='16' channelId='61'  channelOption='1']
+                    [#list tag_list as a]
+                      <li>
+                    <h1>
+                    <a href="${a.url}" title="${a.title}" target="_blank">
+                    [@text_cut s=a.title len=titLen /]
+                    </a>
+                    </h1>
+                    <h2>[@text_cut s=a.companyName len=titLen /]</h2>
+                    <h3>[@text_cut s=a.attr.workplace len=6 /]</h3>
+                    <h4>${a.releaseDate?string("yyyy-MM-dd")}</h4>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+               	  </ul>
+                </div>
+                <!-- 招聘_end -->
+          </div>
+          <div class="clear"></div>
+			<div class="hundred100 mt10">
+            	<!-- 图库_begin -->
+                <div class="AreaTitle">文体娱乐 / 美容资讯 / 文化校园 / 探索新知</div>
+                <div class="AreaContent1">
+                    <ul class="box">
+                        [@cms_content_list typeId='2' count='8' titLen='20' channelOption='1' channelId='42' orderBy='4']
+                        [#list tag_list as a]
+                        <li>
+                        <a href="${a.url}" title="${a.title}" target="_blank">
+                        	<div class="toll_img">
+                        		<img src="${a.typeImg!site.defImg}" alt="${a.title}" width="155" height="110" />
+                        	</div>
+                            <div class="toll_info">
+                            <p>[@text_cut s=a.stit len=titLen append=append/]</p>
+                            </div>
+                        </a>
+                        </li>
+                        [/#list]
+                        [/@cms_content_list]
+                    </ul>
+                </div>
+              <!-- 图库_end -->
+             </div>
+             <div class="clear"></div>
+             <div class="hundred100 mt10">
+            	<!-- 下载_begin -->
+                <div class="AreaTitle">下载</div>
+                <div class="downContent1">
+                	<ul>
+                        [@cms_content_list count='3' orderBy='4' titLen='8' channelId='9' channelOption='1']
+                        [#list tag_list as a]
+                          <li>
+                            <div class="downImg">
+                                <a href="${a.url}" class="figure" target="_blank">
+                                <img src="${a.titleImg!site.defImg}" width="46" height="48"/>
+                                </a>
+                            </div>
+                            <div class="downTex">
+                            	<a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a>
+                                <p>[@text_cut s=a.desc len=12 /]</p>
+                            	<p>
+                                <a href="${a.url}" target="_blank">
+                                <img src="../../${res}/img/index/downMenu.gif" width="61" height="23">
+                                </a>
+                            	</p>
+                            </div>
+                        </li>
+                        [/#list]
+                        [/@cms_content_list]
+                    </ul>
+                </div>
+                <div class="downContent2">
+                	<ul>
+                        [@cms_content_list count='18' orderBy='4' titLen='8' channelId='9' channelOption='1']
+                        [#list tag_list as a][#if 2<a_index]
+                        <li><a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a></li>
+                        [/#if]
+                        [/#list]
+                        [/@cms_content_list]
+                    </ul>
+                </div>
+                <!-- 下载_end -->
+             </div>
+             <div class="clear"></div>
+             <div class="hundred100 mt10">
+				<!-- 网友留言_begin -->
+                <div class="AreaTitle">网友留言</div>
+                <div class="lybCon">
+                    [@cms_guestbook_list siteId=site.id count='3' checked='1']
+                    [#list tag_list as m]
+                       <dl>
+                       <div class="lybTX">
+                           [#if m.member?? && m.member.userImg??]
+                           [#if m.member.userImg!=""]
+                           <img src="${guestbook.member.userImg!}" />
+                           [#else]
+                           <img src="/${res}/img/member/member-phtot.gif" />
+                           [/#if]
+                           [#else]
+                           <img src="/${res}/img/member/member-phtot.gif" />
+                           [/#if]
+                       </div>
+                       <div class="lybMessage">
+                          <h1>[${m.ctg.name!}]&nbsp;${m.titleHtml!}</h1>
+                          <span style="color:#E66100; font-size:12px;">${(m.member.username)!'匿名网友'} 于${m.createTime}{评论}：</span>
+                          <span style="color:#959595; font-size:12px; line-height:20px;">[@text_cut s=m.contentHtml len=60/]</span>
+                          <div class="clear"></div>
+                          <img src="../../${res}/img/guestbook/icon_message.gif" class="lybImg">
+                          <h4>&nbsp;管理员回复：[@text_cut s=m.replyHtml len=30/]</h4>
+                       </div>
+                       </dl>
+                       <div class="clear"></div>
+                       <div style="border-bottom:1px dashed #d6d6d6;"></div>
+                    [/#list]
+                    [/@cms_guestbook_list]
+               </div>
+                <!-- 网友留言_end -->
+             </div>
+        </div>
+        <div class="w300">
+            <!-- 精彩专题_begin -->
+            <script src="/${res}/js/shensuo.js" type="text/javascript"></script>
+            <div class="rim02 mt10">
+                <div class="LanMu02b">
+                    <div class="LanMu02a">精彩专题</div>
+                </div>
+                <ul class="m-list list-tweet">
+                [@cms_topic_list count='7' recommend='1' descLen='35' append='...']
+                [#list tag_list as t]
+                <li>
+                <h3 onMouseOver=javascript:ShowFLT(${t_index+1}) href="javascript:void(null)">
+                <a href="${base}/topic/${t.id}.jspx">
+                ${t.name}
+                </a>
+                </h3>
+                <p id=LM${t_index+1} [#if t_index!=0]style="display:none;"[/#if] class="drink-me clearfix">
+                <a href="${base}/topic/${t.id}.jspx">
+                <img src="${t.titleImg!site.defImg}" width="90" height="64"/>
+                </a>
+                [@text_cut s=t.description len=descLen append=append/]
+                <span class="cBlue"><a href="${base}/topic/${t.id}.jspx"> 详细&gt;&gt;</a></span>
+                </p>
+                </li>
+                [/#list]
+                [/@cms_topic_list]
+                </ul>
+            </div>
+            <!-- 精彩专题_end -->
+        	<!-- 大家爱看_begin -->
+            <div class="rim02 mt10">
+                <div class="LanMu02b">
+                    <div class="LanMu02a">大家爱看</div>
+                </div>
+                <div class="column">
+                    <h3 class="column-title lump-blue">时事</h3>
+                    <ul class="m-list list-main-normal">
+                    [@cms_content_list count='6' orderBy='7' titLen='19' channelId='14,40'  channelOption='1']
+                    [#list tag_list as a]
+                    <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                    </ul>
+                    <h3 class="column-title lump-green">基金</h3>
+                    <ul class="m-list list-main-normal">
+                    [@cms_content_list count='3' orderBy='7' titLen='19' channelId='40'  channelOption='1']
+                    [#list tag_list as a]
+                      <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                    </ul>
+                    <h3 class="column-title lump-gray">社会</h3>
+                    <ul class="m-list list-main-normal">
+                    [@cms_content_list count='3' orderBy='7' titLen='19' channelId='13'  channelOption='1']
+                    [#list tag_list as a]
+                      <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                    </ul>
+                    <h3 class="column-title lump-red">财经</h3>
+                    <ul class="m-list list-main-normal">
+                    [@cms_content_list count='3' orderBy='7' titLen='19' channelId='41'  channelOption='1']
+                    [#list tag_list as a]
+                      <li>
+                    <a href="${a.url}" title="${a.title}" target="_blank">[@text_cut s=a.title len=titLen /]</a>
+                    </li>
+                    [/#list]
+                    [/@cms_content_list]
+                    </ul>
+                </div>
+            </div>
+            <!-- 大家爱看_end -->
+            <!-- 网络调查_begin -->
+            <div class="rim02 mt10">
+                <div class="LanMu02b">
+                    <div class="LanMu02a">网络调查</div>
+                </div>
+                <div class="survey">
+                [#include "../include/vote.html"/]<br>
+                </div>
+            </div>
+            <!-- 网络调查_end -->
+            <!-- 热门评论_begin -->
+            <div class="rim02 mt10">
+                <div class="LanMu02b">
+                    <div class="LanMu02a">热门评论</div>
+                </div>
+                <div id="plcon">
+                    <ul>
+                        [@cms_comment_list count='8' checked='1' textLen='50' append='...']
+                        [#list tag_list as c]
+                        <li>
+                            <span style="color:#E66100;">${(c.commentUser.username)!"匿名网友"}</span>
+                            <span style="color:#aaaaaa;">&nbsp;对&nbsp;</span>
+                            <a href="${c.content.url}" target="_blank"><span style="color:#1C77BA;">${c.content.title}</span></a>
+                            <span style="color:#aaaaaa;">评论道：</span>
+                            <span style="color:#000000;">[@text_cut s=c.textHtml len=textLen append=append/]</span>
+                        </li>
+                        [/#list]
+                        [/@cms_comment_list]
+                    </ul>
+                </div>
+            </div>
+            <!-- 热门评论_end -->
+        </div>
+    </div>
+    [#include "../include/friend_link.html"/]
+    [#include "../include/footer.html"/]
+</div>
+</body>
+</html>

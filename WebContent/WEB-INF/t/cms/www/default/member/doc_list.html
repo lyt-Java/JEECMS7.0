@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>文档列表 - ${site.name} - Powered by JEECMS</title>
+<link href="${resSys}/front.css" rel="stylesheet" type="text/css"/>
+<script src="${resSys}/jquery.js" type="text/javascript"></script>
+<script src="${resSys}/front.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="../../${res}/css/member.css" />
+<script type="text/javascript">
+$(function() {
+	$("#jvForm").validate();
+});
+</script>
+</head>
+
+<body>
+[#include "member_header.html"/]
+<div class="container">
+	 [#include "member_navi.html"/]
+    <div class="mc_right">
+        [#include "member_top.html"/]
+        <div class="mr-top-position">
+		     <div class="mr-top-tit fl">文档列表</div>
+		    <div class="modify fr"><a href="${base}/member/doc_add.jspx">发布文档</a></div>
+		 </div>
+        <div class="mc_content">   
+           	<form id="tableForm" action="doc_list.jspx" method="post">
+            [#if pagination.list?size gt 0]
+            <table border="0" cellpadding="0" cellspacing="1" bgcolor="#C8DCF0" class="tblist">
+            <tr>
+                <th>标题</th>
+                <th>上传时间</th>
+                <th>是否开放</th>
+                <th>财富值</th>
+                <th>收益</th>
+                <th>浏览量</th>
+                <th>下载量</th>
+                <th>操作</th>
+            </tr>
+            [#list pagination.list as doc]
+            <tr>	
+                <td bgcolor="#FFFFFF"><a href="${doc.url!}">${doc.title?html}</a></td>
+                <td bgcolor="#FFFFFF">${doc.releaseDate?string("yyyy-MM-dd")}</td>
+                <td bgcolor="#FFFFFF">[#if doc.hasOpen??][#if doc.hasOpen]开放[#else]私有[/#if][/#if]</td>
+                <td bgcolor="#FFFFFF">${doc.downNeed!}</td>
+                <td bgcolor="#FFFFFF">${doc.grain!}</td>
+                <td bgcolor="#FFFFFF">${doc.views!}</td>
+                <td bgcolor="#FFFFFF">${doc.downs!}</td>
+                <td bgcolor="#FFFFFF"><a href="doc_edit.jspx?id=${doc.id}&nextUrl=contribute_list.jspx">修改<a> | <a href="doc_delete.jspx?ids=${doc.id}&nextUrl=doc_list.jspx">删除<a></td>
+            </tr>
+            [/#list]
+            </table>
+            <input type="hidden" name="pageNo"/>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td align="center" class="pn-sp">
+                共 ${pagination.totalCount} 条&nbsp;
+                每页 ${pagination.pageSize} 条&nbsp;
+                <input type="button" value="首 页" onclick="_gotoPage('1');"[#if pagination.firstPage] disabled="disabled"[/#if]/>
+                <input type="button" value="上一页" onclick="_gotoPage('${pagination.prePage}');"[#if pagination.firstPage] disabled="disabled"[/#if]/>
+                <input type="button" value="下一页" onclick="_gotoPage('${pagination.nextPage}');"[#if pagination.lastPage] disabled="disabled"[/#if]/>
+                <input type="button" value="尾 页" onclick="_gotoPage('${pagination.totalPage}');"[#if pagination.lastPage] disabled="disabled"[/#if]/>&nbsp;
+                当前 ${pagination.pageNo}/${pagination.totalPage} 页 &nbsp;转到第<input type="text" id="_goPs" style="width:50px" onfocus="this.select();" onkeypress="if(event.keyCode==13){$('#_goPage').click();return false;}"/>页
+                <input id="_goPage" type="button" value="转" onclick="_gotoPage($('#_goPs').val());"[#if pagination.totalPage==1] disabled="disabled"[/#if]/>
+            </td>
+            </tr>
+            </table>
+            <script type="text/javascript">
+            function _gotoPage(pageNo) {
+                try{
+                    var tableForm = document.getElementById("tableForm");
+                    $("input[name=pageNo]").val(pageNo);
+                    tableForm.action="doc_list.jspx";
+                    tableForm.onsubmit=null;
+                    tableForm.submit();
+                } catch(e) {
+                    alert('_gotoPage(pageNo)方法出错');
+                }
+            }
+            </script>
+            [#else]
+                <div>暂无文档</div>
+            [/#if]
+            </form>
+    	</div>
+  </div>
+     <div style="clear:both"></div>
+</div>
+</body>
+</html>

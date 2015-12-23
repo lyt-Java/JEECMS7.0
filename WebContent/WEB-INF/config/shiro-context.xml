@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd"
+	default-lazy-init="true">
+	
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login.jspx" />
+		<property name="successUrl" value="/" />
+		<property name="filters">
+			<util:map>
+				<entry key="authc" value-ref="authcFilter" />
+				<entry key="user" value-ref="userFilter" />
+				<entry key="logout" value-ref="logoutFilter" />
+			</util:map>
+		</property>
+		<!--anon匿名 authc登录认证  user用户已登录 logout退出filter-->
+		<property name="filterChainDefinitions">
+			<value>
+				*.jspx = anon
+				*.jhtml = anon
+				/member/forgot_password.jspx = anon
+				/member/password_reset.jspx = anon
+				/login.jspx = authc
+				/logout.jspx = logout
+				/member/** = user
+				/jeeadmin/jeecms/login.do = authc
+				/jeeadmin/jeecms/logout.do = logout
+				/jeeadmin/jeecms/** =user
+			</value>
+		</property>
+	</bean>
+	<!-- Shiro Filter -->	
+	<bean id="adminUrlBean" class="com.jeecms.core.security.CmsAdminUrl">
+		<property name="adminLogin" value="/jeeadmin/jeecms/login.do"/>
+		<property name="adminPrefix" value="/jeeadmin/jeecms/"/>
+	</bean>
+	<bean id="authcFilter" class="com.jeecms.core.security.CmsAuthenticationFilter" parent="adminUrlBean">
+		<property name="adminIndex" value="/jeeadmin/jeecms/index.do"/>
+	</bean>
+	<bean id="userFilter" class="com.jeecms.core.security.CmsUserFilter" parent="adminUrlBean"/>
+	<bean id="logoutFilter" class="com.jeecms.core.security.CmsLogoutFilter" parent="adminUrlBean"/>
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="authorizingRealm" />
+		<property name="cacheManager" ref="shiroEhcacheManager"/>
+	</bean>
+	<bean id="authorizingRealm" class="com.jeecms.core.security.CmsAuthorizingRealm">
+		<property name="credentialsMatcher">
+           <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+               <property name="hashAlgorithmName" value="MD5"/>
+             <!--   true means hex encoded, false means base64 encoded -->
+               <property name="storedCredentialsHexEncoded" value="true"/>
+               <!-- 迭代次数 -->
+               <property name="hashIterations" value="1" />
+           </bean>
+        </property> 
+		<property name="cmsUserMng" ref="cmsUserMng" />
+	</bean>
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile">
+				<value>classpath:ehcache-shiro.xml</value>
+		</property>
+	</bean>
+	
+	<!-- Enable Shiro Annotations for Spring-configured beans.  Only run after -->
+	<!-- the lifecycleBeanProcessor has run: -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+</beans>
