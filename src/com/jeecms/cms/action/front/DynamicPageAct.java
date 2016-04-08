@@ -1,7 +1,7 @@
 package com.jeecms.cms.action.front;
 
 import static com.jeecms.common.web.Constants.INDEX;
-
+import static com.jeecms.cms.Constants.TPL_SUFFIX;
 import java.io.File;
 import java.util.Set;
 
@@ -64,7 +64,8 @@ public class DynamicPageAct {
 			return FrontUtils.pageNotFound(request, response, model);
 		}
 		//使用静态首页而且静态首页存在
-		if(site.getStaticIndex()&&new File(realPathResolver.get(site.getStaticDir()+INDEX)).exists()){
+		//if(site.getStaticIndex()&&new File(realPathResolver.get(site.getStaticDir()+INDEX)).exists()){
+		if(site.getStaticIndex()&&new File(realPathResolver.get(site.getStaticDir()+INDEX+TPL_SUFFIX)).exists()){
 			return FrontUtils.getTplPath("", site.getStaticDir(), INDEX);
 		}else{
 			return site.getTplIndexOrDef();
